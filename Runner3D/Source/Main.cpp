@@ -31,7 +31,7 @@ public:
 
 
 	/**
-	 * @brief 게임 프레임워크를 초기화합니다.
+	 * @brief 게임 애플리케이션를 초기화합니다.
 	 */
 	virtual void Setup() override
 	{
@@ -41,7 +41,7 @@ public:
 
 
 	/**
-	 * @brief 게임 프레임워크 사용을 종료합니다.
+	 * @brief 게임 애플리케이션 사용을 종료합니다.
 	 */
 	virtual void Shutdown() override
 	{
@@ -50,7 +50,7 @@ public:
 
 
 	/**
-	 * @brief 게임 프레임워크를 실행합니다.
+	 * @brief 게임 애플리케이션를 실행합니다.
 	 */
 	virtual void Run() override
 	{
