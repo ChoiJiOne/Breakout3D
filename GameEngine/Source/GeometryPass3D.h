@@ -9,7 +9,7 @@
 /**
  * @brief 3D 기본 도형을 렌더링하는 셰이더입니다.
  */
-class GeometryShader3D : public Shader
+class GeometryPass3D : public Shader
 {
 public:
 	/**
@@ -17,7 +17,7 @@ public:
 	 *
 	 * @note 생성자 이외의 메서드에서 적절한 초기화를 수행해야 합니다.
 	 */
-	GeometryShader3D() = default;
+	GeometryPass3D() = default;
 
 
 	/**
@@ -25,13 +25,13 @@ public:
 	 *
 	 * @note 셰이더의 내부에서 할당된 요소를 해제하기 위해서는 반드시 Release를 호출해야 합니다.
 	 */
-	virtual ~GeometryShader3D();
+	virtual ~GeometryPass3D();
 
 
 	/**
 	 * @brief 3D 기본 도형을 렌더링하는 셰이더의 복사 생성자와 대입 연산자를 명시적으로 삭제합니다.
 	 */
-	DISALLOW_COPY_AND_ASSIGN(GeometryShader3D);
+	DISALLOW_COPY_AND_ASSIGN(GeometryPass3D);
 
 
 	/**

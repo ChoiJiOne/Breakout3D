@@ -1,4 +1,4 @@
-#include "GeometryShader3D.h"
+#include "GeometryPass3D.h"
 
 #include "Assertion.h"
 #include "GLAssertion.h"
@@ -6,7 +6,7 @@
 
 #include <glad/glad.h>
 
-GeometryShader3D::~GeometryShader3D()
+GeometryPass3D::~GeometryPass3D()
 {
 	if (bIsInitialized_)
 	{
@@ -14,7 +14,7 @@ GeometryShader3D::~GeometryShader3D()
 	}
 }
 
-void GeometryShader3D::Initialize(const std::wstring& vsPath, const std::wstring& fsPath)
+void GeometryPass3D::Initialize(const std::wstring& vsPath, const std::wstring& fsPath)
 {
 	ASSERT(!bIsInitialized_, "already initialize geometry shader 3d resource...");
 
@@ -39,7 +39,7 @@ void GeometryShader3D::Initialize(const std::wstring& vsPath, const std::wstring
 	GL_ASSERT(glBindVertexArray(0), "failed to unbind 3d geometry vertex array...");
 }
 
-void GeometryShader3D::Release()
+void GeometryPass3D::Release()
 {
 	ASSERT(bIsInitialized_, "not initialized before or has already been released...");
 
@@ -49,7 +49,7 @@ void GeometryShader3D::Release()
 	GL_ASSERT(glDeleteVertexArrays(1, &vertexArrayObject_), "failed to delete 3d geometry vertex array object...");
 }
 
-void GeometryShader3D::DrawPoints3D(const Matrix4x4f& view, const Matrix4x4f& projection, const std::vector<Vector3f>& positions, const Vector4f& color)
+void GeometryPass3D::DrawPoints3D(const Matrix4x4f& view, const Matrix4x4f& projection, const std::vector<Vector3f>& positions, const Vector4f& color)
 {
 	ASSERT(positions.size() <= MAX_VERTEX_SIZE, "overflow 3d point count : %d", static_cast<int32_t>(positions.size()));
 
@@ -61,7 +61,7 @@ void GeometryShader3D::DrawPoints3D(const Matrix4x4f& view, const Matrix4x4f& pr
 	DrawGeometry3D(Matrix4x4f::GetIdentity(), view, projection, EDrawType::Points, static_cast<uint32_t>(positions.size()));
 }
 
-void GeometryShader3D::DrawConnectPoints3D(const Matrix4x4f& view, const Matrix4x4f& projection, const std::vector<Vector3f>& positions, const Vector4f& color)
+void GeometryPass3D::DrawConnectPoints3D(const Matrix4x4f& view, const Matrix4x4f& projection, const std::vector<Vector3f>& positions, const Vector4f& color)
 {
 	ASSERT(positions.size() <= MAX_VERTEX_SIZE, "overflow 3d point count : %d", static_cast<int32_t>(positions.size()));
 
@@ -73,7 +73,7 @@ void GeometryShader3D::DrawConnectPoints3D(const Matrix4x4f& view, const Matrix4
 	DrawGeometry3D(Matrix4x4f::GetIdentity(), view, projection, EDrawType::LineStrip, static_cast<uint32_t>(positions.size()));
 }
 
-void GeometryShader3D::DrawLine3D(const Matrix4x4f& view, const Matrix4x4f& projection, const Vector3f& fromPosition, const Vector3f& toPosition, const Vector4f& color)
+void GeometryPass3D::DrawLine3D(const Matrix4x4f& view, const Matrix4x4f& projection, const Vector3f& fromPosition, const Vector3f& toPosition, const Vector4f& color)
 {
 	uint32_t vertexCount = 0;
 
@@ -83,7 +83,7 @@ void GeometryShader3D::DrawLine3D(const Matrix4x4f& view, const Matrix4x4f& proj
 	DrawGeometry3D(Matrix4x4f::GetIdentity(), view, projection, EDrawType::LineStrip, vertexCount);
 }
 
-void GeometryShader3D::DrawLine3D(const Matrix4x4f& view, const Matrix4x4f& projection, const Vector3f& fromPosition, const Vector4f& fromColor, const Vector3f& toPosition, const Vector4f& toColor)
+void GeometryPass3D::DrawLine3D(const Matrix4x4f& view, const Matrix4x4f& projection, const Vector3f& fromPosition, const Vector4f& fromColor, const Vector3f& toPosition, const Vector4f& toColor)
 {
 	uint32_t vertexCount = 0;
 
@@ -93,7 +93,7 @@ void GeometryShader3D::DrawLine3D(const Matrix4x4f& view, const Matrix4x4f& proj
 	DrawGeometry3D(Matrix4x4f::GetIdentity(), view, projection, EDrawType::LineStrip, vertexCount);
 }
 
-void GeometryShader3D::DrawQuad3D(const Matrix4x4f& world, const Matrix4x4f& view, const Matrix4x4f& projection, float width, float height, const Vector4f& color)
+void GeometryPass3D::DrawQuad3D(const Matrix4x4f& world, const Matrix4x4f& view, const Matrix4x4f& projection, float width, float height, const Vector4f& color)
 {
 	uint32_t vertexCount = 0;
 
@@ -108,7 +108,7 @@ void GeometryShader3D::DrawQuad3D(const Matrix4x4f& world, const Matrix4x4f& vie
 	DrawGeometry3D(world, view, projection, EDrawType::Triangles, vertexCount);
 }
 
-void GeometryShader3D::DrawHorizonDividQuad3D(const Matrix4x4f& world, const Matrix4x4f& view, const Matrix4x4f& projection, float width, float height, float rate, const Vector4f& color, const Vector4f& bgColor)
+void GeometryPass3D::DrawHorizonDividQuad3D(const Matrix4x4f& world, const Matrix4x4f& view, const Matrix4x4f& projection, float width, float height, float rate, const Vector4f& color, const Vector4f& bgColor)
 {
 	rate = MathUtils::Clamp<float>(rate, 0.0f, 1.0f);
 
@@ -139,7 +139,7 @@ void GeometryShader3D::DrawHorizonDividQuad3D(const Matrix4x4f& world, const Mat
 	DrawGeometry3D(world, view, projection, EDrawType::Triangles, vertexCount);
 }
 
-void GeometryShader3D::DrawVerticalDividQuad3D(const Matrix4x4f& world, const Matrix4x4f& view, const Matrix4x4f& projection, float width, float height, float rate, const Vector4f& color, const Vector4f& bgColor)
+void GeometryPass3D::DrawVerticalDividQuad3D(const Matrix4x4f& world, const Matrix4x4f& view, const Matrix4x4f& projection, float width, float height, float rate, const Vector4f& color, const Vector4f& bgColor)
 {
 	rate = MathUtils::Clamp<float>(rate, 0.0f, 1.0f);
 
@@ -170,7 +170,7 @@ void GeometryShader3D::DrawVerticalDividQuad3D(const Matrix4x4f& world, const Ma
 	DrawGeometry3D(world, view, projection, EDrawType::Triangles, vertexCount);
 }
 
-void GeometryShader3D::DrawAxisAlignedBoundingBox3D(const Matrix4x4f& view, const Matrix4x4f& projection, const Vector3f& center, const Vector3f& extents, const Vector4f& color)
+void GeometryPass3D::DrawAxisAlignedBoundingBox3D(const Matrix4x4f& view, const Matrix4x4f& projection, const Vector3f& center, const Vector3f& extents, const Vector4f& color)
 {
 	uint32_t vertexCount = 0;
 
@@ -216,7 +216,7 @@ void GeometryShader3D::DrawAxisAlignedBoundingBox3D(const Matrix4x4f& view, cons
 	DrawGeometry3D(Matrix4x4f::GetIdentity(), view, projection, EDrawType::Lines, vertexCount);
 }
 
-void GeometryShader3D::DrawWireframeSphere3D(const Matrix4x4f& view, const Matrix4x4f& projection, const Vector3f& center, float radius, const Vector4f& color, int32_t sliceCount)
+void GeometryPass3D::DrawWireframeSphere3D(const Matrix4x4f& view, const Matrix4x4f& projection, const Vector3f& center, float radius, const Vector4f& color, int32_t sliceCount)
 {
 	ASSERT(radius >= 0.0f, "invalid circle radius : %f", radius);
 
@@ -257,7 +257,7 @@ void GeometryShader3D::DrawWireframeSphere3D(const Matrix4x4f& view, const Matri
 	DrawGeometry3D(Matrix4x4f::GetIdentity(), view, projection, EDrawType::LineStrip, vertexCount);
 }
 
-void GeometryShader3D::DrawGrid3D(const Matrix4x4f& view, const Matrix4x4f& projection, float minX, float maxX, float strideX, float minZ, float maxZ, float strideZ, const Vector4f& color)
+void GeometryPass3D::DrawGrid3D(const Matrix4x4f& view, const Matrix4x4f& projection, float minX, float maxX, float strideX, float minZ, float maxZ, float strideZ, const Vector4f& color)
 {
 	ASSERT((strideX >= 1.0f && strideZ >= 1.0f), "The values of strideX and strideZ are too small : %f, %f", strideX, strideZ);
 
@@ -288,7 +288,7 @@ void GeometryShader3D::DrawGrid3D(const Matrix4x4f& view, const Matrix4x4f& proj
 	DrawGeometry3D(Matrix4x4f::GetIdentity(), view, projection, EDrawType::Lines, static_cast<uint32_t>(vertexCount));
 }
 
-void GeometryShader3D::DrawGeometry3D(const Matrix4x4f& world, const Matrix4x4f& view, const Matrix4x4f& projection, const EDrawType& drawType, uint32_t vertexCount)
+void GeometryPass3D::DrawGeometry3D(const Matrix4x4f& world, const Matrix4x4f& view, const Matrix4x4f& projection, const EDrawType& drawType, uint32_t vertexCount)
 {
 	ASSERT(drawType != EDrawType::None, "invalid draw type...");
 
