@@ -1,4 +1,4 @@
-#include "ShadowShader.h"
+#include "ShadowPass.h"
 
 #include "Assertion.h"
 #include "GLAssertion.h"
@@ -7,15 +7,15 @@
 
 #include <glad/glad.h>
 
-ShadowShader::~ShadowShader() {}
+ShadowPass::~ShadowPass() {}
 
-void ShadowShader::SetLight(const Light* light)
+void ShadowPass::SetLight(const Light* light)
 {
 	SetUniform("lightView", light->GetViewMatrix());
 	SetUniform("lightProjection", light->GetProjectionMatrix());
 }
 
-void ShadowShader::DrawMesh3D(const Matrix4x4f& world, const StaticMesh* mesh)
+void ShadowPass::DrawMesh3D(const Matrix4x4f& world, const StaticMesh* mesh)
 {
 	SetUniform("world", world);
 
