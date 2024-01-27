@@ -8,7 +8,7 @@
 #include "GLAssertion.h"
 #include "GeometryPass2D.h"
 #include "GeometryPass3D.h"
-#include "GlyphShader2D.h"
+#include "GlyphPass2D.h"
 #include "LightShader.h"
 #include "MathUtils.h"
 #include "PostEffectShader.h"
@@ -92,7 +92,7 @@ void RenderManager::Startup()
 
 	shaderCache_.insert({ L"Geometry2D", ResourceManager::Get().CreateResource<GeometryPass2D>("GeometryPass2D") });
 	shaderCache_.insert({ L"Geometry3D", ResourceManager::Get().CreateResource<GeometryPass3D>("GeometryPass3D") });
-	shaderCache_.insert({ L"Glyph2D",    ResourceManager::Get().CreateResource<GlyphShader2D>("Glyph2DShader")       });
+	shaderCache_.insert({ L"Glyph2D",    ResourceManager::Get().CreateResource<GlyphPass2D>("GlyphPass2D")       });
 	shaderCache_.insert({ L"Texture2D",  ResourceManager::Get().CreateResource<TextureShader2D>("Texture2DShader")   });
 	shaderCache_.insert({ L"Skybox",     ResourceManager::Get().CreateResource<Shader>("SkyboxShader")               });
 	shaderCache_.insert({ L"Light",      ResourceManager::Get().CreateResource<LightShader>("LightShader")           });
@@ -502,7 +502,7 @@ void RenderManager::RenderText2D(const TTFont* font, const std::wstring& text, c
 		SetDepthMode(false);
 	}
 
-	GlyphShader2D* shader = reinterpret_cast<GlyphShader2D*>(shaderCache_.at(L"Glyph2D"));
+	GlyphPass2D* shader = reinterpret_cast<GlyphPass2D*>(shaderCache_.at(L"Glyph2D"));
 	shader->DrawText2D(screenOrtho_, font, text, center, color);
 }
 
