@@ -1,4 +1,4 @@
-#include "GlyphShader2D.h"
+#include "GlyphPass2D.h"
 
 #include "Assertion.h"
 #include "GLAssertion.h"
@@ -7,7 +7,7 @@
 #include <glad/glad.h>
 
 
-GlyphShader2D::~GlyphShader2D()
+GlyphPass2D::~GlyphPass2D()
 {
 	if (bIsInitialized_)
 	{
@@ -15,7 +15,7 @@ GlyphShader2D::~GlyphShader2D()
 	}
 }
 
-void GlyphShader2D::Initialize(const std::wstring& vsPath, const std::wstring& fsPath)
+void GlyphPass2D::Initialize(const std::wstring& vsPath, const std::wstring& fsPath)
 {
 	ASSERT(!bIsInitialized_, "already initialize glyph shader 2d resource...");
 
@@ -45,7 +45,7 @@ void GlyphShader2D::Initialize(const std::wstring& vsPath, const std::wstring& f
 	Shader::Unbind();
 }
 
-void GlyphShader2D::Release()
+void GlyphPass2D::Release()
 {
 	ASSERT(bIsInitialized_, "not initialized before or has already been released...");
 
@@ -55,7 +55,7 @@ void GlyphShader2D::Release()
 	GL_ASSERT(glDeleteVertexArrays(1, &vertexArrayObject_), "failed to delete glyph vertex array object...");
 }
 
-void GlyphShader2D::DrawText2D(const Matrix4x4f& ortho, const TTFont* font, const std::wstring& text, const Vector2f& center, const Vector4f& color)
+void GlyphPass2D::DrawText2D(const Matrix4x4f& ortho, const TTFont* font, const std::wstring& text, const Vector2f& center, const Vector4f& color)
 {
 	ASSERT(text.length() <= MAX_STRING_LEN, L"overflow text length for draw %d...", text.length());
 	ASSERT(font != nullptr, "invalid font resource...");
@@ -81,7 +81,7 @@ void GlyphShader2D::DrawText2D(const Matrix4x4f& ortho, const TTFont* font, cons
 	Shader::Unbind();
 }
 
-uint32_t GlyphShader2D::UpdateGlyphVertexBuffer(const TTFont* font, const std::wstring& text, const Vector2f& center)
+uint32_t GlyphPass2D::UpdateGlyphVertexBuffer(const TTFont* font, const std::wstring& text, const Vector2f& center)
 {
 	float glyphAtlasSize = static_cast<float>(font->GetGlyphAtlasSize());
 
