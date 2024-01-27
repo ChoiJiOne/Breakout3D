@@ -11,7 +11,7 @@
 #include "GlyphPass2D.h"
 #include "LightPass.h"
 #include "MathUtils.h"
-#include "PostEffectShader.h"
+#include "PostEffectPass.h"
 #include "ResourceManager.h"
 #include "Shader.h"
 #include "Skybox.h"
@@ -116,7 +116,7 @@ void RenderManager::Startup()
 
 	for (const auto& postEffect : postEffects)
 	{
-		PostEffectShader* effect = ResourceManager::Get().CreateResource<PostEffectShader>(StringUtils::Convert(postEffect));
+		PostEffectPass* effect = ResourceManager::Get().CreateResource<PostEffectPass>(StringUtils::Convert(postEffect));
 		effect->Initialize(StringUtils::PrintF(L"%sPostEffect.vert", shaderPath_.c_str()), StringUtils::PrintF(L"%s%s.frag", shaderPath_.c_str(), postEffect.c_str()));
 	}
 	

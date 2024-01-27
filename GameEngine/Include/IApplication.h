@@ -28,7 +28,7 @@
 #include "Material.h"
 #include "MathUtils.h"
 #include "ObjectManager.h"
-#include "PostEffectShader.h"
+#include "PostEffectPass.h"
 #include "RenderManager.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
