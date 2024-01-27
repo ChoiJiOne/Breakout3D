@@ -7,7 +7,7 @@
 #include "CommandLineUtils.h"
 #include "GLAssertion.h"
 #include "GeometryPass2D.h"
-#include "GeometryShader3D.h"
+#include "GeometryPass3D.h"
 #include "GlyphShader2D.h"
 #include "LightShader.h"
 #include "MathUtils.h"
@@ -91,7 +91,7 @@ void RenderManager::Startup()
 	shaderCache_ = std::unordered_map<std::wstring, Shader*>();
 
 	shaderCache_.insert({ L"Geometry2D", ResourceManager::Get().CreateResource<GeometryPass2D>("GeometryPass2D") });
-	shaderCache_.insert({ L"Geometry3D", ResourceManager::Get().CreateResource<GeometryShader3D>("Geometry3DShader") });
+	shaderCache_.insert({ L"Geometry3D", ResourceManager::Get().CreateResource<GeometryPass3D>("GeometryPass3D") });
 	shaderCache_.insert({ L"Glyph2D",    ResourceManager::Get().CreateResource<GlyphShader2D>("Glyph2DShader")       });
 	shaderCache_.insert({ L"Texture2D",  ResourceManager::Get().CreateResource<TextureShader2D>("Texture2DShader")   });
 	shaderCache_.insert({ L"Skybox",     ResourceManager::Get().CreateResource<Shader>("SkyboxShader")               });
@@ -513,7 +513,7 @@ void RenderManager::RenderPoints3D(const Camera3D* camera, const std::vector<Vec
 		SetDepthMode(true);
 	}
 
-	GeometryShader3D* shader = reinterpret_cast<GeometryShader3D*>(shaderCache_.at(L"Geometry3D"));
+	GeometryPass3D* shader = reinterpret_cast<GeometryPass3D*>(shaderCache_.at(L"Geometry3D"));
 	shader->DrawPoints3D(camera->GetViewMatrix(), camera->GetProjectionMatrix(), positions, color);
 }
 
@@ -524,7 +524,7 @@ void RenderManager::RenderConnectPoints3D(const Camera3D* camera, const std::vec
 		SetDepthMode(true);
 	}
 
-	GeometryShader3D* shader = reinterpret_cast<GeometryShader3D*>(shaderCache_.at(L"Geometry3D"));
+	GeometryPass3D* shader = reinterpret_cast<GeometryPass3D*>(shaderCache_.at(L"Geometry3D"));
 	shader->DrawConnectPoints3D(camera->GetViewMatrix(), camera->GetProjectionMatrix(), positions, color);
 }
 
@@ -535,7 +535,7 @@ void RenderManager::RenderLine3D(const Camera3D* camera, const Vector3f& fromPos
 		SetDepthMode(true);
 	}
 
-	GeometryShader3D* shader = reinterpret_cast<GeometryShader3D*>(shaderCache_.at(L"Geometry3D"));
+	GeometryPass3D* shader = reinterpret_cast<GeometryPass3D*>(shaderCache_.at(L"Geometry3D"));
 	shader->DrawLine3D(camera->GetViewMatrix(), camera->GetProjectionMatrix(), fromPosition, toPosition, color);
 }
 
@@ -546,7 +546,7 @@ void RenderManager::RenderLine3D(const Camera3D* camera, const Vector3f& fromPos
 		SetDepthMode(true);
 	}
 
-	GeometryShader3D* shader = reinterpret_cast<GeometryShader3D*>(shaderCache_.at(L"Geometry3D"));
+	GeometryPass3D* shader = reinterpret_cast<GeometryPass3D*>(shaderCache_.at(L"Geometry3D"));
 	shader->DrawLine3D(camera->GetViewMatrix(), camera->GetProjectionMatrix(), fromPosition, fromColor, toPosition, toColor);
 }
 
@@ -557,7 +557,7 @@ void RenderManager::RenderQuad3D(const Matrix4x4f& world, const Camera3D* camera
 		SetDepthMode(true);
 	}
 	
-	GeometryShader3D* shader = reinterpret_cast<GeometryShader3D*>(shaderCache_.at(L"Geometry3D"));
+	GeometryPass3D* shader = reinterpret_cast<GeometryPass3D*>(shaderCache_.at(L"Geometry3D"));
 	shader->DrawQuad3D(world, camera->GetViewMatrix(), camera->GetProjectionMatrix(), width, height, color);
 }
 
@@ -568,7 +568,7 @@ void RenderManager::RenderHorizonDividQuad3D(const Matrix4x4f& world, const Came
 		SetDepthMode(true);
 	}
 
-	GeometryShader3D* shader = reinterpret_cast<GeometryShader3D*>(shaderCache_.at(L"Geometry3D"));
+	GeometryPass3D* shader = reinterpret_cast<GeometryPass3D*>(shaderCache_.at(L"Geometry3D"));
 	shader->DrawHorizonDividQuad3D(world, camera->GetViewMatrix(), camera->GetProjectionMatrix(), width, height, rate, color, bgColor);
 }
 
@@ -579,7 +579,7 @@ void RenderManager::RenderVerticalDividQuad3D(const Matrix4x4f& world, const Cam
 		SetDepthMode(true);
 	}
 
-	GeometryShader3D* shader = reinterpret_cast<GeometryShader3D*>(shaderCache_.at(L"Geometry3D"));
+	GeometryPass3D* shader = reinterpret_cast<GeometryPass3D*>(shaderCache_.at(L"Geometry3D"));
 	shader->DrawVerticalDividQuad3D(world, camera->GetViewMatrix(), camera->GetProjectionMatrix(), width, height, rate, color, bgColor);
 }
 
@@ -590,7 +590,7 @@ void RenderManager::RenderAxisAlignedBoundingBox3D(const Camera3D* camera, const
 		SetDepthMode(true);
 	}
 
-	GeometryShader3D* shader = reinterpret_cast<GeometryShader3D*>(shaderCache_.at(L"Geometry3D"));
+	GeometryPass3D* shader = reinterpret_cast<GeometryPass3D*>(shaderCache_.at(L"Geometry3D"));
 	shader->DrawAxisAlignedBoundingBox3D(camera->GetViewMatrix(), camera->GetProjectionMatrix(), center, extents, color);
 }
 
@@ -601,7 +601,7 @@ void RenderManager::RenderWireframeSphere3D(const Camera3D* camera, const Vector
 		SetDepthMode(true);
 	}
 
-	GeometryShader3D* shader = reinterpret_cast<GeometryShader3D*>(shaderCache_.at(L"Geometry3D"));
+	GeometryPass3D* shader = reinterpret_cast<GeometryPass3D*>(shaderCache_.at(L"Geometry3D"));
 	shader->DrawWireframeSphere3D(camera->GetViewMatrix(), camera->GetProjectionMatrix(), center, radius, color, sliceCount);
 }
 
@@ -612,7 +612,7 @@ void RenderManager::RenderGrid3D(const Camera3D* camera, float minX, float maxX,
 		SetDepthMode(true);
 	}
 
-	GeometryShader3D* shader = reinterpret_cast<GeometryShader3D*>(shaderCache_.at(L"Geometry3D"));
+	GeometryPass3D* shader = reinterpret_cast<GeometryPass3D*>(shaderCache_.at(L"Geometry3D"));
 	shader->DrawGrid3D(camera->GetViewMatrix(), camera->GetProjectionMatrix(), minX, maxX, strideX, minZ, maxZ, strideZ, color);
 }
 
