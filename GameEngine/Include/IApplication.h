@@ -34,7 +34,7 @@
 #include "SceneManager.h"
 #include "Shader.h"
 #include "ShadowMap.h"
-#include "ShadowShader.h"
+#include "ShadowPass.h"
 #include "Skybox.h"
 #include "Sound.h"
 #include "Sphere3D.h"

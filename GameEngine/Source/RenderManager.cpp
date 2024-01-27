@@ -17,7 +17,7 @@
 #include "Skybox.h"
 #include "StaticMesh.h"
 #include "ShadowMap.h"
-#include "ShadowShader.h"
+#include "ShadowPass.h"
 #include "StringUtils.h"
 #include "Texture2D.h"
 #include "TextureShader2D.h"
@@ -96,7 +96,7 @@ void RenderManager::Startup()
 	shaderCache_.insert({ L"Texture2D",  ResourceManager::Get().CreateResource<TextureShader2D>("Texture2DShader")  });
 	shaderCache_.insert({ L"Skybox",     ResourceManager::Get().CreateResource<Shader>("SkyboxShader")              });
 	shaderCache_.insert({ L"Light",      ResourceManager::Get().CreateResource<LightPass>("LightPass")              });
-	shaderCache_.insert({ L"ShadowMap",  ResourceManager::Get().CreateResource<ShadowShader>("ShadowShader")        });
+	shaderCache_.insert({ L"ShadowPass", ResourceManager::Get().CreateResource<ShadowPass>("ShadowPass")        });
 	for (auto& shader : shaderCache_)
 	{
 		shader.second->Initialize(
