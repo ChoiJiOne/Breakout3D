@@ -1,4 +1,4 @@
-#include "GeometryShader2D.h"
+#include "GeometryPass2D.h"
 
 #include "Assertion.h"
 #include "GLAssertion.h"
@@ -7,7 +7,7 @@
 #include <glad/glad.h>
 
 
-GeometryShader2D::~GeometryShader2D()
+GeometryPass2D::~GeometryPass2D()
 {
 	if (bIsInitialized_)
 	{
@@ -15,7 +15,7 @@ GeometryShader2D::~GeometryShader2D()
 	}
 }
 
-void GeometryShader2D::Initialize(const std::wstring& vsPath, const std::wstring& fsPath)
+void GeometryPass2D::Initialize(const std::wstring& vsPath, const std::wstring& fsPath)
 {
 	ASSERT(!bIsInitialized_, "already initialize geometry shader 2d resource...");
 
@@ -40,7 +40,7 @@ void GeometryShader2D::Initialize(const std::wstring& vsPath, const std::wstring
 	GL_ASSERT(glBindVertexArray(0), "failed to unbind 2d geometry vertex array...");
 }
 
-void GeometryShader2D::Release()
+void GeometryPass2D::Release()
 {
 	ASSERT(bIsInitialized_, "not initialized before or has already been released...");
 
@@ -50,7 +50,7 @@ void GeometryShader2D::Release()
 	GL_ASSERT(glDeleteVertexArrays(1, &vertexArrayObject_), "failed to delete 2d geometry vertex array object...");
 }
 
-void GeometryShader2D::DrawPoints2D(const Matrix4x4f& ortho, const std::vector<Vector2f>& positions, const Vector4f& color, float pointSize)
+void GeometryPass2D::DrawPoints2D(const Matrix4x4f& ortho, const std::vector<Vector2f>& positions, const Vector4f& color, float pointSize)
 {
 	ASSERT(positions.size() <= MAX_VERTEX_SIZE, "overflow 2d point count : %d", static_cast<int32_t>(positions.size()));
 	ASSERT(pointSize >= 0.0f, "invalid 2d point size : %d", pointSize);
@@ -64,7 +64,7 @@ void GeometryShader2D::DrawPoints2D(const Matrix4x4f& ortho, const std::vector<V
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::Points, static_cast<uint32_t>(positions.size()));
 }
 
-void GeometryShader2D::DrawConnectPoints2D(const Matrix4x4f& ortho, const std::vector<Vector2f>& positions, const Vector4f& color)
+void GeometryPass2D::DrawConnectPoints2D(const Matrix4x4f& ortho, const std::vector<Vector2f>& positions, const Vector4f& color)
 {
 	ASSERT(positions.size() <= MAX_VERTEX_SIZE, "overflow 2d point count : %d", static_cast<int32_t>(positions.size()));
 
@@ -76,7 +76,7 @@ void GeometryShader2D::DrawConnectPoints2D(const Matrix4x4f& ortho, const std::v
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::LineStrip, static_cast<uint32_t>(positions.size()));
 }
 
-void GeometryShader2D::DrawLine2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector2f& toPosition, const Vector4f& color)
+void GeometryPass2D::DrawLine2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector2f& toPosition, const Vector4f& color)
 {
 	vertices_[0] = VertexPositionColor(Vector3f(fromPosition.x + 0.5f, fromPosition.y + 0.5f, 0.0f), color);
 	vertices_[1] = VertexPositionColor(Vector3f(   toPosition.x + 0.5f,  toPosition.y + 0.5f, 0.0f), color);
@@ -84,7 +84,7 @@ void GeometryShader2D::DrawLine2D(const Matrix4x4f& ortho, const Vector2f& fromP
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::LineStrip, 2);
 }
 
-void GeometryShader2D::DrawLine2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector4f& fromColor, const Vector2f& toPosition, const Vector4f& toColor)
+void GeometryPass2D::DrawLine2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector4f& fromColor, const Vector2f& toPosition, const Vector4f& toColor)
 {
 	vertices_[0] = VertexPositionColor(Vector3f(fromPosition.x + 0.5f, fromPosition.y + 0.5f, 0.0f), fromColor);
 	vertices_[1] = VertexPositionColor(Vector3f(  toPosition.x + 0.5f,   toPosition.y + 0.5f, 0.0f),   toColor);
@@ -92,7 +92,7 @@ void GeometryShader2D::DrawLine2D(const Matrix4x4f& ortho, const Vector2f& fromP
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::LineStrip, 2);
 }
 
-void GeometryShader2D::DrawTriangle2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector2f& byPosition, const Vector2f& toPosition, const Vector4f& color)
+void GeometryPass2D::DrawTriangle2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector2f& byPosition, const Vector2f& toPosition, const Vector4f& color)
 {
 	vertices_[0] = VertexPositionColor(Vector3f(fromPosition.x + 0.5f, fromPosition.y + 0.5f, 0.0f), color);
 	vertices_[1] = VertexPositionColor(Vector3f(  byPosition.x + 0.5f,   byPosition.y + 0.5f, 0.0f), color);
@@ -101,7 +101,7 @@ void GeometryShader2D::DrawTriangle2D(const Matrix4x4f& ortho, const Vector2f& f
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::Triangles, 3);
 }
 
-void GeometryShader2D::DrawTriangle2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector4f& fromColor, const Vector2f& byPosition, const Vector4f& byColor, const Vector2f& toPosition, const Vector4f& toColor)
+void GeometryPass2D::DrawTriangle2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector4f& fromColor, const Vector2f& byPosition, const Vector4f& byColor, const Vector2f& toPosition, const Vector4f& toColor)
 {
 	vertices_[0] = VertexPositionColor(Vector3f(fromPosition.x + 0.5f, fromPosition.y + 0.5f, 0.0f), fromColor);
 	vertices_[1] = VertexPositionColor(Vector3f(  byPosition.x + 0.5f,   byPosition.y + 0.5f, 0.0f),   byColor);
@@ -110,7 +110,7 @@ void GeometryShader2D::DrawTriangle2D(const Matrix4x4f& ortho, const Vector2f& f
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::Triangles, 3);
 }
 
-void GeometryShader2D::DrawWireframeTriangle2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector2f& byPosition, const Vector2f& toPosition, const Vector4f& color)
+void GeometryPass2D::DrawWireframeTriangle2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector2f& byPosition, const Vector2f& toPosition, const Vector4f& color)
 {
 	vertices_[0] = VertexPositionColor(Vector3f(fromPosition.x + 0.5f, fromPosition.y + 0.5f, 0.0f), color);
 	vertices_[1] = VertexPositionColor(Vector3f(  byPosition.x + 0.5f,   byPosition.y + 0.5f, 0.0f), color);
@@ -120,7 +120,7 @@ void GeometryShader2D::DrawWireframeTriangle2D(const Matrix4x4f& ortho, const Ve
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::LineStrip, 4);
 }
 
-void GeometryShader2D::DrawWireframeTriangle2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector4f& fromColor, const Vector2f& byPosition, const Vector4f& byColor, const Vector2f& toPosition, const Vector4f& toColor)
+void GeometryPass2D::DrawWireframeTriangle2D(const Matrix4x4f& ortho, const Vector2f& fromPosition, const Vector4f& fromColor, const Vector2f& byPosition, const Vector4f& byColor, const Vector2f& toPosition, const Vector4f& toColor)
 {
 	vertices_[0] = VertexPositionColor(Vector3f(fromPosition.x + 0.5f, fromPosition.y + 0.5f, 0.0f), fromColor);
 	vertices_[1] = VertexPositionColor(Vector3f(  byPosition.x + 0.5f,   byPosition.y + 0.5f, 0.0f),   byColor);
@@ -130,7 +130,7 @@ void GeometryShader2D::DrawWireframeTriangle2D(const Matrix4x4f& ortho, const Ve
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::LineStrip, 4);
 }
 
-void GeometryShader2D::DrawRectangle2D(const Matrix4x4f& ortho, const Vector2f& center, float width, float height, float rotate, const Vector4f& color)
+void GeometryPass2D::DrawRectangle2D(const Matrix4x4f& ortho, const Vector2f& center, float width, float height, float rotate, const Vector4f& color)
 {
 	vertices_[0] = VertexPositionColor(Vector3f(center.x - width / 2.0f + 0.5f, center.y - height / 2.0f + 0.5f, 0.0f), color);
 	vertices_[1] = VertexPositionColor(Vector3f(center.x - width / 2.0f + 0.5f, center.y + height / 2.0f + 0.5f, 0.0f), color);
@@ -147,7 +147,7 @@ void GeometryShader2D::DrawRectangle2D(const Matrix4x4f& ortho, const Vector2f& 
 	DrawGeometry2D(transform, ortho, EDrawType::Triangles, 6);
 }
 
-void GeometryShader2D::DrawWireframeRectangle2D(const Matrix4x4f& ortho, const Vector2f& center, float width, float height, float rotate, const Vector4f& color)
+void GeometryPass2D::DrawWireframeRectangle2D(const Matrix4x4f& ortho, const Vector2f& center, float width, float height, float rotate, const Vector4f& color)
 {
 	vertices_[0] = VertexPositionColor(Vector3f(center.x - width / 2.0f + 0.5f, center.y - height / 2.0f + 0.5f, 0.0f), color);
 	vertices_[1] = VertexPositionColor(Vector3f(center.x - width / 2.0f + 0.5f, center.y + height / 2.0f + 0.5f, 0.0f), color);
@@ -162,7 +162,7 @@ void GeometryShader2D::DrawWireframeRectangle2D(const Matrix4x4f& ortho, const V
 	DrawGeometry2D(transform, ortho, EDrawType::LineStrip, 5);
 }
 
-void GeometryShader2D::DrawCircle2D(const Matrix4x4f& ortho, const Vector2f& center, float radius, const Vector4f& color, int32_t sliceCount)
+void GeometryPass2D::DrawCircle2D(const Matrix4x4f& ortho, const Vector2f& center, float radius, const Vector4f& color, int32_t sliceCount)
 {
 	ASSERT(radius >= 0.0f, "invalid circle radius : %f", radius);
 	ASSERT(sliceCount <= MAX_VERTEX_SIZE - 2, "overflow circle slice count : %d", sliceCount);
@@ -183,7 +183,7 @@ void GeometryShader2D::DrawCircle2D(const Matrix4x4f& ortho, const Vector2f& cen
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::TriangleFan, vertexCount);
 }
 
-void GeometryShader2D::DrawWireframeCircle2D(const Matrix4x4f& ortho, const Vector2f& center, float radius, const Vector4f& color, int32_t sliceCount)
+void GeometryPass2D::DrawWireframeCircle2D(const Matrix4x4f& ortho, const Vector2f& center, float radius, const Vector4f& color, int32_t sliceCount)
 {
 	ASSERT(radius >= 0.0f, "invalid circle radius : %f", radius);
 	ASSERT(sliceCount <= MAX_VERTEX_SIZE, "overflow circle slice count : %d", sliceCount);
@@ -203,7 +203,7 @@ void GeometryShader2D::DrawWireframeCircle2D(const Matrix4x4f& ortho, const Vect
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::LineStrip, vertexCount);
 }
 
-void GeometryShader2D::DrawEllipse2D(const Matrix4x4f& ortho, const Vector2f& center, float xAxis, float yAxis, const Vector4f& color, int32_t sliceCount)
+void GeometryPass2D::DrawEllipse2D(const Matrix4x4f& ortho, const Vector2f& center, float xAxis, float yAxis, const Vector4f& color, int32_t sliceCount)
 {
 	ASSERT(xAxis >= 0.0f, "invalid ellipse x axis : %f", xAxis);
 	ASSERT(yAxis >= 0.0f, "invalid ellipse y axis : %f", yAxis);
@@ -228,7 +228,7 @@ void GeometryShader2D::DrawEllipse2D(const Matrix4x4f& ortho, const Vector2f& ce
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::TriangleFan, vertexCount);
 }
 
-void GeometryShader2D::DrawWireframeEllipse2D(const Matrix4x4f& ortho, const Vector2f& center, float xAxis, float yAxis, const Vector4f& color, int32_t sliceCount)
+void GeometryPass2D::DrawWireframeEllipse2D(const Matrix4x4f& ortho, const Vector2f& center, float xAxis, float yAxis, const Vector4f& color, int32_t sliceCount)
 {
 	ASSERT(xAxis >= 0.0f, "invalid ellipse x axis : %f", xAxis);
 	ASSERT(yAxis >= 0.0f, "invalid ellipse y axis : %f", yAxis);
@@ -252,7 +252,7 @@ void GeometryShader2D::DrawWireframeEllipse2D(const Matrix4x4f& ortho, const Vec
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::LineStrip, vertexCount);
 }
 
-void GeometryShader2D::DrawGrid2D(const Matrix4x4f& ortho, float minX, float maxX, float strideX, float minY, float maxY, float strideY, const Vector4f& color)
+void GeometryPass2D::DrawGrid2D(const Matrix4x4f& ortho, float minX, float maxX, float strideX, float minY, float maxY, float strideY, const Vector4f& color)
 {
 	ASSERT((strideX >= 1.0f && strideY >= 1.0f), "The values of strideX and strideY are too small : %f, %f", strideX, strideY);
 	
@@ -283,7 +283,7 @@ void GeometryShader2D::DrawGrid2D(const Matrix4x4f& ortho, float minX, float max
 	DrawGeometry2D(Matrix4x4f::GetIdentity(), ortho, EDrawType::Lines, vertexCount);
 }
 
-void GeometryShader2D::DrawGeometry2D(const Matrix4x4f& transform, const Matrix4x4f& ortho, const EDrawType& drawType, uint32_t vertexCount)
+void GeometryPass2D::DrawGeometry2D(const Matrix4x4f& transform, const Matrix4x4f& ortho, const EDrawType& drawType, uint32_t vertexCount)
 {
 	ASSERT(drawType != EDrawType::None, "invalid draw type...");
 
