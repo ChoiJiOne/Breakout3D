@@ -25,4 +25,4 @@ if "%mode%" == "Debug" (
 echo %path%
 echo rootPath="%rootPath%"
 
-start "" %path% devMode=off rootPath=%rootPath%
+start "" %path% devMode=on rootPath=%rootPath%
