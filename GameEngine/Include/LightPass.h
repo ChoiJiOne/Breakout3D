@@ -14,7 +14,7 @@ class ShadowMap;  // 셰도우 맵 리소스를 사용하기 위한 전방선언 입니다.
  * 
  * @note 이 셰이더는 엔진 내부에서 생성하는 셰이더입니다. 외부에서 초기화하면 안됩니다.
  */
-class LightShader : public Shader
+class LightPass : public Shader
 {
 public:
 	/**
@@ -22,7 +22,7 @@ public:
 	 *
 	 * @note 생성자 이외의 메서드에서 적절한 초기화를 수행해야 합니다.
 	 */
-	LightShader() = default;
+	LightPass() = default;
 
 
 	/**
@@ -30,13 +30,13 @@ public:
 	 *
 	 * @note 셰이더의 내부에서 할당된 요소를 해제하기 위해서는 반드시 Release를 호출해야 합니다.
 	 */
-	virtual ~LightShader();
+	virtual ~LightPass();
 
 
 	/**
 	 * @brief 라이트 효과를 적용하는 셰이더의 복사 생성자와 대입 연산자를 명시적으로 삭제합니다.
 	 */
-	DISALLOW_COPY_AND_ASSIGN(LightShader);
+	DISALLOW_COPY_AND_ASSIGN(LightPass);
 
 
 	/**

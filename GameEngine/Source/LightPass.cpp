@@ -1,4 +1,4 @@
-#include "LightShader.h"
+#include "LightPass.h"
 
 #include "Assertion.h"
 #include "Camera3D.h"
@@ -10,9 +10,9 @@
 
 #include <glad/glad.h>
 
-LightShader::~LightShader() {}
+LightPass::~LightPass() {}
 
-void LightShader::SetMaterial(const Material* material)
+void LightPass::SetMaterial(const Material* material)
 {
 	SetUniform("material.ambientRGB", material->GetAmbientRGB());
 	SetUniform("material.diffuseRGB", material->GetDiffuseRGB());
@@ -20,7 +20,7 @@ void LightShader::SetMaterial(const Material* material)
 	SetUniform("material.shininess", material->GetShininess());
 }
 
-void LightShader::SetLight(const Light* light)
+void LightPass::SetLight(const Light* light)
 {
 	SetUniform("lightView", light->GetViewMatrix());
 	SetUniform("lightProjection", light->GetProjectionMatrix());
@@ -31,14 +31,14 @@ void LightShader::SetLight(const Light* light)
 	SetUniform("light.specularRGB", light->GetSpecularRGB());
 }
 
-void LightShader::SetCamera(const Camera3D* camera)
+void LightPass::SetCamera(const Camera3D* camera)
 {
 	SetUniform("viewPosition", camera->GetEyePosition());
 	SetUniform("view", camera->GetViewMatrix());
 	SetUniform("projection", camera->GetProjectionMatrix());
 }
 
-void LightShader::DrawMesh3D(const Matrix4x4f& world, const StaticMesh* mesh, const ShadowMap* shadowMap)
+void LightPass::DrawMesh3D(const Matrix4x4f& world, const StaticMesh* mesh, const ShadowMap* shadowMap)
 {
 	shadowMap->Active(0);
 
