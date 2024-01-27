@@ -9,7 +9,7 @@
 #include "GeometryPass2D.h"
 #include "GeometryPass3D.h"
 #include "GlyphPass2D.h"
-#include "LightShader.h"
+#include "LightPass.h"
 #include "MathUtils.h"
 #include "PostEffectShader.h"
 #include "ResourceManager.h"
@@ -93,10 +93,10 @@ void RenderManager::Startup()
 	shaderCache_.insert({ L"Geometry2D", ResourceManager::Get().CreateResource<GeometryPass2D>("GeometryPass2D") });
 	shaderCache_.insert({ L"Geometry3D", ResourceManager::Get().CreateResource<GeometryPass3D>("GeometryPass3D") });
 	shaderCache_.insert({ L"Glyph2D",    ResourceManager::Get().CreateResource<GlyphPass2D>("GlyphPass2D")       });
-	shaderCache_.insert({ L"Texture2D",  ResourceManager::Get().CreateResource<TextureShader2D>("Texture2DShader")   });
-	shaderCache_.insert({ L"Skybox",     ResourceManager::Get().CreateResource<Shader>("SkyboxShader")               });
-	shaderCache_.insert({ L"Light",      ResourceManager::Get().CreateResource<LightShader>("LightShader")           });
-	shaderCache_.insert({ L"ShadowMap",  ResourceManager::Get().CreateResource<ShadowShader>("ShadowShader")         });
+	shaderCache_.insert({ L"Texture2D",  ResourceManager::Get().CreateResource<TextureShader2D>("Texture2DShader")  });
+	shaderCache_.insert({ L"Skybox",     ResourceManager::Get().CreateResource<Shader>("SkyboxShader")              });
+	shaderCache_.insert({ L"Light",      ResourceManager::Get().CreateResource<LightPass>("LightPass")              });
+	shaderCache_.insert({ L"ShadowMap",  ResourceManager::Get().CreateResource<ShadowShader>("ShadowShader")        });
 	for (auto& shader : shaderCache_)
 	{
 		shader.second->Initialize(

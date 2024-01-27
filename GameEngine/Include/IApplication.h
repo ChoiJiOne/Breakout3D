@@ -23,7 +23,7 @@
 #include "IObject.h"
 #include "IScene.h"
 #include "Light.h"
-#include "LightShader.h"
+#include "LightPass.h"
 #include "Macro.h"
 #include "Material.h"
 #include "MathUtils.h"
