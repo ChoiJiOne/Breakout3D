@@ -1,11 +1,11 @@
-#include "PostEffectShader.h"
+#include "PostEffectPass.h"
 
 #include "GLAssertion.h"
 #include "Framebuffer.h"
 
 #include <glad/glad.h>
 
-PostEffectShader::~PostEffectShader()
+PostEffectPass::~PostEffectPass()
 {
 	if (bIsInitialized_)
 	{
@@ -13,7 +13,7 @@ PostEffectShader::~PostEffectShader()
 	}
 }
 
-void PostEffectShader::Initialize(const std::wstring& vsPath, const std::wstring& fsPath)
+void PostEffectPass::Initialize(const std::wstring& vsPath, const std::wstring& fsPath)
 {
 	ASSERT(!bIsInitialized_, "already initialize post effect shader resource...");
 
@@ -47,7 +47,7 @@ void PostEffectShader::Initialize(const std::wstring& vsPath, const std::wstring
 	GL_ASSERT(glBindVertexArray(0), "failed to unbind frame buffer vertex array...");
 }
 
-void PostEffectShader::Release()
+void PostEffectPass::Release()
 {
 	ASSERT(bIsInitialized_, "not initialized before or has already been released...");
 
@@ -57,7 +57,7 @@ void PostEffectShader::Release()
 	GL_ASSERT(glDeleteVertexArrays(1, &vertexArrayObject_), "failed to delete frame buffer vertex array object...");
 }
 
-void PostEffectShader::BlitEffect(Framebuffer* framebuffer)
+void PostEffectPass::BlitEffect(Framebuffer* framebuffer)
 {
 	framebuffer->Active(0);
 
