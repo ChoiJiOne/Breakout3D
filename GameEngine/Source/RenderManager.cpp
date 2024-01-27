@@ -20,7 +20,7 @@
 #include "ShadowPass.h"
 #include "StringUtils.h"
 #include "Texture2D.h"
-#include "TextureShader2D.h"
+#include "TexturePass2D.h"
 #include "Window.h"
 #include "WindowsAssertion.h"
 
@@ -93,10 +93,10 @@ void RenderManager::Startup()
 	shaderCache_.insert({ L"Geometry2D", ResourceManager::Get().CreateResource<GeometryPass2D>("GeometryPass2D") });
 	shaderCache_.insert({ L"Geometry3D", ResourceManager::Get().CreateResource<GeometryPass3D>("GeometryPass3D") });
 	shaderCache_.insert({ L"Glyph2D",    ResourceManager::Get().CreateResource<GlyphPass2D>("GlyphPass2D")       });
-	shaderCache_.insert({ L"Texture2D",  ResourceManager::Get().CreateResource<TextureShader2D>("Texture2DShader")  });
-	shaderCache_.insert({ L"Skybox",     ResourceManager::Get().CreateResource<Shader>("SkyboxShader")              });
-	shaderCache_.insert({ L"Light",      ResourceManager::Get().CreateResource<LightPass>("LightPass")              });
-	shaderCache_.insert({ L"ShadowPass", ResourceManager::Get().CreateResource<ShadowPass>("ShadowPass")        });
+	shaderCache_.insert({ L"Texture2D",  ResourceManager::Get().CreateResource<TexturePass2D>("TexturePass2D")   });
+	shaderCache_.insert({ L"Skybox",     ResourceManager::Get().CreateResource<Shader>("SkyboxShader")           });
+	shaderCache_.insert({ L"Light",      ResourceManager::Get().CreateResource<LightPass>("LightPass")           });
+	shaderCache_.insert({ L"ShadowPass", ResourceManager::Get().CreateResource<ShadowPass>("ShadowPass")         });
 	for (auto& shader : shaderCache_)
 	{
 		shader.second->Initialize(
@@ -414,7 +414,7 @@ void RenderManager::RenderTexture2D(const Texture2D* texture, const Vector2f& ce
 		SetDepthMode(false);
 	}
 
-	TextureShader2D* shader = reinterpret_cast<TextureShader2D*>(shaderCache_.at(L"Texture2D"));
+	TexturePass2D* shader = reinterpret_cast<TexturePass2D*>(shaderCache_.at(L"Texture2D"));
 	shader->DrawTexture2D(screenOrtho_, texture, center, width, height, rotate, transparent);
 }
 
@@ -425,7 +425,7 @@ void RenderManager::RenderTexture2D(const Texture2D* texture, float transparent)
 		SetDepthMode(false);
 	}
 
-	TextureShader2D* shader = reinterpret_cast<TextureShader2D*>(shaderCache_.at(L"Texture2D"));
+	TexturePass2D* shader = reinterpret_cast<TexturePass2D*>(shaderCache_.at(L"Texture2D"));
 	shader->DrawTexture2D(texture, transparent);
 }
 
@@ -436,7 +436,7 @@ void RenderManager::RenderHorizonScrollTexture2D(const Texture2D* texture, float
 		SetDepthMode(false);
 	}
 
-	TextureShader2D* shader = reinterpret_cast<TextureShader2D*>(shaderCache_.at(L"Texture2D"));
+	TexturePass2D* shader = reinterpret_cast<TexturePass2D*>(shaderCache_.at(L"Texture2D"));
 	shader->DrawHorizonScrollTexture2D(texture, rate, transparent);
 }
 
@@ -447,7 +447,7 @@ void RenderManager::RenderHorizonScrollTexture2D(const Texture2D* texture, const
 		SetDepthMode(false);
 	}
 
-	TextureShader2D* shader = reinterpret_cast<TextureShader2D*>(shaderCache_.at(L"Texture2D"));
+	TexturePass2D* shader = reinterpret_cast<TexturePass2D*>(shaderCache_.at(L"Texture2D"));
 	shader->DrawHorizonScrollTexture2D(screenOrtho_, texture, center, width, height, rotate, rate, transparent);
 }
 
@@ -458,7 +458,7 @@ void RenderManager::RenderVerticalScrollTexture2D(const Texture2D* texture, floa
 		SetDepthMode(false);
 	}
 
-	TextureShader2D* shader = reinterpret_cast<TextureShader2D*>(shaderCache_.at(L"Texture2D"));
+	TexturePass2D* shader = reinterpret_cast<TexturePass2D*>(shaderCache_.at(L"Texture2D"));
 	shader->DrawVerticalScrollTexture2D(texture, rate, transparent);
 }
 
@@ -469,7 +469,7 @@ void RenderManager::RenderVerticalScrollTexture2D(const Texture2D* texture, cons
 		SetDepthMode(false);
 	}
 
-	TextureShader2D* shader = reinterpret_cast<TextureShader2D*>(shaderCache_.at(L"Texture2D"));
+	TexturePass2D* shader = reinterpret_cast<TexturePass2D*>(shaderCache_.at(L"Texture2D"));
 	shader->DrawVerticalScrollTexture2D(screenOrtho_, texture, center, width, height, rotate, rate, transparent);
 }
 
@@ -480,7 +480,7 @@ void RenderManager::RenderOutlineTexture2D(const Texture2D* texture, const Vecto
 		SetDepthMode(false);
 	}
 
-	TextureShader2D* shader = reinterpret_cast<TextureShader2D*>(shaderCache_.at(L"Texture2D"));
+	TexturePass2D* shader = reinterpret_cast<TexturePass2D*>(shaderCache_.at(L"Texture2D"));
 	shader->DrawOutlineTexture2D(screenOrtho_, texture, center, width, height, rotate, outline, transparent);
 }
 
