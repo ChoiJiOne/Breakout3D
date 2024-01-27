@@ -94,7 +94,7 @@ void RenderManager::Startup()
 	shaderCache_.insert({ L"Geometry3D", ResourceManager::Get().CreateResource<GeometryPass3D>("GeometryPass3D") });
 	shaderCache_.insert({ L"Glyph2D",    ResourceManager::Get().CreateResource<GlyphPass2D>("GlyphPass2D")       });
 	shaderCache_.insert({ L"Texture2D",  ResourceManager::Get().CreateResource<TexturePass2D>("TexturePass2D")   });
-	shaderCache_.insert({ L"Skybox",     ResourceManager::Get().CreateResource<Shader>("SkyboxShader")           });
+	shaderCache_.insert({ L"Skybox",     ResourceManager::Get().CreateResource<Shader>("SkyboxPass")             });
 	shaderCache_.insert({ L"Light",      ResourceManager::Get().CreateResource<LightPass>("LightPass")           });
 	shaderCache_.insert({ L"ShadowPass", ResourceManager::Get().CreateResource<ShadowPass>("ShadowPass")         });
 	for (auto& shader : shaderCache_)
