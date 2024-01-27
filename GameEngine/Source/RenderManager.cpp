@@ -6,7 +6,7 @@
 #include "Camera3D.h"
 #include "CommandLineUtils.h"
 #include "GLAssertion.h"
-#include "GeometryShader2D.h"
+#include "GeometryPass2D.h"
 #include "GeometryShader3D.h"
 #include "GlyphShader2D.h"
 #include "LightShader.h"
@@ -90,7 +90,7 @@ void RenderManager::Startup()
 
 	shaderCache_ = std::unordered_map<std::wstring, Shader*>();
 
-	shaderCache_.insert({ L"Geometry2D", ResourceManager::Get().CreateResource<GeometryShader2D>("Geometry2DShader") });
+	shaderCache_.insert({ L"Geometry2D", ResourceManager::Get().CreateResource<GeometryPass2D>("GeometryPass2D") });
 	shaderCache_.insert({ L"Geometry3D", ResourceManager::Get().CreateResource<GeometryShader3D>("Geometry3DShader") });
 	shaderCache_.insert({ L"Glyph2D",    ResourceManager::Get().CreateResource<GlyphShader2D>("Glyph2DShader")       });
 	shaderCache_.insert({ L"Texture2D",  ResourceManager::Get().CreateResource<TextureShader2D>("Texture2DShader")   });
@@ -256,7 +256,7 @@ void RenderManager::RenderPoints2D(const std::vector<Vector2f>& positions, const
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawPoints2D(screenOrtho_, positions, color, pointSize);
 }
 
@@ -267,7 +267,7 @@ void RenderManager::RenderConnectPoints2D(const std::vector<Vector2f>& positions
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawConnectPoints2D(screenOrtho_, positions, color);
 }
 
@@ -278,7 +278,7 @@ void RenderManager::RenderLine2D(const Vector2f& fromPosition, const Vector2f& t
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawLine2D(screenOrtho_, fromPosition, toPosition, color);
 }
 
@@ -289,7 +289,7 @@ void RenderManager::RenderLine2D(const Vector2f& fromPosition, const Vector4f& f
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawLine2D(screenOrtho_, fromPosition, fromColor, toPosition, toColor);
 }
 
@@ -300,7 +300,7 @@ void RenderManager::RenderTriangle2D(const Vector2f& fromPosition, const Vector2
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawTriangle2D(screenOrtho_, fromPosition, byPosition, toPosition, color);
 }
 
@@ -311,7 +311,7 @@ void RenderManager::RenderTriangle2D(const Vector2f& fromPosition, const Vector4
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawTriangle2D(screenOrtho_,
 		fromPosition, fromColor,
 		byPosition, byColor,
@@ -326,7 +326,7 @@ void RenderManager::RenderWireframeTriangle2D(const Vector2f& fromPosition, cons
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawWireframeTriangle2D(screenOrtho_, fromPosition, byPosition, toPosition, color);
 }
 
@@ -337,7 +337,7 @@ void RenderManager::RenderWireframeTriangle2D(const Vector2f& fromPosition, cons
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawWireframeTriangle2D(screenOrtho_, fromPosition, fromColor, byPosition, byColor, toPosition, toColor);
 }
 
@@ -348,7 +348,7 @@ void RenderManager::RenderRectangle2D(const Vector2f& center, float width, float
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawRectangle2D(screenOrtho_, center, width, height, rotate, color);
 }
 
@@ -359,7 +359,7 @@ void RenderManager::RenderWireframeRectangle2D(const Vector2f& center, float wid
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawWireframeRectangle2D(screenOrtho_, center, width, height, rotate, color);
 }
 
@@ -370,7 +370,7 @@ void RenderManager::RenderCircle2D(const Vector2f& center, float radius, const V
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawCircle2D(screenOrtho_, center, radius, color, sliceCount);
 }
 
@@ -381,7 +381,7 @@ void RenderManager::RenderWireframeCircle2D(const Vector2f& center, float radius
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawWireframeCircle2D(screenOrtho_, center, radius, color, sliceCount);
 }
 
@@ -392,7 +392,7 @@ void RenderManager::RenderEllipse2D(const Vector2f& center, float xAxis, float y
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawEllipse2D(screenOrtho_, center, xAxis, yAxis, color, sliceCount);
 }
 
@@ -403,7 +403,7 @@ void RenderManager::RenderWireframeEllipse2D(const Vector2f& center, float xAxis
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawWireframeEllipse2D(screenOrtho_, center, xAxis, yAxis, color, sliceCount);
 }
 
@@ -491,7 +491,7 @@ void RenderManager::RenderGrid2D(float minX, float maxX, float strideX, float mi
 		SetDepthMode(false);
 	}
 
-	GeometryShader2D* shader = reinterpret_cast<GeometryShader2D*>(shaderCache_.at(L"Geometry2D"));
+	GeometryPass2D* shader = reinterpret_cast<GeometryPass2D*>(shaderCache_.at(L"Geometry2D"));
 	shader->DrawGrid2D(screenOrtho_, minX, maxX, strideX, minY, maxY, strideY, color);
 }
 
