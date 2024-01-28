@@ -130,7 +130,7 @@ void RenderManager::Startup()
 	if (bIsEnableImGui_)
 	{
 		ASSERT(ImGui_ImplWin32_InitForOpenGL(renderTargetWindow_->GetHandle()), "failed to initialize windows for opengl in imgui...");
-		ASSERT(ImGui_ImplOpenGL3_Init(), "failed to initialize opengl in imgui...");
+		ASSERT(ImGui_ImplOpenGL3_Init("#version 460 core"), "failed to initialize opengl in imgui...");
 	}
 
 	bIsStartup_ = true;
