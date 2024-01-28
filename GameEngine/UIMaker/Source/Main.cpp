@@ -2,8 +2,6 @@
 
 #include "Config.h"
 
-#include <imgui.h>
-
 
 /**
  * @brief UI 생성 애플리케이션입니다.
@@ -59,16 +57,6 @@ public:
 		while (!bIsDoneLoop_)
 		{
 			InputManager::Get().Tick();
-
-			ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
-			ImGui::SetNextWindowSize(ImVec2(800.0f, 800.0f));
-			ImGui::Begin("Layout", false, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-			ImGui::End();
-
-			ImGui::SetNextWindowPos(ImVec2(800.0f, 0.0f));
-			ImGui::SetNextWindowSize(ImVec2(200.0f, 800.0f));
-			ImGui::Begin("Properties", false, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-			ImGui::End();
 
 			RenderManager::Get().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
