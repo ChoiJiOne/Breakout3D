@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # 엔진에서 사용할 서드 파티 라이브러리를 추가합니다.
-add_subdirectory(ThirdParty/assimp)
 add_subdirectory(ThirdParty/glad)
 add_subdirectory(ThirdParty/jsoncpp)
 add_subdirectory(ThirdParty/miniaudio)
@@ -42,13 +41,11 @@ target_link_libraries(
     Pathcch.lib
     Shlwapi.lib
     opengl32.lib
-    assimp
     glad
     jsoncpp
     miniaudio
     stb
     imgui
-    zlibstatic
     lua
 )
 target_compile_definitions(
@@ -65,5 +62,5 @@ source_group(Script FILES ${GAME_ENGINE_SCRIPT_FILE})
 source_group(Shader FILES ${GAME_ENGINE_SHADER_FILE})
 source_group(Source FILES ${GAME_ENGINE_ENGINE_FILE})
 
-set_target_properties(glad jsoncpp miniaudio stb imgui assimp zlibstatic lua PROPERTIES FOLDER "ThirdParty")
+set_target_properties(glad jsoncpp miniaudio stb imgui lua PROPERTIES FOLDER "ThirdParty")
 set_target_properties(GameEngine PROPERTIES FOLDER "GameEngine")
