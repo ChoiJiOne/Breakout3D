@@ -54,11 +54,63 @@ public:
 	 */
 	virtual void Run() override
 	{
+		std::wstring shaderPath = rootPath_ + L"Client/Shader/";
+		std::wstring resourcePath = rootPath_ + L"Client/Resource/";
+
+		std::vector<Vertex> vertices;
+		std::vector<uint32_t> indices;
+		GeometryGenerator::CreateSphere(1.0f, 30, vertices, indices);
+
+		StaticMesh* mesh = ResourceManager::Get().CreateResource<StaticMesh>("Sphere");
+		mesh->Initialize(vertices, indices);
+
+		Texture2D* albedoMap = ResourceManager::Get().CreateResource<Texture2D>("AlbedoMap");
+		albedoMap->Initialize(resourcePath + L"Texture/AlbedoMap.png");
+
+		Texture2D* normalMap = ResourceManager::Get().CreateResource<Texture2D>("NormalMap");
+		normalMap->Initialize(resourcePath + L"Texture/NormalMap.png");
+
+		Texture2D* heightMap = ResourceManager::Get().CreateResource<Texture2D>("HeightMap");
+		heightMap->Initialize(resourcePath + L"Texture/HeightMap.png");
+
+		Shader* shader = ResourceManager::Get().CreateResource<Shader>("Shader");
+		shader->Initialize(shaderPath + L"Shader.vert", shaderPath + L"Shader.frag");
+
+		Camera3D* camera = ObjectManager::Get().CreateObject<Camera3D>("Camera");
+		camera->Initialize(
+			Vector3f(5.0f, 5.0f, 5.0f),
+			Vector3f(-1.0f, -1.0f, -1.0f), 
+			Vector3f(0.0f, 1.0f, 0.0f),
+			MathUtils::ToRadian(45.0f), 
+			window_->GetAspectSize(), 
+			0.1f, 
+			100.0f
+		);
+
 		while (!bIsDoneLoop_)
 		{
 			InputManager::Get().Tick();
 
-			RenderManager::Get().BeginFrame(0.0f, 1.0f, 0.0f, 1.0f);
+			RenderManager::Get().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+
+			Matrix4x4f world = Matrix4x4f::GetIdentity();
+
+			shader->Bind();
+			{
+				albedoMap->Active(0);
+
+				shader->SetUniform("world", world);
+				shader->SetUniform("view", camera->GetViewMatrix());
+				shader->SetUniform("projection", camera->GetProjectionMatrix());
+
+				glBindVertexArray(mesh->GetVertexArrayObject());
+				glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
+				glBindVertexArray(0);
+
+			}
+			shader->Unbind();
+
+			RenderManager::Get().RenderGrid3D(camera, -5.0f, 5.0f, 1.0f, -5.0f, 5.0f, 1.0f, Vector4f(1.0f, 1.0f, 1.0f, 0.5f));
 			RenderManager::Get().EndFrame();
 		}
 	}
