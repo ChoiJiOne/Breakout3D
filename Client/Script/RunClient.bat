@@ -3,8 +3,11 @@
 @REM 실행할 모드입니다.
 SET mode=%1
 
+@REM 프로젝트 이름입니다.
+SET project=%2
+
 @REM 실행 파일 경로입니다.
-SET path="%~dp0..\..\Solution\%mode%\Runner3D.exe"
+SET path="%~dp0..\..\Solution\%mode%\%project%.exe"
 
 @REM 루트 경로입니다.
 SET rootPath=%~dp0..\..\
