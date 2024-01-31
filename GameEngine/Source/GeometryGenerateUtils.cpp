@@ -1,9 +1,59 @@
-#include "GeometryGenerator.h"
+#include "GeometryGenerateUtils.h"
 
 #include "Assertion.h"
 #include "MathUtils.h"
 
-void GeometryGenerator::CreateCube(const Vector3f& size, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
+/**
+ * @brief 3D 원기둥 상단/하단의 정점과 인덱스 목록을 생성합니다.
+ *
+ * @param radius 3D 원기둥의 반지름 길이입니다.
+ * @param height 3D 원기둥의 높이입니다.
+ * @param tessellation 3D 원기둥의 분할 횟수입니다. 크기는 3이상이여야 합니다.
+ * @param bIsTop 상단인지 하단인지 확인합니다.
+ * @param outVertices 생성한 원기둥 상단/하단의 정점 목록입니다.
+ * @param outIndices  생성한 원기둥 상단/하단의 인덱스 목록입니다.
+ */
+void CreateCylinderCap(float radius, float height, uint32_t tessellation, bool bIsTop, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
+{
+	for (size_t index = 0; index < tessellation - 2; index++)
+	{
+		size_t i1 = (index + 1) % tessellation;
+		size_t i2 = (index + 2) % tessellation;
+
+		if (bIsTop)
+		{
+			std::swap(i1, i2);
+		}
+
+		const size_t vbase = outVertices.size();
+		outIndices.push_back(vbase + 0);
+		outIndices.push_back(vbase + i2);
+		outIndices.push_back(vbase + i1);
+	}
+
+	Vector3f normal(0.0f, 1.0f, 0.0f);
+	Vector2f textureScale(-0.5f, -0.5f);
+
+	if (!bIsTop)
+	{
+		normal = Vector3f(0.0f, -1.0f, 0.0f);
+		textureScale = Vector2f(0.5f, -0.5f);
+	}
+
+	for (size_t index = 0; index < tessellation; ++index)
+	{
+		float angle = TwoPi * static_cast<float>(index) / static_cast<float>(tessellation);
+		float dx = MathUtils::Sin(angle);
+		float dz = MathUtils::Cos(angle);
+
+		Vector3f position = Vector3f(dx * radius, normal.y * height, dz * radius);
+		Vector2f textureCoordinate = Vector2f(dx, dz) * textureScale + Vector2f(0.5f, 0.5f);
+
+		outVertices.push_back(Vertex(position, normal, textureCoordinate));
+	}
+}
+
+void GeometryGenerateUtils::CreateCube(const Vector3f& size, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
 {
 	outVertices.resize(0);
 	outIndices.resize(0);
@@ -51,7 +101,7 @@ void GeometryGenerator::CreateCube(const Vector3f& size, std::vector<Vertex>& ou
 	}
 }
 
-void GeometryGenerator::CreateSphere(float radius, uint32_t tessellation, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
+void GeometryGenerateUtils::CreateSphere(float radius, uint32_t tessellation, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
 {
 	ASSERT(tessellation >= 3, "tesselation parameter must be at least 3...");
 
@@ -99,7 +149,7 @@ void GeometryGenerator::CreateSphere(float radius, uint32_t tessellation, std::v
 	}
 }
 
-void GeometryGenerator::CreateCylinder(float radius, float height, uint32_t tessellation, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
+void GeometryGenerateUtils::CreateCylinder(float radius, float height, uint32_t tessellation, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
 {
 	ASSERT(tessellation >= 3, "tesselation parameter must be at least 3...");
 
@@ -138,7 +188,7 @@ void GeometryGenerator::CreateCylinder(float radius, float height, uint32_t tess
 	CreateCylinderCap(radius, height, tessellation, false, outVertices, outIndices);
 }
 
-void GeometryGenerator::CreateCone(float radius, float height, uint32_t tessellation, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
+void GeometryGenerateUtils::CreateCone(float radius, float height, uint32_t tessellation, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
 {
 	ASSERT(tessellation >= 3, "tesselation parameter must be at least 3...");
 
@@ -174,44 +224,4 @@ void GeometryGenerator::CreateCone(float radius, float height, uint32_t tessella
 	}
 
 	CreateCylinderCap(radius, height, tessellation, false, outVertices, outIndices);
-}
-
-void GeometryGenerator::CreateCylinderCap(float radius, float height, uint32_t tessellation, bool bIsTop, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
-{
-	for (size_t index = 0; index < tessellation - 2; index++)
-	{
-		size_t i1 = (index + 1) % tessellation;
-		size_t i2 = (index + 2) % tessellation;
-
-		if (bIsTop)
-		{
-			std::swap(i1, i2);
-		}
-
-		const size_t vbase = outVertices.size();
-		outIndices.push_back(vbase + 0);
-		outIndices.push_back(vbase + i2);
-		outIndices.push_back(vbase + i1);
-	}
-
-	Vector3f normal(0.0f, 1.0f, 0.0f);
-	Vector2f textureScale(-0.5f, -0.5f);
-
-	if (!bIsTop)
-	{
-		normal = Vector3f(0.0f, -1.0f, 0.0f);
-		textureScale = Vector2f(0.5f, -0.5f);
-	}
-
-	for (size_t index = 0; index < tessellation; ++index)
-	{
-		float angle = TwoPi * static_cast<float>(index) / static_cast<float>(tessellation);
-		float dx = MathUtils::Sin(angle);
-		float dz = MathUtils::Cos(angle);
-
-		Vector3f position = Vector3f(dx * radius, normal.y * height, dz * radius);
-		Vector2f textureCoordinate = Vector2f(dx, dz) * textureScale + Vector2f(0.5f, 0.5f);
-
-		outVertices.push_back(Vertex(position, normal, textureCoordinate));
-	}
 }
