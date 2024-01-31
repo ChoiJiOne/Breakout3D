@@ -59,7 +59,7 @@ public:
 
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
-		GeometryGenerator::CreateSphere(1.0f, 30, vertices, indices);
+		GeometryGenerateUtils::CreateSphere(2.0f, 30, vertices, indices);
 
 		StaticMesh* mesh = ResourceManager::Get().CreateResource<StaticMesh>("Sphere");
 		mesh->Initialize(vertices, indices);
