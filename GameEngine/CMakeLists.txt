@@ -62,7 +62,7 @@ target_compile_definitions(
 source_group(Include FILES ${GAME_ENGINE_INCLUDE_FILE})
 source_group(Script FILES ${GAME_ENGINE_SCRIPT_FILE})
 source_group(Shader FILES ${GAME_ENGINE_SHADER_FILE})
-source_group(Source FILES ${GAME_ENGINE_ENGINE_FILE})
+source_group(Source FILES ${GAME_ENGINE_SOURCE_FILE})
 
 set_target_properties(cgltf glad jsoncpp miniaudio stb imgui lua PROPERTIES FOLDER "ThirdParty")
 set_target_properties(GameEngine PROPERTIES FOLDER "GameEngine")
