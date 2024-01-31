@@ -66,4 +66,4 @@ source_group(Shader FILES ${GAME_ENGINE_SHADER_FILE})
 source_group(Source FILES ${GAME_ENGINE_ENGINE_FILE})
 
 set_target_properties(glad jsoncpp miniaudio stb imgui assimp zlibstatic lua PROPERTIES FOLDER "ThirdParty")
-set_target_properties(GameEngine UIMaker PROPERTIES FOLDER "GameEngine")
+set_target_properties(GameEngine PROPERTIES FOLDER "GameEngine")
