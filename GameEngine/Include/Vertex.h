@@ -10,64 +10,108 @@
 struct Vertex
 {
 	/**
-	 * @brief 위치 정보를 가진 정점의 기본 생성자입니다.
+	 * @brief 정점(Vertex)의 기본 생성자입니다.
 	 */
 	Vertex() noexcept
 		: position(0.0f, 0.0f, 0.0f)
 		, normal(0.0f, 0.0f, 0.0f)
-		, texture(0.0f, 0.0f) {}
+		, tangent(0.0f, 0.0f, 0.0f)
+		, bitangent(0.0f, 0.0f, 0.0f)
+		, uv(0.0f, 0.0f) {}
 
 
 	/**
-	 * @brief 위치 정보를 가진 정점의 생성자입니다.
-	 *
-	 * @param p 정점의 위치입니다.
-	 * @param n 정점의 법선 벡터입니다.
-	 * @param uv 정점의 텍셀입니다.
-	 */
-	Vertex(Vector3f&& p, Vector3f&& n, Vector2f&& uv) noexcept
-		: position(p)
-		, normal(n)
-		, texture(uv) {}
-
-
-	/**
-	 * @brief 위치 정보를 가진 정점의 생성자입니다.
-	 *
-	 * @param p 정점의 위치입니다.
-	 * @param n 정점의 법선 벡터입니다.
-	 * @param uv 정점의 텍셀입니다.
-	 */
-	Vertex(const Vector3f& p, const Vector3f& n, const Vector2f& uv) noexcept
-		: position(p)
-		, normal(n)
-		, texture(uv) {}
-
-
-	/**
-	 * @brief 위치 정보를 가진 정점의 생성자입니다.
+	 * @brief 정점(Vertex)의 복사 생성자입니다.
 	 *
 	 * @param instance 복사할 정점 인스턴스입니다.
 	 */
 	Vertex(Vertex&& instance) noexcept
 		: position(instance.position)
 		, normal(instance.normal)
-		, texture(instance.texture) {}
+		, tangent(instance.tangent)
+		, bitangent(instance.bitangent)
+		, uv(instance.uv) {}
 
 
 	/**
-	 * @brief 위치 정보를 가진 정점의 생성자입니다.
+	 * @brief 정점(Vertex)의 복사 생성자입니다.
 	 *
 	 * @param instance 복사할 정점 인스턴스입니다.
 	 */
 	Vertex(const Vertex& instance) noexcept
 		: position(instance.position)
 		, normal(instance.normal)
-		, texture(instance.texture) {}
+		, tangent(instance.tangent)
+		, bitangent(instance.bitangent)
+		, uv(instance.uv) {}
 
 
 	/**
-	 * @brief 위치 정보를 가진 정점의 대입 연산자입니다.
+	 * @brief 정점(Vertex)의 생성자입니다.
+	 * 
+	 * @param p 정점의 위치입니다.
+	 * @param n 정점의 노말 벡터입니다.
+	 * @param tex 정점의 텍셀 좌표입니다.
+	 */
+	Vertex(Vector3f&& p, Vector3f&& n, Vector2f&& tex) noexcept
+		: position(p)
+		, normal(n)
+		, tangent(0.0f, 0.0f, 0.0f)
+		, bitangent(0.0f, 0.0f, 0.0f)
+		, uv(tex) {}
+
+
+	/**
+	 * @brief 정점(Vertex)의 생성자입니다.
+	 *
+	 * @param p 정점의 위치입니다.
+	 * @param n 정점의 노말 벡터입니다.
+	 * @param t 정점의 탄젠트 벡터입니다.
+	 * @param b 정점의 비탄젠트 벡터입니다.
+	 * @param tex 정점의 텍셀 좌표입니다.
+	 */
+	Vertex(Vector3f&& p, Vector3f&& n, Vector3f&& t, Vector3f&& b, Vector2f&& tex) noexcept
+		: position(p)
+		, normal(n)
+		, tangent(t)
+		, bitangent(b)
+		, uv(tex) {}
+
+
+	/**
+	 * @brief 정점(Vertex)의 생성자입니다.
+	 *
+	 * @param p 정점의 위치입니다.
+	 * @param n 정점의 노말 벡터입니다.
+	 * @param tex 정점의 텍셀 좌표입니다.
+	 */
+	Vertex(const Vector3f& p, const Vector3f& n, const Vector2f& tex) noexcept
+		: position(p)
+		, normal(n)
+		, tangent(0.0f, 0.0f, 0.0f)
+		, bitangent(0.0f, 0.0f, 0.0f)
+		, uv(tex) {}
+
+
+	/**
+	 * @brief 정점(Vertex)의 생성자입니다.
+	 *
+	 * @param p 정점의 위치입니다.
+	 * @param n 정점의 노말 벡터입니다.
+	 * @param t 정점의 탄젠트 벡터입니다.
+	 * @param b 정점의 비탄젠트 벡터입니다.
+	 * @param tex 정점의 텍셀 좌표입니다.
+	 */
+	Vertex(const Vector3f& p, const Vector3f& n, const Vector3f& t, const Vector3f& b, const Vector2f& tex) noexcept
+		: position(p)
+		, normal(n)
+		, tangent(t)
+		, bitangent(b)
+		, uv(tex) {}
+	
+
+	/**
+	 * @brief 정점(Vertex)의 대입 연산자입니다.
 	 *
 	 * @param instance 대입할 정점 인스턴스입니다.
 	 *
@@ -79,14 +123,16 @@ struct Vertex
 
 		position = instance.position;
 		normal = instance.normal;
-		texture = instance.texture;
+		tangent = instance.tangent;
+		bitangent = instance.bitangent;
+		uv = instance.uv;
 
 		return *this;
 	}
 
 
 	/**
-	 * @brief 위치 정보를 가진 정점의 대입 연산자입니다.
+	 * @brief 정점(Vertex)의 대입 연산자입니다.
 	 *
 	 * @param instance 대입할 정점 인스턴스입니다.
 	 *
@@ -98,7 +144,9 @@ struct Vertex
 
 		position = instance.position;
 		normal = instance.normal;
-		texture = instance.texture;
+		tangent = instance.tangent;
+		bitangent = instance.bitangent;
+		uv = instance.uv;
 
 		return *this;
 	}
@@ -122,13 +170,25 @@ struct Vertex
 
 
 	/**
-	 * @brief 정점의 법선 벡터입니다.
+	 * @brief 정점의 노말 벡터입니다.
 	 */
 	Vector3f normal;
 
 
 	/**
+	 * @brief 정점의 탄젠트 벡터입니다.
+	 */
+	Vector3f tangent;
+
+
+	/**
+	 * @brief 정점의 비탄젠트 벡터입니다.
+	 */
+	Vector3f bitangent;
+
+
+	/**
 	 * @brief 정점의 텍셀입니다.
 	 */
-	Vector2f texture;
+	Vector2f uv;
 };
