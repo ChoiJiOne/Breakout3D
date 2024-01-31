@@ -16,7 +16,7 @@
 #include "FileUtils.h"
 #include "Framebuffer.h"
 #include "GameTimer.h"
-#include "GeometryGenerator.h"
+#include "GeometryGenerateUtils.h"
 #include "GLAssertion.h"
 #include "InputManager.h"
 #include "IManager.h"
