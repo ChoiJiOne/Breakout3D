@@ -65,8 +65,5 @@ source_group(Script FILES ${GAME_ENGINE_SCRIPT_FILE})
 source_group(Shader FILES ${GAME_ENGINE_SHADER_FILE})
 source_group(Source FILES ${GAME_ENGINE_ENGINE_FILE})
 
-# 엔진 기반의 툴을 추가합니다.
-add_subdirectory(UIMaker)
-
 set_target_properties(glad jsoncpp miniaudio stb imgui assimp zlibstatic lua PROPERTIES FOLDER "ThirdParty")
 set_target_properties(GameEngine UIMaker PROPERTIES FOLDER "GameEngine")
