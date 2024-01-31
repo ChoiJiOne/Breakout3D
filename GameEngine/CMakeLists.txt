@@ -59,10 +59,10 @@ target_compile_definitions(
     $<$<CONFIG:MinSizeRel>:MIN_SIZE_REL_MODE>
 )
 
-source_group(Include FILES ${GAME_ENGINE_INCLUDE_FILE})
-source_group(Script FILES ${GAME_ENGINE_SCRIPT_FILE})
-source_group(Shader FILES ${GAME_ENGINE_SHADER_FILE})
-source_group(Source FILES ${GAME_ENGINE_SOURCE_FILE})
+source_group("Script" FILES ${GAME_ENGINE_SCRIPT_FILE})
+source_group("Shader" FILES ${GAME_ENGINE_SHADER_FILE})
+source_group(TREE "${GAME_ENGINE_INCLUDE}" PREFIX "Include" FILES ${GAME_ENGINE_INCLUDE_FILE})
+source_group(TREE "${GAME_ENGINE_SOURCE}" PREFIX "Source" FILES ${GAME_ENGINE_SOURCE_FILE})
 
 set_target_properties(cgltf glad jsoncpp miniaudio stb imgui lua PROPERTIES FOLDER "ThirdParty")
 set_target_properties(GameEngine PROPERTIES FOLDER "GameEngine")
