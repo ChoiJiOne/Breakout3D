@@ -15,8 +15,6 @@ struct Vertex
 	Vertex() noexcept
 		: position(0.0f, 0.0f, 0.0f)
 		, normal(0.0f, 0.0f, 0.0f)
-		, tangent(0.0f, 0.0f, 0.0f)
-		, bitangent(0.0f, 0.0f, 0.0f)
 		, uv(0.0f, 0.0f) {}
 
 
@@ -28,8 +26,6 @@ struct Vertex
 	Vertex(Vertex&& instance) noexcept
 		: position(instance.position)
 		, normal(instance.normal)
-		, tangent(instance.tangent)
-		, bitangent(instance.bitangent)
 		, uv(instance.uv) {}
 
 
@@ -41,8 +37,6 @@ struct Vertex
 	Vertex(const Vertex& instance) noexcept
 		: position(instance.position)
 		, normal(instance.normal)
-		, tangent(instance.tangent)
-		, bitangent(instance.bitangent)
 		, uv(instance.uv) {}
 
 
@@ -56,8 +50,6 @@ struct Vertex
 	Vertex(Vector3f&& p, Vector3f&& n, Vector2f&& tex) noexcept
 		: position(p)
 		, normal(n)
-		, tangent(0.0f, 0.0f, 0.0f)
-		, bitangent(0.0f, 0.0f, 0.0f)
 		, uv(tex) {}
 
 
@@ -73,8 +65,6 @@ struct Vertex
 	Vertex(Vector3f&& p, Vector3f&& n, Vector3f&& t, Vector3f&& b, Vector2f&& tex) noexcept
 		: position(p)
 		, normal(n)
-		, tangent(t)
-		, bitangent(b)
 		, uv(tex) {}
 
 
@@ -88,8 +78,6 @@ struct Vertex
 	Vertex(const Vector3f& p, const Vector3f& n, const Vector2f& tex) noexcept
 		: position(p)
 		, normal(n)
-		, tangent(0.0f, 0.0f, 0.0f)
-		, bitangent(0.0f, 0.0f, 0.0f)
 		, uv(tex) {}
 
 
@@ -105,8 +93,6 @@ struct Vertex
 	Vertex(const Vector3f& p, const Vector3f& n, const Vector3f& t, const Vector3f& b, const Vector2f& tex) noexcept
 		: position(p)
 		, normal(n)
-		, tangent(t)
-		, bitangent(b)
 		, uv(tex) {}
 	
 
@@ -123,8 +109,6 @@ struct Vertex
 
 		position = instance.position;
 		normal = instance.normal;
-		tangent = instance.tangent;
-		bitangent = instance.bitangent;
 		uv = instance.uv;
 
 		return *this;
@@ -144,8 +128,6 @@ struct Vertex
 
 		position = instance.position;
 		normal = instance.normal;
-		tangent = instance.tangent;
-		bitangent = instance.bitangent;
 		uv = instance.uv;
 
 		return *this;
@@ -173,18 +155,6 @@ struct Vertex
 	 * @brief ¡§¡°¿« ≥Î∏ª ∫§≈Õ¿‘¥œ¥Ÿ.
 	 */
 	Vector3f normal;
-
-
-	/**
-	 * @brief ¡§¡°¿« ≈∫¡®∆Æ ∫§≈Õ¿‘¥œ¥Ÿ.
-	 */
-	Vector3f tangent;
-
-
-	/**
-	 * @brief ¡§¡°¿« ∫Ò≈∫¡®∆Æ ∫§≈Õ¿‘¥œ¥Ÿ.
-	 */
-	Vector3f bitangent;
 
 
 	/**
