@@ -172,7 +172,8 @@ void RenderManager::EndFrame()
 {
 	if (bIsEnableImGui_)
 	{
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		ImDrawData* drawData = ImGui::GetDrawData();
+		ImGui_ImplOpenGL3_RenderDrawData(drawData);
 	}
 
 	WINDOWS_ASSERT(SwapBuffers(deviceContext_), "failed to swap back and front buffer...");
