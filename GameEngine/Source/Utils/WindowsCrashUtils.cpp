@@ -7,7 +7,6 @@
 #include "Utils/WindowsCrashUtils.h"
 
 #include <windows.h>
-
 #include <dbghelp.h>
 #include <pathcch.h>
 #include <Shlwapi.h>
