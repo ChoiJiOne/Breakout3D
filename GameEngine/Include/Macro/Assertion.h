@@ -20,9 +20,9 @@
 {\
 	if(!(bool)(Expression))\
 	{\
-		DebugPrintF("\nAssertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);\
-		DebugPrintF(__VA_ARGS__);\
-		DebugPrintF("\n");\
+		ErrorUtils::DebugPrintF("\nAssertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);\
+		ErrorUtils::DebugPrintF(__VA_ARGS__);\
+		ErrorUtils::DebugPrintF("\n");\
 		__debugbreak();\
 		ExitProcess(-1);\
 	}\
@@ -34,9 +34,9 @@
 {\
 	if(!(bool)(Expression))\
 	{\
-		DebugPrintF("\nAssertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);\
-		DebugPrintF(__VA_ARGS__);\
-		DebugPrintF("\n");\
+		ErrorUtils::DebugPrintF("\nAssertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);\
+		ErrorUtils::DebugPrintF(__VA_ARGS__);\
+		ErrorUtils::DebugPrintF("\n");\
 		__debugbreak();\
 	}\
 }
