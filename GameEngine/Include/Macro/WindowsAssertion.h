@@ -22,7 +22,7 @@
 	{\
 		ErrorUtils::DebugPrintF("\nWindows assertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);\
 		ErrorUtils::DebugPrintF(__VA_ARGS__);\
-		ErrorUtils::DebugPrintF(L"\nWindows error message : %s\n", GetWindowsErrorMessageW(GetLastError()).c_str());\
+		ErrorUtils::DebugPrintF(L"\nWindows error message : %s\n", ErrorUtils::GetWindowsErrorMessageW(GetLastError()).c_str());\
 		__debugbreak();\
 		ExitProcess(-1);\
 	}\
@@ -36,7 +36,7 @@
 	{\
 		ErrorUtils::DebugPrintF("\nWindows assertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);\
 		ErrorUtils::DebugPrintF(__VA_ARGS__);\
-		ErrorUtils::DebugPrintF(L"\nWindows error message : %s\n", GetWindowsErrorMessageW(GetLastError()).c_str());\
+		ErrorUtils::DebugPrintF(L"\nWindows error message : %s\n", ErrorUtils::GetWindowsErrorMessageW(GetLastError()).c_str());\
 		__debugbreak();\
 	}\
 }

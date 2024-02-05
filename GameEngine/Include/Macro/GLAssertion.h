@@ -27,7 +27,7 @@ X;\
 	{\
 		ErrorUtils::DebugPrintF("\nOpenGL assertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #X);\
 		ErrorUtils::DebugPrintF(__VA_ARGS__);\
-		ErrorUtils::DebugPrintF(L"\nOpenGL error message : %s\n", GetGLErrorMessageW(glError).c_str());\
+		ErrorUtils::DebugPrintF(L"\nOpenGL error message : %s\n", ErrorUtils::GetGLErrorMessageW(glError).c_str());\
 		__debugbreak();\
 		ExitProcess(-1);\
 	}\
@@ -43,7 +43,7 @@ X;\
 	{\
 		ErrorUtils::DebugPrintF("\nOpenGL assertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #X);\
 		ErrorUtils::DebugPrintF(__VA_ARGS__);\
-		ErrorUtils::DebugPrintF(L"\nOpenGL error message : %s\n", GetGLErrorMessageW(glError).c_str());\
+		ErrorUtils::DebugPrintF(L"\nOpenGL error message : %s\n", ErrorUtils::GetGLErrorMessageW(glError).c_str());\
 		__debugbreak();\
 	}\
 }
