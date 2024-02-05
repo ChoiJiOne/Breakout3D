@@ -3,7 +3,6 @@
 
 #include <cstdarg>
 #include <cstdio>
-#include <windows.h>
 
 #include <glad/glad_wgl.h>
 #include <glad/glad.h>
