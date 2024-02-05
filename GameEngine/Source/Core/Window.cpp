@@ -88,7 +88,7 @@ void Window::Create(const std::wstring& title, int32_t x, int32_t y, int32_t w, 
 
 void Window::Destroy()
 {
-	if (windowHandle_ == nullptr)
+	if (windowHandle_ == nullptr || !IsWindow(windowHandle_))
 	{
 		return;
 	}
@@ -98,10 +98,7 @@ void Window::Destroy()
 		WINDOWS_ASSERT(ChangeDisplaySettingsW(nullptr, 0) == DISP_CHANGE_SUCCESSFUL, "failed to set default mode...");
 	}
 
-	if (IsWindow(windowHandle_))
-	{
-		WINDOWS_ASSERT(DestroyWindow(windowHandle_), "failed to destroy window...");
-	}
+	WINDOWS_ASSERT(DestroyWindow(windowHandle_), "failed to destroy window...");
 
 	windowHandle_ = nullptr;
 }
