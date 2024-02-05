@@ -30,4 +30,20 @@ namespace WindowClassUtils
 	 * @brief 윈도우 클래스를 등록 해제합니다.
 	 */
 	void UnregisterWindowClass();
+
+
+	/**
+	 * @brief 윈도우 클래스의 이름을 얻습니다.
+	 * 
+	 * @return 윈도우 클래스의 이름 문자열 포인터를 반환합니다.
+	 */
+	const wchar_t* GetWindowClassName();
+
+
+	/**
+	 * @brief 윈도우 클래스의 인스턴스를 얻습니다.
+	 * 
+	 * @return 윈도우 클래스의 인스턴스 핸들값을 반환합니다.
+	 */
+	HINSTANCE GetWindowClassInstance();
 }

@@ -42,3 +42,13 @@ void WindowClassUtils::UnregisterWindowClass()
 	hInstance = nullptr;
 	bIsRegisterWindowClass = false;
 }
+
+const wchar_t* WindowClassUtils::GetWindowClassName()
+{
+	return windowClassName.c_str();
+}
+
+HINSTANCE WindowClassUtils::GetWindowClassInstance()
+{
+	return hInstance;
+}
