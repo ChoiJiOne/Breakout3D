@@ -11,6 +11,12 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 InputManager* inputManagerPtr = nullptr;
 
 
+InputManager& InputManager::Get()
+{
+	static InputManager instance;
+	return instance;
+}
+
 void InputManager::Startup()
 {
 	ASSERT(!bIsStartup_, "already startup input manager...");
