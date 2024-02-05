@@ -98,7 +98,11 @@ void Window::Destroy()
 		WINDOWS_ASSERT(ChangeDisplaySettingsW(nullptr, 0) == DISP_CHANGE_SUCCESSFUL, "failed to set default mode...");
 	}
 
-	WINDOWS_ASSERT(DestroyWindow(windowHandle_), "failed to destroy window...");
+	if (IsWindow(windowHandle_))
+	{
+		WINDOWS_ASSERT(DestroyWindow(windowHandle_), "failed to destroy window...");
+	}
+
 	windowHandle_ = nullptr;
 }
 
