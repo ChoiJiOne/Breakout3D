@@ -1,4 +1,5 @@
 #include "Utils/ErrorUtils.h"
+#include "Utils/StringUtils.h"
 
 #include <cstdarg>
 #include <cstdio>
@@ -7,58 +8,66 @@
 #include <glad/glad_wgl.h>
 #include <glad/glad.h>
 
-const int32_t BUFFER_SIZE = 1024;
-char charBuffer[BUFFER_SIZE];
-wchar_t wcharBuffer[BUFFER_SIZE];
-
 void ErrorUtils::DebugPrintF(const char* format, ...)
 {
+	char* bufferPtr = StringUtils::GetCharBufferPtr();
+	std::size_t count = static_cast<std::size_t>(StringUtils::STRING_BUFFER_SIZE);
+
 	va_list args;
 	va_start(args, format);
-	int32_t size = _vsnprintf_s(charBuffer, BUFFER_SIZE, format, args);
+	int32_t size = _vsnprintf_s(bufferPtr, count, count, format, args);
 	va_end(args);
 
-	OutputDebugStringA(charBuffer);
+	OutputDebugStringA(bufferPtr);
 }
 
 void ErrorUtils::DebugPrintF(const wchar_t* format, ...)
 {
+	wchar_t* bufferPtr = StringUtils::GetWideCharBufferPtr();
+	std::size_t count = static_cast<std::size_t>(StringUtils::STRING_BUFFER_SIZE);
+	
 	va_list args;
 	va_start(args, format);
-	int32_t size = _vsnwprintf_s(wcharBuffer, BUFFER_SIZE, format, args);
+	int32_t size = _vsnwprintf_s(bufferPtr, count, count, format, args);
 	va_end(args);
 
-	OutputDebugStringW(wcharBuffer);
+	OutputDebugStringW(bufferPtr);
 }
 
 std::string ErrorUtils::GetWindowsErrorMessageA(const uint32_t& errorCode)
 {
+	char* bufferPtr = StringUtils::GetCharBufferPtr();
+	std::size_t count = static_cast<std::size_t>(StringUtils::STRING_BUFFER_SIZE);
+
 	uint32_t size = FormatMessageA(
 		FORMAT_MESSAGE_FROM_SYSTEM,
 		nullptr,
 		static_cast<DWORD>(errorCode),
 		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		charBuffer,
-		BUFFER_SIZE,
+		bufferPtr,
+		count,
 		nullptr
 	);
 
-	return std::string(charBuffer, size);
+	return std::string(bufferPtr, size);
 }
 
 std::wstring ErrorUtils::GetWindowsErrorMessageW(const uint32_t& errorCode)
 {
+	wchar_t* bufferPtr = StringUtils::GetWideCharBufferPtr();
+	std::size_t count = static_cast<std::size_t>(StringUtils::STRING_BUFFER_SIZE);
+
 	uint32_t size = FormatMessageW(
 		FORMAT_MESSAGE_FROM_SYSTEM,
 		nullptr,
 		static_cast<DWORD>(errorCode),
 		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		wcharBuffer,
-		BUFFER_SIZE,
+		bufferPtr,
+		count,
 		nullptr
 	);
 
-	return std::wstring(wcharBuffer, size);
+	return std::wstring(bufferPtr, size);
 }
 
 std::string ErrorUtils::GetGLErrorMessageA(const uint32_t& errorCode)
