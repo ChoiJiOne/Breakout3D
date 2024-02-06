@@ -32,7 +32,7 @@ void ResourceManager::Shutdown()
 
 void ResourceManager::DestroyResource(const std::string& signature)
 {
-	if (IsValidResourceKey(signature))
+	if (IsValidKey(signature))
 	{
 		IResource* resource = resourceCache_.at(signature).get();
 		if (resource && resource->IsInitialized())
@@ -44,7 +44,7 @@ void ResourceManager::DestroyResource(const std::string& signature)
 	}
 }
 
-bool ResourceManager::IsValidResourceKey(const std::string& key)
+bool ResourceManager::IsValidKey(const std::string& key)
 {
 	return resourceCache_.find(key) != resourceCache_.end();
 }

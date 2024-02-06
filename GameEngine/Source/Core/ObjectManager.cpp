@@ -32,7 +32,7 @@ void ObjectManager::Shutdown()
 
 void ObjectManager::DestroyObject(const std::string& signature)
 {
-	if (IsValidObjectKey(signature))
+	if (IsValidKey(signature))
 	{
 		IObject* object = objectCache_.at(signature).get();
 		if (object && object->IsInitialized())
@@ -44,7 +44,7 @@ void ObjectManager::DestroyObject(const std::string& signature)
 	}
 }
 
-bool ObjectManager::IsValidObjectKey(const std::string& key)
+bool ObjectManager::IsValidKey(const std::string& key)
 {
 	return objectCache_.find(key) != objectCache_.end();
 }

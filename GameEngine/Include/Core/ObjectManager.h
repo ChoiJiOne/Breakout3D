@@ -64,7 +64,7 @@ public:
 	template <typename TObject>
 	TObject* CreateObject(const std::string& signature)
 	{
-		ASSERT(!IsValidObjectKey(signature), "already exist object signature %s key...", signature.c_str());
+		ASSERT(!IsValidKey(signature), "already exist object signature %s key...", signature.c_str());
 
 		std::unique_ptr<TObject> object = std::make_unique<TObject>();
 		objectCache_.insert({ signature, std::move(object) });
@@ -83,7 +83,7 @@ public:
 	template <typename TObject>
 	TObject* GetObject(const std::string& signature)
 	{
-		if (!IsValidObjectKey(signature))
+		if (!IsValidKey(signature))
 		{
 			return nullptr;
 		}
@@ -114,7 +114,7 @@ private:
 	 *
 	 * @return 키 값에 대응하는 오브젝트가 존재하면 true, 그렇지 않으면 false를 반환합니다.
 	 */
-	bool IsValidObjectKey(const std::string& key);
+	bool IsValidKey(const std::string& key);
 
 
 private:

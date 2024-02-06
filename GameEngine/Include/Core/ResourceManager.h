@@ -64,7 +64,7 @@ public:
 	template <typename TResource>
 	TResource* CreateResource(const std::string& signature)
 	{
-		ASSERT(!IsValidResourceKey(signature), "already exist resource signature %s key...", signature.c_str());
+		ASSERT(!IsValidKey(signature), "already exist resource signature %s key...", signature.c_str());
 
 		std::unique_ptr<TResource> resource = std::make_unique<TResource>();
 		resourceCache_.insert({ signature, std::move(resource) });
@@ -83,7 +83,7 @@ public:
 	template <typename TResource>
 	TResource* GetResource(const std::string& signature)
 	{
-		if (!IsValidResourceKey(signature))
+		if (!IsValidKey(signature))
 		{
 			return nullptr;
 		}
@@ -114,7 +114,7 @@ private:
 	 *
 	 * @return 키 값에 대응하는 리소스가 존재하면 true, 그렇지 않으면 false를 반환합니다.
 	 */
-	bool IsValidResourceKey(const std::string& key);
+	bool IsValidKey(const std::string& key);
 
 
 private:
