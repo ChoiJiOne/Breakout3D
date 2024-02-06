@@ -1,7 +1,7 @@
+#include "Core/Window.h"
+
 #include "Macro/Assertion.h"
 #include "Macro/WindowsAssertion.h"
-
-#include "Core/Window.h"
 
 #include "Utils/WindowClassUtils.h"
 

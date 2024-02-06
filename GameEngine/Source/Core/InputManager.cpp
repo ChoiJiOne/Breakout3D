@@ -1,8 +1,8 @@
-#include "Macro/Assertion.h"
-#include "Macro/WindowsAssertion.h"
-
 #include "Core/InputManager.h"
 #include "Core/Window.h"
+
+#include "Macro/Assertion.h"
+#include "Macro/WindowsAssertion.h"
 
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>

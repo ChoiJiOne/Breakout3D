@@ -1,6 +1,7 @@
+#include "Core/AudioManager.h"
+
 #include "Macro/Assertion.h"
 
-#include "Core/AudioManager.h"
 
 AudioManager& AudioManager::Get()
 {

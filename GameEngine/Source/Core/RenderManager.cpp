@@ -1,9 +1,9 @@
+#include "Core/RenderManager.h"
+#include "Core/Window.h"
+
 #include "Macro/Assertion.h"
 #include "Macro/GLAssertion.h"
 #include "Macro/WindowsAssertion.h"
-
-#include "Core/RenderManager.h"
-#include "Core/Window.h"
 
 #include "Utils/MathUtils.h"
 

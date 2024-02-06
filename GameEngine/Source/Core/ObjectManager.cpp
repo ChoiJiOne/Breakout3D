@@ -1,6 +1,6 @@
-#include "Macro/Assertion.h"
-
 #include "Core/ObjectManager.h"
+
+#include "Macro/Assertion.h"
 
 ObjectManager& ObjectManager::Get()
 {

@@ -1,6 +1,6 @@
-#include "Macro/Assertion.h"
-
 #include "Core/ResourceManager.h"
+
+#include "Macro/Assertion.h"
 
 ResourceManager& ResourceManager::Get()
 {

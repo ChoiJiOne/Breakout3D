@@ -1,6 +1,6 @@
-#include "Macro/WindowsAssertion.h"
-
 #include "Core/GameTimer.h"
+
+#include "Macro/WindowsAssertion.h"
 
 #include "Utils/StringUtils.h"
 

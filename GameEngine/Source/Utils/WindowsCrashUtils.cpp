@@ -1,7 +1,7 @@
+#include "Core/GameTimer.h"
+
 #include "Macro/Assertion.h"
 #include "Macro/WindowsAssertion.h"
-
-#include "Core/GameTimer.h"
 
 #include "Utils/StringUtils.h"
 #include "Utils/WindowsCrashUtils.h"
