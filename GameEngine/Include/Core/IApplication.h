@@ -7,6 +7,7 @@
 #include "Core/ObjectManager.h"
 #include "Core/RenderManager.h"
 #include "Core/ResourceManager.h"
+#include "Core/ShaderManager.h"
 #include "Core/Vertex.h"
 #include "Core/Window.h"
 

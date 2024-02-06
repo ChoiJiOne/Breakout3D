@@ -61,10 +61,7 @@ void IApplication::Setup()
 	WindowClassUtils::RegisterWindowClass(windowTitle_, InputManager::WindowProc);
 
 	window_ = std::make_unique<Window>();
-	window_->Create(Window::WindowConstructParam{
-		windowTitle_, windowPosition_.x, windowPosition_.y, windowWidth_, windowHeight_,
-		bIsResize_, bIsFullscreen_
-		});
+	window_->Create( windowTitle_, windowPosition_.x, windowPosition_.y, windowWidth_, windowHeight_, bIsResize_, bIsFullscreen_);
 
 	InputManager::Get().SetInputControlWindow(window_.get());
 	InputManager::Get().SetEnableImGui(bIsImGui_);
@@ -77,7 +74,8 @@ void IApplication::Setup()
 	ResourceManager::Get().Startup();
 	RenderManager::Get().Startup();
 	ObjectManager::Get().Startup();
-
+	ShaderManager::Get().Startup();
+	
 	RenderManager::Get().SetVsyncMode(bIsVsync_);
 
 	AddDefaultWindowEvents();
@@ -89,6 +87,7 @@ void IApplication::Shutdown()
 {
 	if (bIsSetup_ && bIsPropertiesSet_)
 	{
+		ShaderManager::Get().Shutdown();
 		ObjectManager::Get().Shutdown();
 		ResourceManager::Get().Shutdown();
 		RenderManager::Get().Shutdown();
