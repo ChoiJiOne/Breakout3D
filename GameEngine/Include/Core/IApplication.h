@@ -127,6 +127,12 @@ protected:
 	);
 
 
+	/**
+	 * @brief 기본 윈도우 이벤트를 추가합니다.
+	 */
+	void AddDefaultWindowEvents();
+
+
 protected:
 	/**
 	 * @brief 게임 프레임워크를 초기화했는지 확인합니다.

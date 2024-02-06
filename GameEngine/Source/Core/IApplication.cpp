@@ -78,30 +78,9 @@ void IApplication::Setup()
 	RenderManager::Get().Startup();
 	ObjectManager::Get().Startup();
 
-	auto defaultLoopDoneEvent = [&]()
-	{
-		bIsDoneLoop_ = true;
-	};
-
-	auto defaultResizeEvent = [&]()
-	{
-		window_->GetSize(windowWidth_, windowHeight_);
-		RenderManager::Get().Resize();
-	};
-
-	auto defaultMoveEvent = [&]()
-	{
-		window_->GetPosition(windowPosition_.x, windowPosition_.y);
-	};
-
-	InputManager::Get().AddWindowEventAction("DefaultLoopDoneEvent", EWindowEvent::Close, defaultLoopDoneEvent, true);
-	InputManager::Get().AddWindowEventAction("DefaultMoveEvent", EWindowEvent::Move, defaultMoveEvent, true);
-	InputManager::Get().AddWindowEventAction("DefaultResizeEvent", EWindowEvent::Resize, defaultResizeEvent, true);
-	InputManager::Get().AddWindowEventAction("DefaultExitMinimize", EWindowEvent::ExitMinimize, defaultResizeEvent, true);
-	InputManager::Get().AddWindowEventAction("DefaultEnterMaximize", EWindowEvent::EnterMaximize, defaultResizeEvent, true);
-	InputManager::Get().AddWindowEventAction("DefaultExitMaximize", EWindowEvent::ExitMaximize, defaultResizeEvent, true);
-
 	RenderManager::Get().SetVsyncMode(bIsVsync_);
+
+	AddDefaultWindowEvents();
 
 	bIsSetup_ = true;
 }
@@ -139,4 +118,30 @@ void IApplication::SetProperties(const std::wstring& windowTitle, int32_t window
 	bIsImGui_ = bIsImGui;
 
 	bIsPropertiesSet_ = true;
+}
+
+void IApplication::AddDefaultWindowEvents()
+{
+	auto defaultLoopDoneEvent = [&]()
+	{
+		bIsDoneLoop_ = true;
+	};
+
+	auto defaultResizeEvent = [&]()
+	{
+		window_->GetSize(windowWidth_, windowHeight_);
+		RenderManager::Get().Resize();
+	};
+
+	auto defaultMoveEvent = [&]()
+	{
+		window_->GetPosition(windowPosition_.x, windowPosition_.y);
+	};
+
+	InputManager::Get().AddWindowEventAction("DefaultLoopDoneEvent", EWindowEvent::Close,         defaultLoopDoneEvent, true);
+	InputManager::Get().AddWindowEventAction("DefaultMoveEvent",     EWindowEvent::Move,          defaultMoveEvent,     true);
+	InputManager::Get().AddWindowEventAction("DefaultResizeEvent",   EWindowEvent::Resize,        defaultResizeEvent,   true);
+	InputManager::Get().AddWindowEventAction("DefaultExitMinimize",  EWindowEvent::ExitMinimize,  defaultResizeEvent,   true);
+	InputManager::Get().AddWindowEventAction("DefaultEnterMaximize", EWindowEvent::EnterMaximize, defaultResizeEvent,   true);
+	InputManager::Get().AddWindowEventAction("DefaultExitMaximize",  EWindowEvent::ExitMaximize,  defaultResizeEvent,   true);
 }
