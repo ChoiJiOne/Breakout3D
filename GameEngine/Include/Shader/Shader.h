@@ -277,6 +277,14 @@ public:
 	int32_t GetUniformLocation(const std::string& uniformName);
 
 
+	/**
+	 * @brief 리소스가 초기화된 적이 있는지 확인합니다.
+	 *
+	 * @return 리소스가 초기화된 적이 있다면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	bool IsInitialized() const { return bIsInitialized_; }
+
+
 private:
 	/**
 	 * @brief 셰이더 객체를 생성하고 셰이더 소스를 컴파일합니다.
