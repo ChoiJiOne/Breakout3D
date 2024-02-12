@@ -361,7 +361,7 @@ if(VITA OR PSP OR PS2 OR N3DS)
 endif()
 
 # When defined, respect CMake's BUILD_SHARED_LIBS setting:
-set(SDL_STATIC_ENABLED_BY_DEFAULT ON)
+set(SDL_STATIC_ENABLED_BY_DEFAULT OFF)
 if (NOT DEFINED SDL_SHARED_ENABLED_BY_DEFAULT)
   # ...unless decided already (as for EMSCRIPTEN)
 
@@ -380,7 +380,7 @@ if (NOT DEFINED SDL_SHARED_ENABLED_BY_DEFAULT)
 endif()
 
 if (NOT DEFINED SDL_TEST_ENABLED_BY_DEFAULT)
-  set(SDL_TEST_ENABLED_BY_DEFAULT ON)
+  set(SDL_TEST_ENABLED_BY_DEFAULT OFF)
 endif()
 
 set(LONGESTOPTIONNAME 0)  # set_option and friends will change this.
@@ -399,7 +399,7 @@ endforeach()
 # Allow some projects to be built conditionally.
 set_option(SDL2_DISABLE_SDL2MAIN   "Disable building/installation of SDL2main" OFF)
 set_option(SDL2_DISABLE_INSTALL    "Disable installation of SDL2" ${SDL2_SUBPROJECT})
-set_option(SDL2_DISABLE_UNINSTALL  "Disable uninstallation of SDL2" OFF)
+set_option(SDL2_DISABLE_UNINSTALL  "Disable uninstallation of SDL2" ON)
 
 option_string(SDL_ASSERTIONS "Enable internal sanity checks (auto/disabled/release/enabled/paranoid)" "auto")
 #set_option(SDL_DEPENDENCY_TRACKING "Use gcc -MMD -MT dependency tracking" ON)
