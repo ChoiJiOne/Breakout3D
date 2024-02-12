@@ -1,2 +1,2 @@
-# ProjectB
-- 3D 슈팅 (Shooter3D) 게임 개발 프로젝트입니다.
+# ProjectB - Breakout3D
+- 3D 벽돌 깨기 (Breakout3D) 게임 개발 프로젝트입니다.
