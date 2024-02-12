@@ -1,0 +1,20 @@
+# CMake의 최소 버전을 명시합니다.
+cmake_minimum_required(VERSION 3.27)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CGLTF_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+set(CGLTF_INCLUDE "${CGLTF_PATH}/include")
+set(CGLTF_SOURCE "${CGLTF_PATH}/src")
+
+file(GLOB_RECURSE CGLTF_INCLUDE_FILE "${CGLTF_INCLUDE}/*")
+file(GLOB_RECURSE CGLTF_SOURCE_FILE "${CGLTF_SOURCE}/*")
+
+add_library(cgltf STATIC ${CGLTF_INCLUDE_FILE} ${CGLTF_SOURCE_FILE})
+
+target_include_directories(cgltf PUBLIC ${CGLTF_INCLUDE})
+
+source_group(include FILES ${CGLTF_INCLUDE_FILE})
+source_group(src FILES ${CGLTF_SOURCE_FILE})
