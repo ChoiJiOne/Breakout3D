@@ -117,33 +117,77 @@ inline void DebugPrintF(const wchar_t* format, ...)
 #ifndef SDL_ASSERT
 #define SDL_ASSERT(Expression, ...)\
 {\
-	if (!(bool)(Expression))                                                                                                                \
-	{                                                                                                                                       \
-		DebugPrintF("\nAssertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression); \
-		DebugPrintF(__VA_ARGS__);                                                                                                           \
-		DebugPrintF("\nSDL error message : %s\n", SDL_GetError());                                                                          \
-		DebugPrintF("\n");                                                                                                                  \
-		__debugbreak();                                                                                                                     \
-		ExitProcess(-1);                                                                                                                    \
-	}                                                                                                                                       \
+	if (!(bool)(Expression))                                                                                                                    \
+	{                                                                                                                                           \
+		DebugPrintF("\nSDL Assertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression); \
+		DebugPrintF(__VA_ARGS__);                                                                                                               \
+		DebugPrintF("\nSDL error message : %s\n", SDL_GetError());                                                                              \
+		DebugPrintF("\n");                                                                                                                      \
+		__debugbreak();                                                                                                                         \
+		ExitProcess(-1);                                                                                                                        \
+	}                                                                                                                                           \
 }
 #endif
 #elif defined(RELEASE_MODE) || defined(DEVELOPMENT_MODE)
 #ifndef SDL_ASSERT
 #define SDL_ASSERT(Expression, ...)\
 {\
-	if (!(bool)(Expression))                                                                                                                \
-	{                                                                                                                                       \
-		DebugPrintF("\nAssertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression); \
-		DebugPrintF(__VA_ARGS__);                                                                                                           \
-		DebugPrintF("\nSDL error message : %s\n", SDL_GetError());                                                                          \
-		DebugPrintF("\n");                                                                                                                  \
-		__debugbreak();                                                                                                                     \
+	if (!(bool)(Expression))                                                                                                                    \
+	{                                                                                                                                           \
+		DebugPrintF("\nSDL Assertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression); \
+		DebugPrintF(__VA_ARGS__);                                                                                                               \
+		DebugPrintF("\nSDL error message : %s\n", SDL_GetError());                                                                              \
+		DebugPrintF("\n");                                                                                                                      \
+		__debugbreak();                                                                                                                         \
 }
 #endif
 #else // defined(SHIPPING_MODE)
 #ifndef SDL_ASSERT
 #define SDL_ASSERT(Expression, ...) ((void)(Expression))
+#endif
+#endif
+
+
+/**
+ * @brief SDL API가 호출에 실패했는지 확인합니다.
+ * 
+ * @param Expression 검사할 호출값입니다.
+ *
+ * @note
+ * - Debug 모드와 Release 모드에서는 평가식을 검사하지만 Shipping 모드에서는 평가식을 검사하지 않습니다.
+ * - 디버거가 존재하면 브레이크 포인트가 걸립니다.
+ * - SDL API은 호출에 성공하면 0을 반환합니다.
+ */
+#if defined(DEBUG_MODE)
+#ifndef SDL_FAILED
+#define SDL_FAILED(Expression)\
+{\
+	if ((bool)(Expression))                                                                                                             \
+	{                                                                                                                                   \
+		DebugPrintF("\nSDL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);  \
+		DebugPrintF("\nSDL error message : %s\n", SDL_GetError());                                                                      \
+		DebugPrintF("\n");                                                                                                              \
+		__debugbreak();                                                                                                                 \
+		ExitProcess(-1);                                                                                                                \
+	}                                                                                                                                   \
+}
+#endif
+#elif defined(RELEASE_MODE) || defined(DEVELOPMENT_MODE)
+#ifndef SDL_FAILED
+#define SDL_FAILED(Expression)\
+{\
+	if ((bool)(Expression))                                                                                                             \
+	{                                                                                                                                   \
+		DebugPrintF("\nSDL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);  \
+		DebugPrintF("\nSDL error message : %s\n", SDL_GetError());                                                                      \
+		DebugPrintF("\n");                                                                                                              \
+		__debugbreak();                                                                                                                 \
+	}                                                                                                                                   \
+}
+#endif
+#else // defined(SHIPPING_MODE)
+#ifndef SDL_FAILED
+#define SDL_FAILED(Expression, ...) ((void)(Expression))
 #endif
 #endif
 #endif
