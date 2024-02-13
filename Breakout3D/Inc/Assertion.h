@@ -162,27 +162,27 @@ inline void DebugPrintF(const wchar_t* format, ...)
 #ifndef SDL_FAILED
 #define SDL_FAILED(Expression)\
 {\
-	if ((bool)(Expression))                                                                                                             \
-	{                                                                                                                                   \
-		DebugPrintF("\nSDL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);  \
-		DebugPrintF("\nSDL error message : %s\n", SDL_GetError());                                                                      \
-		DebugPrintF("\n");                                                                                                              \
-		__debugbreak();                                                                                                                 \
-		ExitProcess(-1);                                                                                                                \
-	}                                                                                                                                   \
+	if ((bool)(Expression))                                                                                                   \
+	{                                                                                                                         \
+		DebugPrintF("\nSDL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\n", __FILE__, __LINE__, #Expression);  \
+		DebugPrintF("SDL error message : %s\n", SDL_GetError());                                                              \
+		DebugPrintF("\n");                                                                                                    \
+		__debugbreak();                                                                                                       \
+		ExitProcess(-1);                                                                                                      \
+	}                                                                                                                         \
 }
 #endif
 #elif defined(RELEASE_MODE) || defined(DEVELOPMENT_MODE)
 #ifndef SDL_FAILED
 #define SDL_FAILED(Expression)\
 {\
-	if ((bool)(Expression))                                                                                                             \
-	{                                                                                                                                   \
-		DebugPrintF("\nSDL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);  \
-		DebugPrintF("\nSDL error message : %s\n", SDL_GetError());                                                                      \
-		DebugPrintF("\n");                                                                                                              \
-		__debugbreak();                                                                                                                 \
-	}                                                                                                                                   \
+	if ((bool)(Expression))                                                                                                   \
+	{                                                                                                                         \
+		DebugPrintF("\nSDL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\n", __FILE__, __LINE__, #Expression);  \
+		DebugPrintF("SDL error message : %s\n", SDL_GetError());                                                              \
+		DebugPrintF("\n");                                                                                                    \
+		__debugbreak();                                                                                                       \
+	}                                                                                                                         \
 }
 #endif
 #else // defined(SHIPPING_MODE)
