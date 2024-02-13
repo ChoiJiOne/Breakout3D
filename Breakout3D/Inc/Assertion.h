@@ -372,15 +372,15 @@ inline std::wstring GetGLErrorCodeMessageW(const GLenum & errorCode)
 #define GL_ASSERT(Expression, ...)\
 Expression;\
 {\
-	GLenum _errorCode = glGetError();\
-	if (_errorCode != GL_NO_ERROR)\
-	{\
-		DebugPrintF("\nOpenGL assertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);\
-		DebugPrintF(__VA_ARGS__);\
-		DebugPrintF("\nOpenGL error message : %s\n", GetGLErrorCodeMessageA(_errorCode).c_str());\
-		DebugPrintF("\n");\
-		__debugbreak();\
-		ExitProcess(-1);\
+	GLenum _errorCode = glGetError();                                                                                                              \
+	if (_errorCode != GL_NO_ERROR)                                                                                                                 \
+	{                                                                                                                                              \
+		DebugPrintF("\nOpenGL assertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression); \
+		DebugPrintF(__VA_ARGS__);                                                                                                                  \
+		DebugPrintF("\nOpenGL error message : %s\n", GetGLErrorCodeMessageA(_errorCode).c_str());                                                  \
+		DebugPrintF("\n");                                                                                                                         \
+		__debugbreak();                                                                                                                            \
+		ExitProcess(-1);                                                                                                                           \
 	}\
 }
 #endif
@@ -389,14 +389,14 @@ Expression;\
 #define GL_ASSERT(Expression, ...)\
 Expression;\
 {\
-	GLenum _errorCode = glGetError();\
-	if (_errorCode != GL_NO_ERROR)\
-	{\
-		DebugPrintF("\nOpenGL assertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression);\
-		DebugPrintF(__VA_ARGS__);\
-		DebugPrintF("\nOpenGL error message : %s\n", GetGLErrorCodeMessageA(_errorCode).c_str());\
-		DebugPrintF("\n");\
-		__debugbreak();\
+	GLenum _errorCode = glGetError();                                                                                                              \
+	if (_errorCode != GL_NO_ERROR)                                                                                                                 \
+	{                                                                                                                                              \
+		DebugPrintF("\nOpenGL assertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression); \
+		DebugPrintF(__VA_ARGS__);                                                                                                                  \
+		DebugPrintF("\nOpenGL error message : %s\n", GetGLErrorCodeMessageA(_errorCode).c_str());                                                  \
+		DebugPrintF("\n");                                                                                                                         \
+		__debugbreak();                                                                                                                            \
 	}\
 }
 #endif
@@ -422,14 +422,14 @@ Expression;
 #define GL_FAILED(Expression)\
 Expression;\
 {\
-	GLenum _errorCode = glGetError();\
-	if (_errorCode != GL_NO_ERROR)\
-	{\
-		DebugPrintF("\nOpenGL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\n", __FILE__, __LINE__, #Expression);\
-		DebugPrintF("OpenGL error message : %s\n", GetGLErrorCodeMessageA(_errorCode).c_str());\
-		DebugPrintF("\n");\
-		__debugbreak();\
-		ExitProcess(-1);\
+	GLenum _errorCode = glGetError();                                                                                           \
+	if (_errorCode != GL_NO_ERROR)                                                                                              \
+	{                                                                                                                           \
+		DebugPrintF("\nOpenGL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\n", __FILE__, __LINE__, #Expression); \
+		DebugPrintF("OpenGL error message : %s\n", GetGLErrorCodeMessageA(_errorCode).c_str());                                 \
+		DebugPrintF("\n");                                                                                                      \
+		__debugbreak();                                                                                                         \
+		ExitProcess(-1);                                                                                                        \
 	}\
 }
 #endif
@@ -438,13 +438,13 @@ Expression;\
 #define GL_FAILED(Expression)\
 Expression;\
 {\
-	GLenum _errorCode = glGetError();\
-	if (_errorCode != GL_NO_ERROR)\
-	{\
-		DebugPrintF("\nOpenGL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\n", __FILE__, __LINE__, #Expression);\
-		DebugPrintF("OpenGL error message : %s\n", GetGLErrorCodeMessageA(_errorCode).c_str());\
-		DebugPrintF("\n");\
-		__debugbreak();\
+	GLenum _errorCode = glGetError();                                                                                           \
+	if (_errorCode != GL_NO_ERROR)                                                                                              \
+	{                                                                                                                           \
+		DebugPrintF("\nOpenGL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\n", __FILE__, __LINE__, #Expression); \
+		DebugPrintF("OpenGL error message : %s\n", GetGLErrorCodeMessageA(_errorCode).c_str());                                 \
+		DebugPrintF("\n");                                                                                                      \
+		__debugbreak();                                                                                                         \
 	}\
 }
 #endif
