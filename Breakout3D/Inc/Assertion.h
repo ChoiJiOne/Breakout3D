@@ -365,4 +365,52 @@ Expression;\
 Expression;
 #endif
 #endif
+
+
+/**
+ * @brief OpenGL API 호출에 실패했는지 확인합니다.
+ *
+ * @param Expression 검사할 호출값입니다.
+ *
+ * @note
+ * - Debug 모드와 Release 모드에서는 평가식을 검사하지만 Shipping 모드에서는 평가식을 검사하지 않습니다.
+ * - 디버거가 존재하면 브레이크 포인트가 걸립니다.
+ */
+#if defined(DEBUG_MODE)
+#ifndef GL_FAILED
+#define GL_FAILED(Expression)\
+Expression;\
+{\
+	GLenum _errorCode = glGetError();\
+	if (_errorCode != GL_NO_ERROR)\
+	{\
+		DebugPrintF("\nOpenGL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\n", __FILE__, __LINE__, #Expression);\
+		DebugPrintF("OpenGL error message : %s\n", GetGLErrorCodeMessageA(_errorCode).c_str());\
+		DebugPrintF("\n");\
+		__debugbreak();\
+		ExitProcess(-1);\
+	}\
+}
+#endif
+#elif defined(RELEASE_MODE) || defined(DEVELOPMENT_MODE)
+#ifndef GL_FAILED
+#define GL_FAILED(Expression)\
+Expression;\
+{\
+	GLenum _errorCode = glGetError();\
+	if (_errorCode != GL_NO_ERROR)\
+	{\
+		DebugPrintF("\nOpenGL API call has failed!\nFile : %s\nLine : %d\nExpression : %s\n", __FILE__, __LINE__, #Expression);\
+		DebugPrintF("OpenGL error message : %s\n", GetGLErrorCodeMessageA(_errorCode).c_str());\
+		DebugPrintF("\n");\
+		__debugbreak();\
+	}\
+}
+#endif
+#else // defined(SHIPPING_MODE)
+#ifndef GL_FAILED
+#define GL_FAILED(Expression)\
+Expression;
+#endif
+#endif
 #endif
