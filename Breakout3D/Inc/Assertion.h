@@ -76,7 +76,7 @@ inline void DebugPrintF(const wchar_t* format, ...)
 	{                                                                                                                                       \
 		DebugPrintF("\nAssertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression); \
 		DebugPrintF(__VA_ARGS__);                                                                                                           \
-		DebugPrintF("\n");                                                                                                                  \
+		DebugPrintF("\n\n");                                                                                                                \
 		__debugbreak();                                                                                                                     \
 		ExitProcess(-1);                                                                                                                    \
 	}                                                                                                                                       \
@@ -90,7 +90,7 @@ inline void DebugPrintF(const wchar_t* format, ...)
 	{                                                                                                                                       \
 		DebugPrintF("\nAssertion check point failed!\nFile : %s\nLine : %d\nExpression : %s\nMessage : ", __FILE__, __LINE__, #Expression); \
 		DebugPrintF(__VA_ARGS__);                                                                                                           \
-		DebugPrintF("\n");                                                                                                                  \
+		DebugPrintF("\n\n");                                                                                                                \
 		__debugbreak();                                                                                                                     \
 		ExitProcess(-1);                                                                                                                    \
 	}                                                                                                                                       \
