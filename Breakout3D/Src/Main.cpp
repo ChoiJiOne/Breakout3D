@@ -29,6 +29,8 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	SDL_FAILED(SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24));
 	SDL_FAILED(SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8));
 	SDL_FAILED(SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1));
+	SDL_FAILED(SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1));
+	SDL_FAILED(SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16));
 
 	SDL_Window* window = SDL_CreateWindow("Breakout3D", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1000, 800, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 	SDL_ASSERT(window != nullptr, "failed to create window");
@@ -38,6 +40,8 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 
 	SDL_FAILED(SDL_GL_MakeCurrent(window, context));
 	CHECK(gladLoadGLLoader((GLADloadproc)(SDL_GL_GetProcAddress)));
+
+	glEnable(GL_MULTISAMPLE);
 
 	Shader shader;
 	shader.Initialize("Shader/Shader.vert", "Shader/Shader.frag");
@@ -73,9 +77,11 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	{
 		while (SDL_PollEvent(&e))
 		{
-			if (e.type == SDL_QUIT)
+			switch (e.type)
 			{
+			case SDL_QUIT:
 				bIsDone = true;
+				break;
 			}
 		}
 
