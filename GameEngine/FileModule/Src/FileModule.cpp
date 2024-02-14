@@ -306,3 +306,39 @@ bool FileModule::IsValidPath(const std::wstring& path)
 {
 	return PathFileExistsW(path.c_str());
 }
+
+std::string FileModule::GetBasePath(const std::string& path)
+{
+	std::size_t lastSlash;
+
+	if ((lastSlash = path.rfind('/')) != std::string::npos)
+	{
+		return path.substr(0, lastSlash + 1);
+	}
+	else if ((lastSlash = path.rfind('\\')) != std::string::npos)
+	{
+		return path.substr(0, lastSlash + 1);
+	}
+	else
+	{
+		return "";
+	}
+}
+
+std::wstring FileModule::GetBasePath(const std::wstring& path)
+{
+	std::size_t lastSlash;
+
+	if ((lastSlash = path.rfind(L'/')) != std::wstring::npos)
+	{
+		return path.substr(0, lastSlash + 1);
+	}
+	else if ((lastSlash = path.rfind(L'\\')) != std::wstring::npos)
+	{
+		return path.substr(0, lastSlash + 1);
+	}
+	else
+	{
+		return L"";
+	}
+}
