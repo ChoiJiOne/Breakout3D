@@ -378,3 +378,19 @@ std::wstring FileModule::RemoveBasePath(const std::wstring& path)
 		return path;
 	}
 }
+
+std::string FileModule::GetFileExtension(const std::string& path)
+{
+	std::string filename = RemoveBasePath(path);
+	std::size_t offset = filename.rfind('.');
+
+	return (offset == std::string::npos) ? "" : filename.substr(offset + 1);
+}
+
+std::wstring FileModule::GetFileExtension(const std::wstring& path)
+{
+	std::wstring filename = RemoveBasePath(path);
+	std::size_t offset = filename.rfind('.');
+
+	return (offset == std::wstring::npos) ? L"" : filename.substr(offset + 1);
+}
