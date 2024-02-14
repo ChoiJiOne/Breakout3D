@@ -342,3 +342,39 @@ std::wstring FileModule::GetBasePath(const std::wstring& path)
 		return L"";
 	}
 }
+
+std::string FileModule::RemoveBasePath(const std::string& path)
+{
+	std::size_t lastSlash;
+
+	if ((lastSlash = path.rfind('/')) != std::string::npos)
+	{
+		return path.substr(lastSlash + 1, std::string::npos);
+	}
+	else if ((lastSlash = path.rfind('\\')) != std::string::npos)
+	{
+		return path.substr(lastSlash + 1, std::string::npos);
+	}
+	else
+	{
+		return path;
+	}
+}
+
+std::wstring FileModule::RemoveBasePath(const std::wstring& path)
+{
+	std::size_t lastSlash;
+
+	if ((lastSlash = path.rfind(L'/')) != std::string::npos)
+	{
+		return path.substr(lastSlash + 1, std::string::npos);
+	}
+	else if ((lastSlash = path.rfind(L'\\')) != std::string::npos)
+	{
+		return path.substr(lastSlash + 1, std::string::npos);
+	}
+	else
+	{
+		return path;
+	}
+}
