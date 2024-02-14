@@ -2310,3 +2310,45 @@ using Matrix4x4i = Matrix4x4<int32_t>;
  * @brief float 타입의 4x4 행렬입니다.
  */
 using Matrix4x4f = Matrix4x4<float>;
+
+
+/**
+ * 수학 관련 기능을 제공합니다.
+ */
+namespace MathModule
+{
+	/**
+	 * @brief 파이(π) 값입니다.
+	 */
+	const float Pi = 3.141592654f;
+
+
+	/**
+	 * @brief 2파이(2π) 값입니다.
+	 */
+	const float TwoPi = 6.283185307f;
+
+
+	/**
+	 * @brief 파이(π) 의 역수 값입니다.
+	 */
+	const float OneDivPi = 0.318309886f;
+
+
+	/**
+	 * @brief 2파이(2π) 의 역수 값입니다.
+	 */
+	const float OneDivTwoPi = 0.159154943f;
+
+
+	/**
+	 * @brief 파이(π) 의 반값(π/2)입니다.
+	 */
+	const float PiDiv2 = 1.570796327f;
+
+
+	/**
+	 * @brief 파이(π) 의 반의 반 값(π/4)입니다.
+	 */
+	const float PiDiv4 = 0.785398163f;
+}
