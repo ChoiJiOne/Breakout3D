@@ -296,3 +296,13 @@ bool FileModule::WriteBufferToFile(const std::wstring& path, const std::vector<u
 
 	return true;
 }
+
+bool FileModule::IsValidPath(const std::string& path)
+{
+	return PathFileExistsA(path.c_str());
+}
+
+bool FileModule::IsValidPath(const std::wstring& path)
+{
+	return PathFileExistsW(path.c_str());
+}
