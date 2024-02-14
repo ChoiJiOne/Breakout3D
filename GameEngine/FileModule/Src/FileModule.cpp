@@ -155,3 +155,144 @@ bool FileModule::ReadBufferFromFile(const std::wstring& path, std::vector<uint8_
 
 	return true;
 }
+
+bool FileModule::WriteBufferToFile(const std::string& path, const std::vector<uint8_t>& buffer)
+{
+	HANDLE fileHandle = CreateFileA(path.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (fileHandle == INVALID_HANDLE_VALUE)
+	{
+		uint32_t size = FormatMessageA
+		(
+			FORMAT_MESSAGE_FROM_SYSTEM,
+			nullptr,
+			static_cast<DWORD>(GetLastError()),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			errorMessageBuffer,
+			MAX_BUFFER_SIZE,
+			nullptr
+		);
+
+		if (size == 0)
+		{
+			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to create file", MAX_BUFFER_SIZE);
+		}
+
+		return false;
+	}
+
+	DWORD writeByteSize = 0;
+	if (!WriteFile(fileHandle, &buffer[0], static_cast<DWORD>(buffer.size()), &writeByteSize, nullptr))
+	{
+		uint32_t size = FormatMessageA
+		(
+			FORMAT_MESSAGE_FROM_SYSTEM,
+			nullptr,
+			static_cast<DWORD>(GetLastError()),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			errorMessageBuffer,
+			MAX_BUFFER_SIZE,
+			nullptr
+		);
+
+		if (size == 0)
+		{
+			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to write file", MAX_BUFFER_SIZE);
+		}
+
+		return false;
+	}
+
+	if (!CloseHandle(fileHandle))
+	{
+		uint32_t size = FormatMessageA
+		(
+			FORMAT_MESSAGE_FROM_SYSTEM,
+			nullptr,
+			static_cast<DWORD>(GetLastError()),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			errorMessageBuffer,
+			MAX_BUFFER_SIZE,
+			nullptr
+		);
+
+		if (size == 0)
+		{
+			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to close file", MAX_BUFFER_SIZE);
+		}
+
+		return false;
+	}
+
+	return true;
+}
+
+bool FileModule::WriteBufferToFile(const std::wstring& path, const std::vector<uint8_t>& buffer)
+{
+	HANDLE fileHandle = CreateFileW(path.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (fileHandle == INVALID_HANDLE_VALUE)
+	{
+		uint32_t size = FormatMessageA
+		(
+			FORMAT_MESSAGE_FROM_SYSTEM,
+			nullptr,
+			static_cast<DWORD>(GetLastError()),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			errorMessageBuffer,
+			MAX_BUFFER_SIZE,
+			nullptr
+		);
+
+		if (size == 0)
+		{
+			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to create file", MAX_BUFFER_SIZE);
+		}
+
+		return false;
+	}
+
+
+	DWORD writeByteSize = 0;
+	if (!WriteFile(fileHandle, &buffer[0], static_cast<DWORD>(buffer.size()), &writeByteSize, nullptr))
+	{
+		uint32_t size = FormatMessageA
+		(
+			FORMAT_MESSAGE_FROM_SYSTEM,
+			nullptr,
+			static_cast<DWORD>(GetLastError()),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			errorMessageBuffer,
+			MAX_BUFFER_SIZE,
+			nullptr
+		);
+
+		if (size == 0)
+		{
+			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to write file", MAX_BUFFER_SIZE);
+		}
+
+		return false;
+	}
+
+	if (!CloseHandle(fileHandle))
+	{
+		uint32_t size = FormatMessageA
+		(
+			FORMAT_MESSAGE_FROM_SYSTEM,
+			nullptr,
+			static_cast<DWORD>(GetLastError()),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			errorMessageBuffer,
+			MAX_BUFFER_SIZE,
+			nullptr
+		);
+
+		if (size == 0)
+		{
+			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to close file", MAX_BUFFER_SIZE);
+		}
+
+		return false;
+	}
+
+	return true;
+}
