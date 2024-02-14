@@ -1387,7 +1387,7 @@ struct Matrix2x2
 	 *
 	 * @return 2x2 행렬의 단위 행렬를 반환합니다.
 	 */
-	static Matrix2x2<T> GetIdentity()
+	static Matrix2x2<T> Identity()
 	{
 		return Matrix2x2(
 			static_cast<T>(1), static_cast<T>(0),
@@ -1780,7 +1780,7 @@ struct Matrix3x3
 	 *
 	 * @return 3x3 행렬의 단위 행렬를 반환합니다.
 	 */
-	static Matrix3x3<T> GetIdentity()
+	static Matrix3x3<T> Identity()
 	{
 		return Matrix3x3(
 			static_cast<T>(1), static_cast<T>(0), static_cast<T>(0),
@@ -2222,7 +2222,7 @@ struct Matrix4x4
 	 *
 	 * @return 4x4 행렬의 단위 행렬를 반환합니다.
 	 */
-	static Matrix4x4<T> GetIdentity()
+	static Matrix4x4<T> Identity()
 	{
 		return Matrix4x4(
 			static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
