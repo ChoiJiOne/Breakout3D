@@ -3,11 +3,11 @@
 #include <shlwapi.h>
 
 const uint32_t MAX_BUFFER_SIZE = 1024;
-char errorMessageBuffer[MAX_BUFFER_SIZE];
+char fileErrorMessageBuffer[MAX_BUFFER_SIZE];
 
 const char* FileModule::GetErrorMessage()
 {
-	return &errorMessageBuffer[0];
+	return &fileErrorMessageBuffer[0];
 }
 
 bool FileModule::ReadBufferFromFile(const std::string& path, std::vector<uint8_t>& outBuffer)
@@ -21,14 +21,14 @@ bool FileModule::ReadBufferFromFile(const std::string& path, std::vector<uint8_t
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to open file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to open file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -46,14 +46,14 @@ bool FileModule::ReadBufferFromFile(const std::string& path, std::vector<uint8_t
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to read file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to read file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -67,14 +67,14 @@ bool FileModule::ReadBufferFromFile(const std::string& path, std::vector<uint8_t
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to close file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to close file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -94,14 +94,14 @@ bool FileModule::ReadBufferFromFile(const std::wstring& path, std::vector<uint8_
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to open file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to open file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -119,14 +119,14 @@ bool FileModule::ReadBufferFromFile(const std::wstring& path, std::vector<uint8_
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to open file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to open file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -140,14 +140,14 @@ bool FileModule::ReadBufferFromFile(const std::wstring& path, std::vector<uint8_
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to open file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to open file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -167,14 +167,14 @@ bool FileModule::WriteBufferToFile(const std::string& path, const std::vector<ui
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to create file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to create file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -189,14 +189,14 @@ bool FileModule::WriteBufferToFile(const std::string& path, const std::vector<ui
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to write file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to write file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -210,14 +210,14 @@ bool FileModule::WriteBufferToFile(const std::string& path, const std::vector<ui
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to close file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to close file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -237,14 +237,14 @@ bool FileModule::WriteBufferToFile(const std::wstring& path, const std::vector<u
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to create file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to create file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -260,14 +260,14 @@ bool FileModule::WriteBufferToFile(const std::wstring& path, const std::vector<u
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to write file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to write file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -281,14 +281,14 @@ bool FileModule::WriteBufferToFile(const std::wstring& path, const std::vector<u
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			fileErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to close file", MAX_BUFFER_SIZE);
+			strncpy_s(fileErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to close file", MAX_BUFFER_SIZE);
 		}
 
 		return false;

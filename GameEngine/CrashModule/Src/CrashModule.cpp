@@ -8,7 +8,7 @@
 #include <string>
 
 const uint32_t MAX_BUFFER_SIZE = 1024;
-char errorMessageBuffer[MAX_BUFFER_SIZE];
+char crashErrorMessageBuffer[MAX_BUFFER_SIZE];
 wchar_t crashSavePath[MAX_BUFFER_SIZE];
 LPTOP_LEVEL_EXCEPTION_FILTER topLevelExceptionFilter;
 
@@ -49,7 +49,7 @@ void WriteErrorMessage(const std::wstring& path)
 	}
 
 	DWORD writeByteSize = 0;
-	WriteFile(fileHandle, &errorMessageBuffer[0], static_cast<DWORD>(MAX_BUFFER_SIZE), &writeByteSize, nullptr);
+	WriteFile(fileHandle, &crashErrorMessageBuffer[0], static_cast<DWORD>(MAX_BUFFER_SIZE), &writeByteSize, nullptr);
 	CloseHandle(fileHandle);
 }
 
@@ -64,18 +64,18 @@ bool CreateMinidumpFile(const std::wstring& path, EXCEPTION_POINTERS* exceptionP
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			crashErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to create minidump file", MAX_BUFFER_SIZE);
+			strncpy_s(crashErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to create minidump file", MAX_BUFFER_SIZE);
 		}
 		else
 		{
-			strncat_s(errorMessageBuffer, "\nfailed to create minidump file", MAX_BUFFER_SIZE);
+			strncat_s(crashErrorMessageBuffer, "\nfailed to create minidump file", MAX_BUFFER_SIZE);
 		}
 		
 		return false;
@@ -94,18 +94,18 @@ bool CreateMinidumpFile(const std::wstring& path, EXCEPTION_POINTERS* exceptionP
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			crashErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to write minidump file", MAX_BUFFER_SIZE);
+			strncpy_s(crashErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to write minidump file", MAX_BUFFER_SIZE);
 		}
 		else
 		{
-			strncat_s(errorMessageBuffer, "\nfailed to write minidump file", MAX_BUFFER_SIZE);
+			strncat_s(crashErrorMessageBuffer, "\nfailed to write minidump file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -119,18 +119,18 @@ bool CreateMinidumpFile(const std::wstring& path, EXCEPTION_POINTERS* exceptionP
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			crashErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to close minidump file", MAX_BUFFER_SIZE);
+			strncpy_s(crashErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to close minidump file", MAX_BUFFER_SIZE);
 		}
 		else
 		{
-			strncat_s(errorMessageBuffer, "\nfailed to close minidump file", MAX_BUFFER_SIZE);
+			strncat_s(crashErrorMessageBuffer, "\nfailed to close minidump file", MAX_BUFFER_SIZE);
 		}
 
 		return false;
@@ -155,7 +155,7 @@ LONG WINAPI DetectApplicationCrash(EXCEPTION_POINTERS* exceptionPtr)
 
 const char* CrashModule::GetErrorMessage()
 {
-	return &errorMessageBuffer[0];
+	return &crashErrorMessageBuffer[0];
 }
 
 bool CrashModule::RegisterExceptionFilter()
@@ -173,18 +173,18 @@ bool CrashModule::RegisterExceptionFilter()
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			crashErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to get execute file name", MAX_BUFFER_SIZE);
+			strncpy_s(crashErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to get execute file name", MAX_BUFFER_SIZE);
 		}
 		else
 		{
-			strncat_s(errorMessageBuffer, "\nfailed to get execute file name", MAX_BUFFER_SIZE);
+			strncat_s(crashErrorMessageBuffer, "\nfailed to get execute file name", MAX_BUFFER_SIZE);
 		}
 
 		std::wstring writeErrorPath = PrintFormat(L"%sWindows-%s-WriteError.txt", crashSavePath, systemTime.c_str());
@@ -195,7 +195,7 @@ bool CrashModule::RegisterExceptionFilter()
 
 	if (FAILED(PathCchRemoveFileSpec(exePath, MAX_BUFFER_SIZE)))
 	{
-		strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to remove execute file name", MAX_BUFFER_SIZE);
+		strncpy_s(crashErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to remove execute file name", MAX_BUFFER_SIZE);
 
 		std::wstring writeErrorPath = PrintFormat(L"%sWindows-%s-WriteError.txt", crashSavePath, systemTime.c_str());
 		WriteErrorMessage(writeErrorPath);
@@ -213,18 +213,18 @@ bool CrashModule::RegisterExceptionFilter()
 			nullptr,
 			static_cast<DWORD>(GetLastError()),
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			errorMessageBuffer,
+			crashErrorMessageBuffer,
 			MAX_BUFFER_SIZE,
 			nullptr
 		);
 
 		if (size == 0)
 		{
-			strncpy_s(errorMessageBuffer, MAX_BUFFER_SIZE, "failed to create crash directory", MAX_BUFFER_SIZE);
+			strncpy_s(crashErrorMessageBuffer, MAX_BUFFER_SIZE, "failed to create crash directory", MAX_BUFFER_SIZE);
 		}
 		else
 		{
-			strncat_s(errorMessageBuffer, "\nfailed to create crash directory", MAX_BUFFER_SIZE);
+			strncat_s(crashErrorMessageBuffer, "\nfailed to create crash directory", MAX_BUFFER_SIZE);
 		}
 
 		std::wstring writeErrorPath = PrintFormat(L"%sWindows-%s-WriteError.txt", crashSavePath, systemTime.c_str());
