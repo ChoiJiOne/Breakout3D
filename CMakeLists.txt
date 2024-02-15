@@ -21,19 +21,12 @@ add_subdirectory(ThirdParty/lua)
 add_subdirectory(ThirdParty/miniaudio)
 add_subdirectory(ThirdParty/stb)
 
-set_target_properties(
-    cgltf
-    glad
-    imgui
-    jsoncpp
-    lua
-    miniaudio
-    SDL2 
-    SDL2main 
-    sdl_headers_copy
-    stb 
-    PROPERTIES FOLDER "ThirdParty"
-)
+add_subdirectory(GameEngine/CrashModule)
+add_subdirectory(GameEngine/FileModule)
+add_subdirectory(GameEngine/MathModule)
+
+set_target_properties(cgltf glad imgui jsoncpp lua miniaudio SDL2 SDL2main sdl_headers_copy stb PROPERTIES FOLDER "ThirdParty")
+set_target_properties(CrashModule FileModule MathModule PROPERTIES FOLDER "GameEngine")
 
 set(PROJECT_INCLUDE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Inc")
 set(PROJECT_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Src")
@@ -64,9 +57,6 @@ target_include_directories(
 target_link_libraries(
     ${PROJECT_NAME} 
     PUBLIC 
-    Dbghelp.lib 
-    Pathcch.lib 
-    Shlwapi.lib
     cgltf
     glad
     imgui
@@ -75,6 +65,9 @@ target_link_libraries(
     miniaudio
     SDL2
     stb 
+    CrashModule
+    FileModule
+    MathModule
 )
 
 target_compile_definitions(
