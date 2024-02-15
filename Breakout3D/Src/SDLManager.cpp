@@ -49,10 +49,9 @@ void SDLManager::Startup()
 		y = WINDOW_Y;
 	}
 
-	SDL_Window* window = SDL_CreateWindow(WINDOW_TITLE, x, y, WINDOW_W, WINDOW_H, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
-	CHECK(window != nullptr);
+	mainWindow_ = SDL_CreateWindow(WINDOW_TITLE, x, y, WINDOW_W, WINDOW_H, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+	CHECK(mainWindow_ != nullptr);
 
-	mainWindow_ = window;
 	bIsStartup_ = true;
 }
 
