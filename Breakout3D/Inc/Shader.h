@@ -3,13 +3,13 @@
 #include <map>
 #include <string>
 
-#include "Macro.h"
+#include "IResource.h"
 
 
 /**
  * @brief GLSL 셰이더를 컴파일하고 셰이더 프로그램을 관리합니다.
  */
-class Shader
+class Shader : public IResource
 {
 public:
 	/**
@@ -36,7 +36,7 @@ public:
 	 * @param vsPath 버텍스 셰이더(Vertex Shader)의 경로입니다.
 	 * @param fsPath 프레그먼트 셰이더(Fragment Shader)의 경로입니다.
 	 */
-	void Initialize(const std::string& vsPath, const std::string& fsPath);
+	virtual void Initialize(const std::string& vsPath, const std::string& fsPath);
 
 
 	/**
@@ -46,13 +46,13 @@ public:
 	 * @param gsFile 지오메트리 셰이더의 확장자(.geom)를 포함한 경로입니다.
 	 * @param fsPath 프레그먼트 셰이더(Fragment Shader)의 경로입니다.
 	 */
-	void Initialize(const std::string& vsPath, const std::string& gsPath, const std::string& fsPath);
+	virtual void Initialize(const std::string& vsPath, const std::string& gsPath, const std::string& fsPath);
 
 
 	/**
 	 * @brief 셰이더 내부에서 할당된 리소스의 할당을 해제합니다.
 	 */
-	virtual void Release();
+	virtual void Release() override;
 
 
 	/**
@@ -65,15 +65,7 @@ public:
 	 * @brief 셰이더를 바인딩 해제합니다.
 	 */
 	void Unbind();
-
-
-	/**
-	 * @brief 셰이더가 초기화된 적이 있는지 확인합니다.
-	 *
-	 * @return 셰이더가 초기화된 적이 있다면 true, 그렇지 않으면 false를 반환합니다.
-	 */
-	bool IsInitialized() const { return bIsInitialized_; }
-
+	
 
 protected:
 	/**
@@ -123,12 +115,6 @@ protected:
 
 
 protected:
-	/**
-	 * @brief 셰이더가 초기화되었는지 확인합니다.
-	 */
-	bool bIsInitialized_ = false;
-
-
 	/**
 	 * @brief 셰이더 프로그램의 아이디입니다.
 	 */
