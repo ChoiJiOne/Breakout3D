@@ -142,44 +142,6 @@ void GeometryGenerator::CreateCylinder(float radius, float height, uint32_t tess
 	CreateCylinderCap(radius, height, tessellation, false, outVertices, outIndices);
 }
 
-void GeometryGenerator::CreateCone(float radius, float height, uint32_t tessellation, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
-{
-	CHECK(tessellation >= 3);
-
-	outVertices.resize(0);
-	outIndices.resize(0);
-
-	height *= 0.5f;
-
-	Vector3f topOffset(0.0f, height, 0.0f);
-	uint32_t stride = tessellation + 1;
-
-	for (uint32_t index = 0; index <= tessellation; ++index)
-	{
-		float angle = MathModule::TwoPi * static_cast<float>(index) / static_cast<float>(tessellation);
-		float dx = MathModule::Sin(angle);
-		float dz = MathModule::Cos(angle);
-
-		float tangle = angle + MathModule::PiDiv2;
-		float tdx = MathModule::Sin(tangle);
-		float tdz = MathModule::Cos(tangle);
-
-		Vector3f sideOffset(dx * radius, 0.0f, dz * radius);
-		Vector2f uv = Vector2f(static_cast<float>(index) / static_cast<float>(tessellation), 0.0f) + Vector2f(0.0f, 1.0f);
-		Vector3f diff = sideOffset - topOffset;
-		Vector3f normal = MathModule::Normalize(MathModule::CrossProduct(Vector3f(tdx, 0.0f, tdz), topOffset - diff));
-
-		outVertices.push_back(Vertex(topOffset, normal, Vector2f(0.0f, 0.0f)));
-		outVertices.push_back(Vertex(     diff, normal, Vector2f(uv.x, 1.0f - uv.y)));
-
-		outIndices.push_back((index * 2 + 0));
-		outIndices.push_back((index * 2 + 1) % (stride * 2));
-		outIndices.push_back((index * 2 + 3) % (stride * 2));
-	}
-
-	CreateCylinderCap(radius, height, tessellation, false, outVertices, outIndices);
-}
-
 void GeometryGenerator::CreateCylinderCap(float radius, float height, uint32_t tessellation, bool bIsTop, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
 {
 	for (size_t index = 0; index < tessellation - 2; index++)
