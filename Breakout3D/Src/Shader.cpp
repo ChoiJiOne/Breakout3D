@@ -120,10 +120,142 @@ void Shader::Unbind()
 {
 	GL_FAILED(glUseProgram(0));
 }
+void Shader::SetUniform(const std::string& name, bool value)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniform1i(location, static_cast<int32_t>(value)));
+}
+
+void Shader::SetUniform(const std::string& name, int32_t value)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniform1i(location, value));
+}
+
+void Shader::SetUniform(const std::string& name, float value)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniform1f(location, value));
+}
+
+void Shader::SetUniform(const std::string& name, const Vector2f& value)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const float* valuePtr = value.GetPtr();
+	GL_FAILED(glUniform2fv(location, 1, valuePtr));
+}
+
+void Shader::SetUniform(const std::string& name, float x, float y)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniform2f(location, x, y));
+}
+
+void Shader::SetUniform(const std::string& name, const Vector2i& value)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const int32_t* valuePtr = value.GetPtr();
+	GL_FAILED(glUniform2iv(location, 1, valuePtr));
+}
+
+void Shader::SetUniform(const std::string& name, int32_t x, int32_t y)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniform2i(location, x, y));
+}
+
+void Shader::SetUniform(const std::string& name, const Vector3f& value)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const float* valuePtr = value.GetPtr();
+	GL_FAILED(glUniform3fv(location, 1, valuePtr));
+}
+
+void Shader::SetUniform(const std::string& name, float x, float y, float z)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniform3f(location, x, y, z));
+}
+
+void Shader::SetUniform(const std::string& name, const Vector3i& value)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const int32_t* valuePtr = value.GetPtr();
+	GL_FAILED(glUniform3iv(location, 1, valuePtr));
+}
+
+void Shader::SetUniform(const std::string& name, int32_t x, int32_t y, int32_t z)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniform3i(location, x, y, z));
+}
+
+void Shader::SetUniform(const std::string& name, const Vector4f& value)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const float* valuePtr = value.GetPtr();
+	GL_FAILED(glUniform4fv(location, 1, valuePtr));
+}
+
+void Shader::SetUniform(const std::string& name, float x, float y, float z, float w)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniform4f(location, x, y, z, w));
+}
+
+void Shader::SetUniform(const std::string& name, const Vector4i& value)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const int32_t* valuePtr = value.GetPtr();
+	GL_FAILED(glUniform4iv(location, 1, valuePtr));
+}
+
+void Shader::SetUniform(const std::string& name, int32_t x, int32_t y, int32_t z, int32_t w)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniform4i(location, x, y, z, w));
+}
+
+void Shader::SetUniform(const std::string& name, const Matrix2x2f& value)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniformMatrix2fv(location, 1, GL_FALSE, value.GetPtr()));
+}
+
+void Shader::SetUniform(const std::string& name, const Matrix3x3f& value)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniformMatrix3fv(location, 1, GL_FALSE, value.GetPtr()));
+}
+
+void Shader::SetUniform(const std::string& name, const Matrix4x4f& value)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniformMatrix4fv(location, 1, GL_FALSE, value.GetPtr()));
+}
 
 int32_t Shader::GetUniformLocation(const std::string& name)
 {
-	return glGetUniformLocation(programID_, name.c_str());
+	std::map<std::string, uint32_t>::iterator uniformLocation = uniformLocationCache_.find(name);
+
+	if (uniformLocation == uniformLocationCache_.end())
+	{
+		int32_t location = glGetUniformLocation(programID_, name.c_str());
+		CHECK(location != -1);
+
+		uniformLocationCache_.insert({ name, location });
+		return location;
+	}
+	else
+	{
+		return uniformLocation->second;
+	}
 }
 
 std::string Shader::ReadShaderFile(const std::string& path)
