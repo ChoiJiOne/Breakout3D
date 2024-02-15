@@ -7,14 +7,6 @@
 #include "RenderManager.h"
 #include "SDLManager.h"
 
-/**
- * @brief OpenGL의 버전입니다.
- *
- * @note 이 값은 4.6으로 고정되어 있습니다.
- */
-#define FIX_OPENGL_MAJOR_VERSION 4 // OpenGL 주(4) 버전입니다.
-#define FIX_OPENGL_MINOR_VERSION 6 // OpenGL 부(6) 버전입니다.
-
 RenderManager& RenderManager::Get()
 {
 	static RenderManager instance;
@@ -74,11 +66,12 @@ void RenderManager::SetViewport(int32_t x, int32_t y, int32_t width, int32_t hei
 
 void RenderManager::SetWindowViewport()
 {
-	//int32_t width = 0;
-	//int32_t height = 0;
-	//SDL_Window* window = reinterpret_cast<SDL_Window*>(renderTargetWindow_);
+	int32_t width = 0;
+	int32_t height = 0;
+	SDL_Window* window = reinterpret_cast<SDL_Window*>(renderTargetWindow_);
 
-	//SDL_GetWindowSize(window, &width, &height);
+	SDL_GetWindowSize(window, &width, &height);
+	SetViewport(0, 0, width, height);
 }
 
 void RenderManager::SetVsyncMode(bool bIsEnable)
