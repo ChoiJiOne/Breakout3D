@@ -21,10 +21,10 @@ void GeometryGenerator::CreateCube(const Vector3f& size, std::vector<Vertex>& ou
 
 	static const Vector2f uvs[4] = 
 	{
-		Vector2f(1.0f, 0.0f),
 		Vector2f(1.0f, 1.0f),
-		Vector2f(0.0f, 1.0f),
+		Vector2f(1.0f, 0.0f),
 		Vector2f(0.0f, 0.0f),
+		Vector2f(0.0f, 1.0f),
 	};
 
 	Vector3f tsize = Vector3f(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f);
