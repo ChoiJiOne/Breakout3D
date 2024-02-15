@@ -70,6 +70,8 @@ void Texture2D::Release()
 {
 	CHECK(bIsInitialized_);
 
+	GL_FAILED(glDeleteTextures(1, &textureID_));
+
 	bIsInitialized_ = false;
 }
 
