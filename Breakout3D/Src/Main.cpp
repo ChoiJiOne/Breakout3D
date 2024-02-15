@@ -5,9 +5,12 @@
 #include <glad/glad.h>
 #include <SDL.h>
 
+#include "CrashModule.h"
+#include "FileModule.h"
+#include "MathModule.h"
+
 #include "Assertion.h"
 #include "Shader.h"
-#include "Vector.h"
 
 struct Vertex
 {
@@ -17,6 +20,8 @@ struct Vertex
 
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
 {
+	ASSERT(CrashModule::RegisterExceptionFilter(), CrashModule::GetErrorMessage());
+	
 	SDL_FAILED(SDL_Init(SDL_INIT_EVERYTHING));
 	SDL_FAILED(SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG));
 	SDL_FAILED(SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE));
@@ -109,5 +114,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	window = nullptr;
 
 	SDL_Quit();
+
+	CrashModule::UnregisterExceptionFilter();
 	return 0;
 }
