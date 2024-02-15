@@ -79,7 +79,7 @@ void GeometryGenerator::CreateSphere(float radius, uint32_t tessellation, std::v
 
 			Vector3f position(radius * dx, radius * dy, radius * dz);
 			Vector3f normal(dx, dy, dz);
-			Vector2f uv(u, v);
+			Vector2f uv(u, 1.0f - v);
 
 			outVertices.push_back(Vertex(position, normal, uv));
 		}
@@ -123,9 +123,11 @@ void GeometryGenerator::CreateCylinder(float radius, float height, uint32_t tess
 		Vector3f sideOffset(normal.x * radius, normal.y * radius, normal.z * radius);
 
 		Vector2f uv(static_cast<float>(index) / static_cast<float>(tessellation), 0.0f);
+		Vector2f uv0 = uv + Vector2f(0.0f, 0.0f);
+		Vector2f uv1 = uv + Vector2f(0.0f, 1.0f);
 
-		outVertices.push_back(Vertex(sideOffset + topOffset, normal, uv + Vector2f(0.0f, 0.0f)));
-		outVertices.push_back(Vertex(sideOffset - topOffset, normal, uv + Vector2f(0.0f, 1.0f)));
+		outVertices.push_back(Vertex(sideOffset + topOffset, normal, Vector2f(uv0.x, 1.0f - uv0.y)));
+		outVertices.push_back(Vertex(sideOffset - topOffset, normal, Vector2f(uv1.x, 1.0f - uv1.y)));
 
 		outIndices.push_back((index * 2 + 0));
 		outIndices.push_back((index * 2 + 1));
@@ -163,12 +165,12 @@ void GeometryGenerator::CreateCone(float radius, float height, uint32_t tessella
 		float tdz = MathModule::Cos(tangle);
 
 		Vector3f sideOffset(dx * radius, 0.0f, dz * radius);
-		Vector2f uv(static_cast<float>(index) / static_cast<float>(tessellation), 0.0f);
+		Vector2f uv = Vector2f(static_cast<float>(index) / static_cast<float>(tessellation), 0.0f) + Vector2f(0.0f, 1.0f);
 		Vector3f diff = sideOffset - topOffset;
 		Vector3f normal = MathModule::Normalize(MathModule::CrossProduct(Vector3f(tdx, 0.0f, tdz), topOffset - diff));
 
 		outVertices.push_back(Vertex(topOffset, normal, Vector2f(0.0f, 0.0f)));
-		outVertices.push_back(Vertex(     diff, normal, uv + Vector2f(0.0f, 1.0f)));
+		outVertices.push_back(Vertex(     diff, normal, Vector2f(uv.x, 1.0f - uv.y)));
 
 		outIndices.push_back((index * 2 + 0));
 		outIndices.push_back((index * 2 + 1) % (stride * 2));
@@ -212,8 +214,8 @@ void GeometryGenerator::CreateCylinderCap(float radius, float height, uint32_t t
 		float dz = MathModule::Cos(angle);
 
 		Vector3f position = Vector3f(dx * radius, normal.y * height, dz * radius);
-		Vector2f textureCoordinate = Vector2f(dx, dz) * textureScale + Vector2f(0.5f, 0.5f);
+		Vector2f uv = Vector2f(dx, dz) * textureScale + Vector2f(0.5f, 0.5f);
 
-		outVertices.push_back(Vertex(position, normal, textureCoordinate));
+		outVertices.push_back(Vertex(position, normal, Vector2f(uv.x, 1.0f - uv.y)));
 	}
 }
