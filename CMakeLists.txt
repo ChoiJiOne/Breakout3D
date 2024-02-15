@@ -28,6 +28,30 @@ add_subdirectory(GameEngine/MathModule)
 set_target_properties(cgltf glad imgui jsoncpp lua miniaudio SDL2 SDL2main sdl_headers_copy stb PROPERTIES FOLDER "ThirdParty")
 set_target_properties(CrashModule FileModule MathModule PROPERTIES FOLDER "GameEngine")
 
+set(WINDOW_TITLE "${PROJECT_NAME}")
+set(WINDOW_POS_UNDEFINED 0)
+set(WINDOW_POS_CENTERED 1)
+set(WINDOW_X 100)
+set(WINDOW_Y 100)
+set(WINDOW_W 1000)
+set(WINDOW_H 800)
+set(GL_MAJOR_VERSION 4)
+set(GL_MINOR_VERSION 6)
+set(GL_RED_SIZE 8)
+set(GL_GREEN_SIZE 8)
+set(GL_BLUE_SIZE 8)
+set(GL_ALPHA_SIZE 8)
+set(GL_DEPTH_SIZE 24)
+set(GL_STENCIL_SIZE 8)
+set(GL_DOUBLEBUFFER 1)
+set(GL_MULTISAMPLEBUFFERS 1)
+set(GL_MULTISAMPLESAMPLES 16)
+
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Inc/SDLConfig.h.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Inc/SDLConfig.h"
+)
+
 set(PROJECT_INCLUDE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Inc")
 set(PROJECT_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Src")
 set(SCRIPT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Script")
