@@ -15,3 +15,5 @@ Solution
 *.aps
 *.rc
 *.bin
+
+SDLConfig.h
