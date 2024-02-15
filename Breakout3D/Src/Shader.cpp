@@ -5,6 +5,8 @@
 
 #include <glad/glad.h>
 
+#include "FileModule.h"
+
 #include "Assertion.h"
 #include "Shader.h"
 
@@ -126,17 +128,10 @@ int32_t Shader::GetUniformLocation(const std::string& name)
 
 std::string Shader::ReadShaderFile(const std::string& path)
 {
-	ASSERT(std::filesystem::exists(std::filesystem::path(path)), "invalid %s shader file", path.c_str());
+	std::vector<uint8_t> shaderSourceBuffer;
+	ASSERT(FileModule::ReadBufferFromFile(path, shaderSourceBuffer), "failed to read %s shader file buffer", path.c_str());
 
-	std::ifstream fileStream(path);
-	ASSERT(fileStream.is_open(), "failed to open %s", path.c_str());
-
-	std::stringstream fileStringStream;
-	fileStringStream << fileStream.rdbuf();
-
-	fileStream.close();
-
-	return fileStringStream.str();
+	return std::string(shaderSourceBuffer.begin(), shaderSourceBuffer.end());
 }
 
 uint32_t Shader::CreateAndCompileShader(const EType& type, const std::string& source)
