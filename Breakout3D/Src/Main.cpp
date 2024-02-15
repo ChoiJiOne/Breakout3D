@@ -10,15 +10,16 @@
 #include "MathModule.h"
 
 #include "Assertion.h"
-#include "Shader.h"
 #include "RenderManager.h"
 #include "ResourceManager.h"
 #include "SDLManager.h"
+#include "Shader.h"
+#include "Texture2D.h"
 
 struct Vertex
 {
 	Vector3f position;
-	Vector4f color;
+	Vector2f uv;
 };
 
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
@@ -29,35 +30,52 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	RenderManager::Get().Startup();
 	ResourceManager::Get().Startup();
 
+	RenderManager::Get().SetDepthMode(true);
+	RenderManager::Get().SetAlphaBlendMode(true);
+	RenderManager::Get().SetMultisampleMode(true);
+
 	Shader* shader = ResourceManager::Get().CreateResource<Shader>("Shader");
 	shader->Initialize("Shader/Shader.vert", "Shader/Shader.frag");
 
+	Texture2D* texture = ResourceManager::Get().CreateResource<Texture2D>("Texture");
+	texture->Initialize("Resource/awesomeface.png");
+
 	std::vector<Vertex> vertices = 
 	{
-		{ Vector3f(-0.5f, -0.5f, 0.0f), Vector4f(1.0f, 0.0f, 0.0f, 1.0f) },
-		{ Vector3f(+0.5f, -0.5f, 0.0f), Vector4f(0.0f, 1.0f, 0.0f, 1.0f) },
-		{ Vector3f(+0.0f, +0.5f, 0.0f), Vector4f(0.0f, 0.0f, 1.0f, 1.0f) },
+		{ Vector3f(-0.5f, -0.5f, 0.0f), Vector2f(0.0f, 0.0f) },
+		{ Vector3f(+0.5f, -0.5f, 0.0f), Vector2f(1.0f, 0.0f) },
+		{ Vector3f(+0.5f, +0.5f, 0.0f), Vector2f(1.0f, 1.0f) },
+		{ Vector3f(-0.5f, +0.5f, 0.0f), Vector2f(0.0f, 1.0f) },
+	};
+	
+	std::vector<uint32_t> indices =
+	{
+		0, 1, 2,
+		0, 2, 3,
 	};
 
 	uint32_t vao;
 	uint32_t vbo;
+	uint32_t ebo;
 
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ebo);
 
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, static_cast<uint32_t>(vertices.size()) * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+	
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<uint32_t>(indices.size()) * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, position)));
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, color)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, uv)));
 	glEnableVertexAttribArray(1);
 
 	glBindVertexArray(0);
-
-	RenderManager::Get().SetMultisampleMode(false);
 
 	SDL_Event e;
 	bool bIsDone = false;
@@ -73,17 +91,20 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			}
 		}
 
-		RenderManager::Get().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+		RenderManager::Get().BeginFrame(1.0f, 0.0f, 0.0f, 1.0f);
+
+		texture->Active(0);
 
 		shader->Bind();
 		glBindVertexArray(vao);
-		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 		shader->Unbind();
 
 		RenderManager::Get().EndFrame();
 	}
 
+	glDeleteBuffers(1, &ebo);
 	glDeleteBuffers(1, &vbo);
 	glDeleteVertexArrays(1, &vao);
 	
