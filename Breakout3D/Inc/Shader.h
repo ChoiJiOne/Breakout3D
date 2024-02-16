@@ -38,7 +38,7 @@ public:
 	 * @param vsPath 버텍스 셰이더(Vertex Shader)의 경로입니다.
 	 * @param fsPath 프레그먼트 셰이더(Fragment Shader)의 경로입니다.
 	 */
-	virtual void Initialize(const std::string& vsPath, const std::string& fsPath);
+	virtual void Initialize(const std::string& vsPath, const std::string& fsPath) final;
 
 
 	/**
@@ -48,7 +48,7 @@ public:
 	 * @param gsFile 지오메트리 셰이더의 확장자(.geom)를 포함한 경로입니다.
 	 * @param fsPath 프레그먼트 셰이더(Fragment Shader)의 경로입니다.
 	 */
-	virtual void Initialize(const std::string& vsPath, const std::string& gsPath, const std::string& fsPath);
+	virtual void Initialize(const std::string& vsPath, const std::string& gsPath, const std::string& fsPath) final;
 
 
 	/**
