@@ -36,7 +36,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	GeometryGenerator::CreateSphere(1.0f, 40, vertices, indices);
 	
 	Shader* shader = ResourceManager::Get().CreateResource<Shader>("Shader");
-	shader->Initialize("Shader/Shader.vert", "Shader/Shader.frag");
+	shader->Initialize("Shader/Shader.vert", "Shader/Shader.geom", "Shader/Shader.frag");
 
 	Texture2D* texture = ResourceManager::Get().CreateResource<Texture2D>("Texture");
 	texture->Initialize("Resource/earth.png");
@@ -64,6 +64,10 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 
 		shader->Bind();
 
+		static float time = 0.0f;
+		time += 0.01f;
+		shader->SetUniform("time", time);
+		
 		shader->SetUniform("world", Matrix4x4f::Identity());
 		shader->SetUniform("view", MathModule::CreateLookAt(
 			Vector3f(3.0f, 3.0f, 3.0f),
