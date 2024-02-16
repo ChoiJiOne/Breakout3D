@@ -81,64 +81,6 @@ void Skybox::Initialize(const std::string& rightPath, const std::string& leftPat
 
 	GL_FAILED(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
 
-
-	std::vector<float> vertices = 
-	{
-		-1.0f, +1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		+1.0f, -1.0f, -1.0f,
-		+1.0f, -1.0f, -1.0f,
-		+1.0f, +1.0f, -1.0f,
-		-1.0f, +1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, +1.0f, -1.0f,
-		-1.0f, +1.0f, -1.0f,
-		-1.0f, +1.0f, +1.0f,
-		-1.0f, -1.0f, +1.0f,
-
-		+1.0f, -1.0f, -1.0f,
-		+1.0f, -1.0f, +1.0f,
-		+1.0f, +1.0f, +1.0f,
-		+1.0f, +1.0f, +1.0f,
-		+1.0f, +1.0f, -1.0f,
-		+1.0f, -1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		+1.0f,  1.0f,  1.0f,
-		+1.0f,  1.0f,  1.0f,
-		+1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		-1.0f,  1.0f, -1.0f,
-		+1.0f,  1.0f, -1.0f,
-		+1.0f,  1.0f,  1.0f,
-		+1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f, -1.0f,
-
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		+1.0f, -1.0f, -1.0f,
-		+1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		+1.0f, -1.0f,  1.0f
-	};
-	vertexCount_ = static_cast<uint32_t>(vertices.size());
-
-	GL_FAILED(glGenVertexArrays(1, &vertexArrayObject_));
-	GL_FAILED(glGenBuffers(1, &vertexBufferObject_));
-	GL_FAILED(glBindVertexArray(vertexArrayObject_));
-	GL_FAILED(glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject_));
-	GL_FAILED(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * static_cast<uint32_t>(vertices.size()), vertices.data(), GL_STATIC_DRAW));
-
-	GL_FAILED(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(0)));
-	GL_FAILED(glEnableVertexAttribArray(0));
-
-	GL_FAILED(glBindVertexArray(0));
-
 	bIsInitialized_ = true;
 }
 
@@ -147,8 +89,6 @@ void Skybox::Release()
 	CHECK(bIsInitialized_);
 
 	GL_FAILED(glDeleteTextures(1, &cubeMapID_));
-	GL_FAILED(glDeleteBuffers(1, &vertexBufferObject_));
-	GL_FAILED(glDeleteVertexArrays(1, &vertexArrayObject_));
 
 	bIsInitialized_ = false;
 }

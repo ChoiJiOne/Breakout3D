@@ -65,23 +65,7 @@ public:
 	 * @param unit 활성화 할 텍스처 유닛입니다.
 	 */
 	void Active(uint32_t unit) const;
-
-
-	/**
-	 * @brief 스카이 박스의 정점 버퍼 오브젝트를 얻습니다.
-	 *
-	 * @return 스카이 박스의 정점 버퍼 오브젝트의 ID를 반환합니다.
-	 */
-	uint32_t GetVertexArrayObject() const { return vertexArrayObject_; }
-
-
-	/**
-	 * @brief 스카이 박스의 정점 버퍼의 수를 얻습니다.
-	 *
-	 * @return 스카이 박스의 정점 버퍼의 수를 반환합니다.
-	 */
-	uint32_t GetVertexCount() const { return vertexCount_; }
-
+	
 
 private:
 	/**
@@ -101,22 +85,4 @@ private:
 	 * @brief 큐브맵 텍스처의 ID입니다.
 	 */
 	uint32_t cubeMapID_ = 0;
-
-
-	/**
-	 * @brief 스카이 박스의 정점 목록의 오브젝트입니다.
-	 */
-	uint32_t vertexArrayObject_ = 0;
-
-
-	/**
-	 * @brief 스카이 박스의 정점 버퍼 오브젝트입니다.
-	 */
-	uint32_t vertexBufferObject_ = 0;
-
-
-	/**
-	 * @brief 스카이 박스 정점의 수입니다.
-	 */
-	uint32_t vertexCount_ = 0;
 };
