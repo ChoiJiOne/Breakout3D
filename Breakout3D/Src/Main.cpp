@@ -10,17 +10,14 @@
 #include "MathModule.h"
 
 #include "Assertion.h"
+#include "GeometryGenerator.h"
 #include "RenderManager.h"
 #include "ResourceManager.h"
 #include "SDLManager.h"
 #include "Shader.h"
+#include "StaticMesh.h"
 #include "Texture2D.h"
-
-struct Vertex
-{
-	Vector3f position;
-	Vector2f uv;
-};
+#include "Vertex.h"
 
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
 {
@@ -34,48 +31,18 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	RenderManager::Get().SetAlphaBlendMode(true);
 	RenderManager::Get().SetMultisampleMode(true);
 
+	std::vector<Vertex> vertices;
+	std::vector<uint32_t> indices;
+	GeometryGenerator::CreateSphere(1.0f, 40, vertices, indices);
+	
 	Shader* shader = ResourceManager::Get().CreateResource<Shader>("Shader");
 	shader->Initialize("Shader/Shader.vert", "Shader/Shader.frag");
 
 	Texture2D* texture = ResourceManager::Get().CreateResource<Texture2D>("Texture");
-	texture->Initialize("Resource/awesomeface.png");
+	texture->Initialize("Resource/earth.png");
 
-	std::vector<Vertex> vertices = 
-	{
-		{ Vector3f(-0.5f, -0.5f, 0.0f), Vector2f(0.0f, 0.0f) },
-		{ Vector3f(+0.5f, -0.5f, 0.0f), Vector2f(1.0f, 0.0f) },
-		{ Vector3f(+0.5f, +0.5f, 0.0f), Vector2f(1.0f, 1.0f) },
-		{ Vector3f(-0.5f, +0.5f, 0.0f), Vector2f(0.0f, 1.0f) },
-	};
-	
-	std::vector<uint32_t> indices =
-	{
-		0, 1, 2,
-		0, 2, 3,
-	};
-
-	uint32_t vao;
-	uint32_t vbo;
-	uint32_t ebo;
-
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
-
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<uint32_t>(vertices.size()) * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
-	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<uint32_t>(indices.size()) * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, position)));
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, uv)));
-	glEnableVertexAttribArray(1);
-
-	glBindVertexArray(0);
+	StaticMesh* mesh = ResourceManager::Get().CreateResource<StaticMesh>("StaticMesh");
+	mesh->Initialize(vertices, indices);
 
 	SDL_Event e;
 	bool bIsDone = false;
@@ -91,23 +58,33 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			}
 		}
 
-		RenderManager::Get().BeginFrame(1.0f, 0.0f, 0.0f, 1.0f);
+		RenderManager::Get().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
 		texture->Active(0);
 
 		shader->Bind();
-		glBindVertexArray(vao);
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+
+		shader->SetUniform("world", Matrix4x4f::Identity());
+		shader->SetUniform("view", MathModule::CreateLookAt(
+			Vector3f(3.0f, 3.0f, 3.0f),
+			Vector3f(0.0f, 0.0f, 0.0f),
+			Vector3f(0.0f, 1.0f, 0.0f)
+		));
+		shader->SetUniform("projection", MathModule::CreatePerspective(
+			MathModule::ToRadian(45.0f),
+			static_cast<float>(1000) / static_cast<float>(800),
+			0.1f,
+			100.0f
+		));
+
+		mesh->Bind();
+		glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
+		mesh->Unbind();
 		shader->Unbind();
 
 		RenderManager::Get().EndFrame();
 	}
-
-	glDeleteBuffers(1, &ebo);
-	glDeleteBuffers(1, &vbo);
-	glDeleteVertexArrays(1, &vao);
-	
+		
 	ResourceManager::Get().Shutdown();
 	RenderManager::Get().Shutdown();
 	SDLManager::Get().Shutdown();
