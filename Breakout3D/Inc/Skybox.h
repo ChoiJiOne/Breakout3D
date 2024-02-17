@@ -108,7 +108,7 @@ private:
 	 * @param outPixelBuffer 픽셀 버퍼입니다.
 	 * @param bIsVerticallyFlip 픽셀 버퍼를 수직으로 뒤집을지 확인합니다. 기본 값은 false입니다.
 	 */
-	void ReadPixelBufferFromFile(const std::string& path, PixelBuffer& outPixelBuffer, bool bIsVerticallyFlip = false);
+	static void ReadPixelBufferFromFile(const std::string& path, PixelBuffer& outPixelBuffer, bool bIsVerticallyFlip = false);
 
 
 private:
