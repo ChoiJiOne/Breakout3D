@@ -38,7 +38,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	GeometryGenerator::CreateSphere(1.0f, 40, vertices, indices);
 	
 	Shader* shader = ResourceManager::Get().CreateResource<Shader>("Shader");
-	shader->Initialize("Shader/Shader.vert", "Shader/Shader.geom", "Shader/Shader.frag");
+	shader->Initialize("Shader/Shader.vert", "Shader/Shader.frag");
 
 	SkyboxPass* skyboxPass = ResourceManager::Get().CreateResource<SkyboxPass>("SkyboxPass");
 	skyboxPass->Initialize();
@@ -47,21 +47,13 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	texture->Initialize("Resource/earth.png");
 
 	Skybox* skybox = ResourceManager::Get().CreateResource<Skybox>("Skybox");
-	//skybox->Initialize(
-	//	"Resource/Skybox/Cloud_Right.png",
-	//	"Resource/Skybox/Cloud_Left.png",
-	//	"Resource/Skybox/Cloud_Up.png",
-	//	"Resource/Skybox/Cloud_Down.png",
-	//	"Resource/Skybox/Cloud_Front.png",
-	//	"Resource/Skybox/Cloud_Back.png"
-	//);
 	skybox->Initialize(
-		"Resource/Skybox/Right.png",
-		"Resource/Skybox/Left.png",
-		"Resource/Skybox/Up.png",
-		"Resource/Skybox/Down.png",
-		"Resource/Skybox/Front.png",
-		"Resource/Skybox/Back.png"
+		"Resource/Skybox/Space_Right.png",
+		"Resource/Skybox/Space_Left.png",
+		"Resource/Skybox/Space_Top.png",
+		"Resource/Skybox/Space_Bottom.png",
+		"Resource/Skybox/Space_Front.png",
+		"Resource/Skybox/Space_Back.png"
 	);
 
 	StaticMesh* mesh = ResourceManager::Get().CreateResource<StaticMesh>("StaticMesh");
@@ -81,10 +73,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			}
 		}
 
-		static float time = 0.0f;
-		time += 0.01f;
-
-		Matrix4x4f view = MathModule::CreateLookAt(Vector3f(0.0f, 0.0f, 0.0f), Vector3f(MathModule::Cos(time), 0.0f, MathModule::Sin(time)), Vector3f(0.0f, 1.0f, 0.0f));
+		Matrix4x4f view = MathModule::CreateLookAt(Vector3f(3.0f, 3.0f, 3.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 1.0f, 0.0f));
 		Matrix4x4f projection = MathModule::CreatePerspective(
 			MathModule::ToRadian(45.0f),
 			static_cast<float>(1000) / static_cast<float>(800),
@@ -96,17 +85,16 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 
 		skyboxPass->Draw(view, projection, skybox);
 
-		//texture->Active(0);
+		texture->Active(0);
 
-		//shader->Bind();
-		//shader->SetUniform("time", time);
-		//shader->SetUniform("world", Matrix4x4f::Identity());
-		//shader->SetUniform("view", view);
-		//shader->SetUniform("projection", projection);
-		//mesh->Bind();
-		//glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
-		//mesh->Unbind();
-		//shader->Unbind();
+		shader->Bind();
+		shader->SetUniform("world", Matrix4x4f::Identity());
+		shader->SetUniform("view", view);
+		shader->SetUniform("projection", projection);
+		mesh->Bind();
+		glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
+		mesh->Unbind();
+		shader->Unbind();
 
 		RenderManager::Get().EndFrame();
 	}
