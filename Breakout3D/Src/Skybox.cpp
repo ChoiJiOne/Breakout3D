@@ -1,4 +1,5 @@
-#include <map>
+#include <array>
+#include <thread>
 
 #include <glad/glad.h>
 #include <stb_image.h>
@@ -23,30 +24,40 @@ void Skybox::Initialize(const std::string& rightPath, const std::string& leftPat
 {
 	CHECK(!bIsInitialized_);
 
-	std::vector<std::pair<std::string, GLenum>> resourcePaths = 
+	std::array<std::tuple<std::string, GLenum, PixelBuffer>, 6> resourceInfos = 
 	{
-		{ rightPath,  GL_TEXTURE_CUBE_MAP_POSITIVE_X },
-		{ leftPath,   GL_TEXTURE_CUBE_MAP_NEGATIVE_X },
-		{ topPath,    GL_TEXTURE_CUBE_MAP_POSITIVE_Y },
-		{ bottomPath, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y },
-		{ frontPath,  GL_TEXTURE_CUBE_MAP_POSITIVE_Z },
-		{ backPath,   GL_TEXTURE_CUBE_MAP_NEGATIVE_Z },
+		std::tuple<std::string, GLenum, PixelBuffer>{ rightPath,  GL_TEXTURE_CUBE_MAP_POSITIVE_X, PixelBuffer{} },
+		std::tuple<std::string, GLenum, PixelBuffer>{ leftPath,   GL_TEXTURE_CUBE_MAP_NEGATIVE_X, PixelBuffer{} },
+		std::tuple<std::string, GLenum, PixelBuffer>{ topPath,    GL_TEXTURE_CUBE_MAP_POSITIVE_Y, PixelBuffer{} },
+		std::tuple<std::string, GLenum, PixelBuffer>{ bottomPath, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, PixelBuffer{} },
+		std::tuple<std::string, GLenum, PixelBuffer>{ frontPath,  GL_TEXTURE_CUBE_MAP_POSITIVE_Z, PixelBuffer{} },
+		std::tuple<std::string, GLenum, PixelBuffer>{ backPath,   GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, PixelBuffer{} },
 	};
 
-	std::map<GLenum, PixelBuffer> cubeMapPixelBuffers;
-	for (const auto& resourcePath : resourcePaths)
+	std::vector<std::thread> workers;
+	for (auto& resourceInfo : resourceInfos)
 	{
-		ReadPixelBufferFromFile(resourcePath.first, cubeMapPixelBuffers[resourcePath.second]);
+		workers.push_back(std::thread(ReadPixelBufferFromFile, std::get<0>(resourceInfo), std::ref(std::get<2>(resourceInfo)), false));
+	}
+
+	for (auto& worker : workers)
+	{
+		worker.join();
 	}
 
 	GL_FAILED(glGenTextures(1, &cubeMapID_));
 	GL_FAILED(glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapID_));
 
-	for (const auto& cubeMapPixelBuffer : cubeMapPixelBuffers)
+	for (const auto& resourceInfo : resourceInfos)
 	{
-		const PixelBuffer& pixelBuffer = cubeMapPixelBuffer.second;
+		const PixelBuffer& bufferData = std::get<2>(resourceInfo);
 
-		int32_t channels = pixelBuffer.channels;
+		int32_t width = bufferData.width;
+		int32_t height = bufferData.height;
+		int32_t channels = bufferData.channels;
+		const std::vector<uint8_t>& buffer = bufferData.buffer;
+
+		GLenum target = std::get<1>(resourceInfo);
 		GLenum format = 0xFFFF;
 
 		switch (channels)
@@ -72,7 +83,7 @@ void Skybox::Initialize(const std::string& rightPath, const std::string& leftPat
 			break;
 		}
 
-		GL_FAILED(glTexImage2D(cubeMapPixelBuffer.first, 0, format, pixelBuffer.width, pixelBuffer.height, 0, format, GL_UNSIGNED_BYTE, pixelBuffer.buffer.data()));
+		GL_FAILED(glTexImage2D(target, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, buffer.data()));
 	}
 
 	GL_FAILED(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
