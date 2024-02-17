@@ -77,8 +77,16 @@ private:
 	 * @param outHeight 버퍼의 세로 크기입니다.
 	 * @param outChannels 픽셀의 체널(1~4)입니다.
 	 * @param outPixelBuffer 픽셀 버퍼입니다.
+	 * @param bIsVerticallyFlip 픽셀 버퍼를 수직으로 뒤집을지 확인합니다. 기본 값은 false입니다.
 	 */
-	void ReadPixelBufferFromFile(const std::string& path, int32_t& outWidth, int32_t& outHeight, int32_t& outChannels, std::vector<uint8_t>& outPixelBuffer);
+	void ReadPixelBufferFromFile(
+		const std::string& path, 
+		int32_t& outWidth, 
+		int32_t& outHeight, 
+		int32_t& outChannels, 
+		std::vector<uint8_t>& outPixelBuffer,
+		bool bIsVerticallyFlip = false
+	);
 
 
 private:
