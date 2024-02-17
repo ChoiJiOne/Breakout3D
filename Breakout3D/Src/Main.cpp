@@ -43,6 +43,9 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	SkyboxPass* skyboxPass = ResourceManager::Get().CreateResource<SkyboxPass>("SkyboxPass");
 	skyboxPass->Initialize();
 
+	Shader* visualLightPass = ResourceManager::Get().CreateResource<Shader>("VisualLight");
+	visualLightPass->Initialize("Shader/VisualLight.vert", "Shader/VisualLight.frag");
+
 	Texture2D* texture = ResourceManager::Get().CreateResource<Texture2D>("Texture");
 	texture->Initialize("Resource/earth.png");
 
@@ -73,7 +76,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			}
 		}
 
-		Matrix4x4f view = MathModule::CreateLookAt(Vector3f(3.0f, 3.0f, 3.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 1.0f, 0.0f));
+		Matrix4x4f view = MathModule::CreateLookAt(Vector3f(5.0f, 5.0f, 5.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 1.0f, 0.0f));
 		Matrix4x4f projection = MathModule::CreatePerspective(
 			MathModule::ToRadian(45.0f),
 			static_cast<float>(1000) / static_cast<float>(800),
@@ -83,19 +86,34 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 
 		RenderManager::Get().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
-		skyboxPass->Draw(view, projection, skybox);
+		{
+			skyboxPass->Draw(view, projection, skybox);
+		}
+		{
+			texture->Active(0);
+			shader->Bind();
+			shader->SetUniform("world", Matrix4x4f::Identity());
+			shader->SetUniform("view", view);
+			shader->SetUniform("projection", projection);
+			mesh->Bind();
+			glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
+			mesh->Unbind();
+			shader->Unbind();
+		}
+		{
+			//Matrix4x4f world = MathModule::CreateTranslation(Vector3f(0.0f, 3.0f, 0.0f)) * MathModule::CreateScale(Vector3f(0.2f, 0.2f, 0.2f));
+			Matrix4x4f world = MathModule::CreateScale(Vector3f(0.3f, 0.3f, 0.3f)) * MathModule::CreateTranslation(Vector3f(0.0f, 3.0f, 0.0f));
 
-		texture->Active(0);
-
-		shader->Bind();
-		shader->SetUniform("world", Matrix4x4f::Identity());
-		shader->SetUniform("view", view);
-		shader->SetUniform("projection", projection);
-		mesh->Bind();
-		glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
-		mesh->Unbind();
-		shader->Unbind();
-
+			visualLightPass->Bind();
+			visualLightPass->SetUniform("world", world);
+			visualLightPass->SetUniform("view", view);
+			visualLightPass->SetUniform("projection", projection);
+			visualLightPass->SetUniform("lightColor", Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
+			mesh->Bind();
+			glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
+			mesh->Unbind();
+			visualLightPass->Unbind();
+		}
 		RenderManager::Get().EndFrame();
 	}
 		
