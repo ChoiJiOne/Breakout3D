@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include <stb_image.h>
+#include <SDL.h>
 
 #include "Assertion.h"
 #include "Skybox.h"
@@ -33,6 +34,8 @@ void Skybox::Initialize(const std::string& rightPath, const std::string& leftPat
 
 	GL_FAILED(glGenTextures(1, &cubeMapID_));
 	GL_FAILED(glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapID_));
+
+	uint64_t begin = SDL_GetTicks64();
 
 	for (std::size_t index = 0; index < resourcePaths.size(); ++index)
 	{
@@ -70,6 +73,10 @@ void Skybox::Initialize(const std::string& rightPath, const std::string& leftPat
 
 		GL_FAILED(glTexImage2D(target, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, buffer.data()));
 	}
+
+	uint64_t end = SDL_GetTicks64();
+	uint64_t diff = end - begin;
+	float time = static_cast<float>(diff) / 1000.0f;
 
 	GL_FAILED(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 	GL_FAILED(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
