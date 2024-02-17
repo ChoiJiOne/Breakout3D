@@ -4,6 +4,9 @@
 
 #include <glad/glad.h>
 #include <SDL.h>
+#include <imgui.h>
+#include <imgui_impl_sdl2.h>
+#include <imgui_impl_opengl3.h>
 
 #include "CrashModule.h"
 #include "FileModule.h"
@@ -33,12 +36,23 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	RenderManager::Get().SetAlphaBlendMode(true);
 	RenderManager::Get().SetMultisampleMode(true);
 
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.IniFilename = nullptr;
+
+	ImGui::StyleColorsDark();
+
+	SDL_Window* window = reinterpret_cast<SDL_Window*>(SDLManager::Get().GetMainWindow());
+
+	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
+	ImGui_ImplOpenGL3_Init("#version 460 core");
+
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 	GeometryGenerator::CreateSphere(1.0f, 40, vertices, indices);
 	
-	Shader* shader = ResourceManager::Get().CreateResource<Shader>("Shader");
-	shader->Initialize("Shader/Shader.vert", "Shader/Shader.frag");
+	Shader* lightPass = ResourceManager::Get().CreateResource<Shader>("Shader");
+	lightPass->Initialize("Shader/Shader.vert", "Shader/Shader.frag");
 
 	SkyboxPass* skyboxPass = ResourceManager::Get().CreateResource<SkyboxPass>("SkyboxPass");
 	skyboxPass->Initialize();
@@ -62,12 +76,17 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	StaticMesh* mesh = ResourceManager::Get().CreateResource<StaticMesh>("StaticMesh");
 	mesh->Initialize(vertices, indices);
 
+	Vector3f viewPosition = Vector3f(5.0f, 5.0f, 5.0f);
+	Vector3f lightPosition = Vector3f(0.0f, 3.0f, 0.0f);
+	Vector4f lightColor = Vector4f(1.0f, 1.0f, 1.0f, 1.0f);
+
 	SDL_Event e;
 	bool bIsDone = false;
 	while (!bIsDone)
 	{
 		while (SDL_PollEvent(&e))
 		{
+			ImGui_ImplSDL2_ProcessEvent(&e);
 			switch (e.type)
 			{
 			case SDL_QUIT:
@@ -76,47 +95,58 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			}
 		}
 
-		Matrix4x4f view = MathModule::CreateLookAt(Vector3f(5.0f, 5.0f, 5.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 1.0f, 0.0f));
-		Matrix4x4f projection = MathModule::CreatePerspective(
-			MathModule::ToRadian(45.0f),
-			static_cast<float>(1000) / static_cast<float>(800),
-			0.1f,
-			100.0f
-		);
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplSDL2_NewFrame();
+		ImGui::NewFrame();
+
+		{
+			ImGui::Begin("Light Position");
+			ImGui::SliderFloat("x", &lightPosition.x, -10.0f, 10.0f);
+			ImGui::SliderFloat("z", &lightPosition.z, -10.0f, 10.0f);
+			ImGui::End();
+		}
 
 		RenderManager::Get().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
+		Matrix4x4f world = MathModule::CreateScale(Vector3f(0.3f, 0.3f, 0.3f)) * MathModule::CreateTranslation(lightPosition);
+		Matrix4x4f view = MathModule::CreateLookAt(viewPosition, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 1.0f, 0.0f));
+		Matrix4x4f projection = MathModule::CreatePerspective(MathModule::ToRadian(45.0f), static_cast<float>(1000) / static_cast<float>(800), 0.1f, 100.0f);
+
 		{
 			skyboxPass->Draw(view, projection, skybox);
-		}
-		{
+			
 			texture->Active(0);
-			shader->Bind();
-			shader->SetUniform("world", Matrix4x4f::Identity());
-			shader->SetUniform("view", view);
-			shader->SetUniform("projection", projection);
+			lightPass->Bind();
+			lightPass->SetUniform("world", Matrix4x4f::Identity());
+			lightPass->SetUniform("view", view);
+			lightPass->SetUniform("projection", projection);
+			lightPass->SetUniform("lightPosition", lightPosition);
+			lightPass->SetUniform("viewPosition", viewPosition);
 			mesh->Bind();
 			glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
 			mesh->Unbind();
-			shader->Unbind();
-		}
-		{
-			//Matrix4x4f world = MathModule::CreateTranslation(Vector3f(0.0f, 3.0f, 0.0f)) * MathModule::CreateScale(Vector3f(0.2f, 0.2f, 0.2f));
-			Matrix4x4f world = MathModule::CreateScale(Vector3f(0.3f, 0.3f, 0.3f)) * MathModule::CreateTranslation(Vector3f(0.0f, 3.0f, 0.0f));
+			lightPass->Unbind();
 
 			visualLightPass->Bind();
 			visualLightPass->SetUniform("world", world);
 			visualLightPass->SetUniform("view", view);
 			visualLightPass->SetUniform("projection", projection);
-			visualLightPass->SetUniform("lightColor", Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
+			visualLightPass->SetUniform("lightColor", lightColor);
 			mesh->Bind();
 			glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
 			mesh->Unbind();
 			visualLightPass->Unbind();
 		}
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		RenderManager::Get().EndFrame();
 	}
-		
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	ResourceManager::Get().Shutdown();
 	RenderManager::Get().Shutdown();
 	SDLManager::Get().Shutdown();
