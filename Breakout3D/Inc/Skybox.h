@@ -70,23 +70,45 @@ public:
 
 private:
 	/**
+	 * @brief 픽셀 버퍼입니다.
+	 */
+	struct PixelBuffer
+	{
+		/**
+		 * @brief 픽셀 버퍼의 가로 크기입니다.
+		 */
+		int32_t width = 0;
+
+
+		/**
+		 * @brief 픽셀 버퍼의 세로 크기입니다.
+		 */
+		int32_t height = 0;
+
+
+		/**
+		 * @brief 픽셀 버퍼의 채널입니다.
+		 * 
+		 * @note 픽셀의 체널은 1~4 값입니다
+		 */
+		int32_t channels = 0;
+
+
+		/**
+		 * @brief 픽셀 버퍼입니다.
+		 */
+		std::vector<uint8_t> buffer;
+	};
+
+
+	/**
 	 * @brief 파일로부터 픽셀 버퍼를 읽습니다.
 	 *
 	 * @param path 픽셀 버퍼 파일(이미지 파일)의 경로입니다.
-	 * @param outWidth 버퍼의 가로 크기입니다.
-	 * @param outHeight 버퍼의 세로 크기입니다.
-	 * @param outChannels 픽셀의 체널(1~4)입니다.
 	 * @param outPixelBuffer 픽셀 버퍼입니다.
 	 * @param bIsVerticallyFlip 픽셀 버퍼를 수직으로 뒤집을지 확인합니다. 기본 값은 false입니다.
 	 */
-	void ReadPixelBufferFromFile(
-		const std::string& path, 
-		int32_t& outWidth, 
-		int32_t& outHeight, 
-		int32_t& outChannels, 
-		std::vector<uint8_t>& outPixelBuffer,
-		bool bIsVerticallyFlip = false
-	);
+	void ReadPixelBufferFromFile(const std::string& path, PixelBuffer& outPixelBuffer, bool bIsVerticallyFlip = false);
 
 
 private:

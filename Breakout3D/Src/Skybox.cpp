@@ -1,6 +1,7 @@
+#include <map>
+
 #include <glad/glad.h>
 #include <stb_image.h>
-#include <SDL.h>
 
 #include "Assertion.h"
 #include "Skybox.h"
@@ -22,30 +23,30 @@ void Skybox::Initialize(const std::string& rightPath, const std::string& leftPat
 {
 	CHECK(!bIsInitialized_);
 
-	std::vector<std::string> resourcePaths = 
+	std::vector<std::pair<std::string, GLenum>> resourcePaths = 
 	{
-		rightPath,
-		leftPath,
-		topPath,
-		bottomPath,
-		frontPath,
-		backPath,
+		{ rightPath,  GL_TEXTURE_CUBE_MAP_POSITIVE_X },
+		{ leftPath,   GL_TEXTURE_CUBE_MAP_NEGATIVE_X },
+		{ topPath,    GL_TEXTURE_CUBE_MAP_POSITIVE_Y },
+		{ bottomPath, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y },
+		{ frontPath,  GL_TEXTURE_CUBE_MAP_POSITIVE_Z },
+		{ backPath,   GL_TEXTURE_CUBE_MAP_NEGATIVE_Z },
 	};
+
+	std::map<GLenum, PixelBuffer> cubeMapPixelBuffers;
+	for (const auto& resourcePath : resourcePaths)
+	{
+		ReadPixelBufferFromFile(resourcePath.first, cubeMapPixelBuffers[resourcePath.second]);
+	}
 
 	GL_FAILED(glGenTextures(1, &cubeMapID_));
 	GL_FAILED(glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapID_));
 
-	uint64_t begin = SDL_GetTicks64();
-
-	for (std::size_t index = 0; index < resourcePaths.size(); ++index)
+	for (const auto& cubeMapPixelBuffer : cubeMapPixelBuffers)
 	{
-		int32_t width = 0;
-		int32_t height = 0;
-		int32_t channels = 0;
-		std::vector<uint8_t> buffer;
-		ReadPixelBufferFromFile(resourcePaths[index], width, height, channels, buffer);
+		const PixelBuffer& pixelBuffer = cubeMapPixelBuffer.second;
 
-		GLenum target = static_cast<GLenum>(GL_TEXTURE_CUBE_MAP_POSITIVE_X + index);
+		int32_t channels = pixelBuffer.channels;
 		GLenum format = 0xFFFF;
 
 		switch (channels)
@@ -71,12 +72,8 @@ void Skybox::Initialize(const std::string& rightPath, const std::string& leftPat
 			break;
 		}
 
-		GL_FAILED(glTexImage2D(target, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, buffer.data()));
+		GL_FAILED(glTexImage2D(cubeMapPixelBuffer.first, 0, format, pixelBuffer.width, pixelBuffer.height, 0, format, GL_UNSIGNED_BYTE, pixelBuffer.buffer.data()));
 	}
-
-	uint64_t end = SDL_GetTicks64();
-	uint64_t diff = end - begin;
-	float time = static_cast<float>(diff) / 1000.0f;
 
 	GL_FAILED(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 	GL_FAILED(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
@@ -104,24 +101,17 @@ void Skybox::Active(uint32_t unit) const
 	GL_FAILED(glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapID_));
 }
 
-void Skybox::ReadPixelBufferFromFile(
-	const std::string& path, 
-	int32_t& outWidth, 
-	int32_t& outHeight, 
-	int32_t& outChannels, 
-	std::vector<uint8_t>& outPixelBuffer,
-	bool bIsVerticallyFlip
-)
+void Skybox::ReadPixelBufferFromFile(const std::string& path, PixelBuffer& outPixelBuffer, bool bIsVerticallyFlip)
 {
 	stbi_set_flip_vertically_on_load(static_cast<int32_t>(bIsVerticallyFlip));
 
-	uint8_t* bufferPtr = stbi_load(path.c_str(), &outWidth, &outHeight, &outChannels, 0);
+	uint8_t* bufferPtr = stbi_load(path.c_str(), &outPixelBuffer.width, &outPixelBuffer.height, &outPixelBuffer.channels, 0);
 	ASSERT(bufferPtr != nullptr, "failed to load %s file", path.c_str());
 
-	std::size_t bufferSize = static_cast<std::size_t>(outWidth * outHeight * outChannels);
-	outPixelBuffer.resize(bufferSize);
+	std::size_t bufferSize = static_cast<std::size_t>(outPixelBuffer.width * outPixelBuffer.height * outPixelBuffer.channels);
+	outPixelBuffer.buffer.resize(bufferSize);
 
-	std::copy(bufferPtr, bufferPtr + bufferSize, outPixelBuffer.data());
+	std::copy(bufferPtr, bufferPtr + bufferSize, outPixelBuffer.buffer.data());
 
 	stbi_image_free(bufferPtr);
 	bufferPtr = nullptr;
