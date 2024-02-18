@@ -102,7 +102,7 @@ public:
 	 * @param name 유니폼 변수의 이름입니다.
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
-	void SetUniform(const std::string& name, const Vector2f& value);
+	void SetUniform(const std::string& name, const Vec2f& value);
 
 
 	/**
@@ -121,7 +121,7 @@ public:
 	 * @param name 유니폼 변수의 이름입니다.
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
-	void SetUniform(const std::string& name, const Vector2i& value);
+	void SetUniform(const std::string& name, const Vec2i& value);
 
 
 	/**
@@ -140,7 +140,7 @@ public:
 	 * @param name 유니폼 변수의 이름입니다.
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
-	void SetUniform(const std::string& name, const Vector3f& value);
+	void SetUniform(const std::string& name, const Vec3f& value);
 
 
 	/**
@@ -160,7 +160,7 @@ public:
 	 * @param name 유니폼 변수의 이름입니다.
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
-	void SetUniform(const std::string& name, const Vector3i& value);
+	void SetUniform(const std::string& name, const Vec3i& value);
 
 
 	/**
@@ -180,7 +180,7 @@ public:
 	 * @param name 유니폼 변수의 이름입니다.
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
-	void SetUniform(const std::string& name, const Vector4f& value);
+	void SetUniform(const std::string& name, const Vec4f& value);
 
 
 	/**
@@ -201,7 +201,7 @@ public:
 	 * @param name 유니폼 변수의 이름입니다.
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
-	void SetUniform(const std::string& name, const Vector4i& value);
+	void SetUniform(const std::string& name, const Vec4i& value);
 
 
 	/**
@@ -222,7 +222,7 @@ public:
 	 * @param name 유니폼 변수의 이름입니다.
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
-	void SetUniform(const std::string& name, const Matrix2x2f& value);
+	void SetUniform(const std::string& name, const Mat2x2f& value);
 
 
 	/**
@@ -231,7 +231,7 @@ public:
 	 * @param name 유니폼 변수의 이름입니다.
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
-	void SetUniform(const std::string& name, const Matrix3x3f& value);
+	void SetUniform(const std::string& name, const Mat3x3f& value);
 
 
 	/**
@@ -240,7 +240,7 @@ public:
 	 * @param name 유니폼 변수의 이름입니다.
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
-	void SetUniform(const std::string& name, const Matrix4x4f& value);
+	void SetUniform(const std::string& name, const Mat4x4f& value);
 	
 
 protected:

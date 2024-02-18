@@ -89,7 +89,7 @@ void SkyboxPass::Release()
 	Shader::Release();
 }
 
-void SkyboxPass::Draw(const Matrix4x4f& view, const Matrix4x4f& projection, const Skybox* skybox)
+void SkyboxPass::Draw(const Mat4x4f& view, const Mat4x4f& projection, const Skybox* skybox)
 {
 	Bind();
 	GL_FAILED(glDepthFunc(GL_LEQUAL));

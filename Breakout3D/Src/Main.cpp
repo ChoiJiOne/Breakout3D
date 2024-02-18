@@ -76,9 +76,9 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	StaticMesh* mesh = ResourceManager::Get().CreateResource<StaticMesh>("StaticMesh");
 	mesh->Initialize(vertices, indices);
 
-	Vector3f viewPosition = Vector3f(5.0f, 5.0f, 5.0f);
-	Vector3f lightPosition = Vector3f(0.0f, 3.0f, 0.0f);
-	Vector4f lightColor = Vector4f(1.0f, 1.0f, 1.0f, 1.0f);
+	Vec3f viewPosition = Vec3f(5.0f, 5.0f, 5.0f);
+	Vec3f lightPosition = Vec3f(0.0f, 3.0f, 0.0f);
+	Vec4f lightColor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 	SDL_Event e;
 	bool bIsDone = false;
@@ -108,16 +108,16 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 
 		RenderManager::Get().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
-		Matrix4x4f world = MathModule::CreateScale(Vector3f(0.3f, 0.3f, 0.3f)) * MathModule::CreateTranslation(lightPosition);
-		Matrix4x4f view = MathModule::CreateLookAt(viewPosition, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 1.0f, 0.0f));
-		Matrix4x4f projection = MathModule::CreatePerspective(MathModule::ToRadian(45.0f), static_cast<float>(1000) / static_cast<float>(800), 0.1f, 100.0f);
+		Mat4x4f world = MathModule::CreateScale(Vec3f(0.3f, 0.3f, 0.3f)) * MathModule::CreateTranslation(lightPosition);
+		Mat4x4f view = MathModule::CreateLookAt(viewPosition, Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 0.0f));
+		Mat4x4f projection = MathModule::CreatePerspective(MathModule::ToRadian(45.0f), static_cast<float>(1000) / static_cast<float>(800), 0.1f, 100.0f);
 
 		{
 			skyboxPass->Draw(view, projection, skybox);
 			
 			texture->Active(0);
 			lightPass->Bind();
-			lightPass->SetUniform("world", Matrix4x4f::Identity());
+			lightPass->SetUniform("world", Mat4x4f::Identity());
 			lightPass->SetUniform("view", view);
 			lightPass->SetUniform("projection", projection);
 			lightPass->SetUniform("lightPosition", lightPosition);

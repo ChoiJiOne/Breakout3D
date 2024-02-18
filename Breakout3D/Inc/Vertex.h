@@ -25,7 +25,7 @@ public:
 	 * @param normal 정점의 법선 벡터입니다.
 	 * @param uv 정점의 텍스처 좌표입니다.
 	 */
-	Vertex(Vector3f&& position, Vector3f&& normal, Vector2f&& uv) noexcept
+	Vertex(Vec3f&& position, Vec3f&& normal, Vec2f&& uv) noexcept
 		: position_(position)
 		, normal_(normal)
 		, uv_(uv) {}
@@ -38,7 +38,7 @@ public:
 	 * @param normal 정점의 법선 벡터입니다.
 	 * @param uv 정점의 텍스처 좌표입니다.
 	 */
-	Vertex(const Vector3f& position, const Vector3f& normal, const Vector2f& uv) noexcept
+	Vertex(const Vec3f& position, const Vec3f& normal, const Vec2f& uv) noexcept
 		: position_(position)
 		, normal_(normal)
 		, uv_(uv) {}
@@ -131,7 +131,7 @@ public:
 	 * 
 	 * @return 정점의 위치를 반환합니다.
 	 */
-	Vector3f GetPosition() { return position_; }
+	Vec3f GetPosition() { return position_; }
 
 
 	/**
@@ -139,7 +139,7 @@ public:
 	 *
 	 * @return 정점의 위치를 반환합니다.
 	 */
-	const Vector3f& GetPosition() const { return position_; }
+	const Vec3f& GetPosition() const { return position_; }
 
 
 	/**
@@ -147,7 +147,7 @@ public:
 	 * 
 	 * @return 정점의 법선 벡터를 반환합니다.
 	 */
-	Vector3f GetNormal() { return normal_; }
+	Vec3f GetNormal() { return normal_; }
 
 
 	/**
@@ -155,7 +155,7 @@ public:
 	 *
 	 * @return 정점의 법선 벡터를 반환합니다.
 	 */
-	const Vector3f& GetNormal() const { return normal_; }
+	const Vec3f& GetNormal() const { return normal_; }
 
 
 	/**
@@ -163,7 +163,7 @@ public:
 	 * 
 	 * @return 정점의 텍스처 좌표를 반환합니다.
 	 */
-	Vector2f GetUV() { return uv_; }
+	Vec2f GetUV() { return uv_; }
 
 
 	/**
@@ -171,7 +171,7 @@ public:
 	 *
 	 * @return 정점의 텍스처 좌표를 반환합니다.
 	 */
-	const Vector2f& GetUV() const { return uv_; }
+	const Vec2f& GetUV() const { return uv_; }
 
 	
 	/**
@@ -228,17 +228,17 @@ private:
 	/**
 	 * @brief 정점의 위치입니다.
 	 */
-	Vector3f position_;
+	Vec3f position_;
 
 
 	/**
 	 * @brief 정점의 법선 벡터입니다.
 	 */
-	Vector3f normal_;
+	Vec3f normal_;
 
 
 	/**
 	 * @brief 정점의 텍스처 좌표입니다.
 	 */
-	Vector2f uv_;
+	Vec2f uv_;
 };

@@ -138,7 +138,7 @@ void Shader::SetUniform(const std::string& name, float value)
 	GL_FAILED(glUniform1f(location, value));
 }
 
-void Shader::SetUniform(const std::string& name, const Vector2f& value)
+void Shader::SetUniform(const std::string& name, const Vec2f& value)
 {
 	int32_t location = GetUniformLocation(name);
 
@@ -152,7 +152,7 @@ void Shader::SetUniform(const std::string& name, float x, float y)
 	GL_FAILED(glUniform2f(location, x, y));
 }
 
-void Shader::SetUniform(const std::string& name, const Vector2i& value)
+void Shader::SetUniform(const std::string& name, const Vec2i& value)
 {
 	int32_t location = GetUniformLocation(name);
 
@@ -166,7 +166,7 @@ void Shader::SetUniform(const std::string& name, int32_t x, int32_t y)
 	GL_FAILED(glUniform2i(location, x, y));
 }
 
-void Shader::SetUniform(const std::string& name, const Vector3f& value)
+void Shader::SetUniform(const std::string& name, const Vec3f& value)
 {
 	int32_t location = GetUniformLocation(name);
 
@@ -180,7 +180,7 @@ void Shader::SetUniform(const std::string& name, float x, float y, float z)
 	GL_FAILED(glUniform3f(location, x, y, z));
 }
 
-void Shader::SetUniform(const std::string& name, const Vector3i& value)
+void Shader::SetUniform(const std::string& name, const Vec3i& value)
 {
 	int32_t location = GetUniformLocation(name);
 
@@ -194,7 +194,7 @@ void Shader::SetUniform(const std::string& name, int32_t x, int32_t y, int32_t z
 	GL_FAILED(glUniform3i(location, x, y, z));
 }
 
-void Shader::SetUniform(const std::string& name, const Vector4f& value)
+void Shader::SetUniform(const std::string& name, const Vec4f& value)
 {
 	int32_t location = GetUniformLocation(name);
 
@@ -208,7 +208,7 @@ void Shader::SetUniform(const std::string& name, float x, float y, float z, floa
 	GL_FAILED(glUniform4f(location, x, y, z, w));
 }
 
-void Shader::SetUniform(const std::string& name, const Vector4i& value)
+void Shader::SetUniform(const std::string& name, const Vec4i& value)
 {
 	int32_t location = GetUniformLocation(name);
 
@@ -222,19 +222,19 @@ void Shader::SetUniform(const std::string& name, int32_t x, int32_t y, int32_t z
 	GL_FAILED(glUniform4i(location, x, y, z, w));
 }
 
-void Shader::SetUniform(const std::string& name, const Matrix2x2f& value)
+void Shader::SetUniform(const std::string& name, const Mat2x2f& value)
 {
 	int32_t location = GetUniformLocation(name);
 	GL_FAILED(glUniformMatrix2fv(location, 1, GL_FALSE, value.GetPtr()));
 }
 
-void Shader::SetUniform(const std::string& name, const Matrix3x3f& value)
+void Shader::SetUniform(const std::string& name, const Mat3x3f& value)
 {
 	int32_t location = GetUniformLocation(name);
 	GL_FAILED(glUniformMatrix3fv(location, 1, GL_FALSE, value.GetPtr()));
 }
 
-void Shader::SetUniform(const std::string& name, const Matrix4x4f& value)
+void Shader::SetUniform(const std::string& name, const Mat4x4f& value)
 {
 	int32_t location = GetUniformLocation(name);
 	GL_FAILED(glUniformMatrix4fv(location, 1, GL_FALSE, value.GetPtr()));

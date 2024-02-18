@@ -3,39 +3,39 @@
 #include "Assertion.h"
 #include "GeometryGenerator.h"
 
-void GeometryGenerator::CreateCube(const Vector3f& size, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
+void GeometryGenerator::CreateCube(const Vec3f& size, std::vector<Vertex>& outVertices, std::vector<uint32_t>& outIndices)
 {
 	outVertices.resize(0);
 	outIndices.resize(0);
 
 	static const uint32_t faceCount = 6;
-	static const Vector3f faceNormals[faceCount] = 
+	static const Vec3f faceNormals[faceCount] = 
 	{
-		Vector3f(+0.0f, +0.0f, +1.0f),
-		Vector3f(+0.0f, +0.0f, -1.0f),
-		Vector3f(+1.0f, +0.0f, +0.0f),
-		Vector3f(-1.0f, +0.0f, +0.0f),
-		Vector3f(+0.0f, +1.0f, +0.0f),
-		Vector3f(+0.0f, -1.0f, +0.0f),
+		Vec3f(+0.0f, +0.0f, +1.0f),
+		Vec3f(+0.0f, +0.0f, -1.0f),
+		Vec3f(+1.0f, +0.0f, +0.0f),
+		Vec3f(-1.0f, +0.0f, +0.0f),
+		Vec3f(+0.0f, +1.0f, +0.0f),
+		Vec3f(+0.0f, -1.0f, +0.0f),
 	};
 
-	static const Vector2f uvs[4] = 
+	static const Vec2f uvs[4] = 
 	{
-		Vector2f(1.0f, 1.0f),
-		Vector2f(1.0f, 0.0f),
-		Vector2f(0.0f, 0.0f),
-		Vector2f(0.0f, 1.0f),
+		Vec2f(1.0f, 1.0f),
+		Vec2f(1.0f, 0.0f),
+		Vec2f(0.0f, 0.0f),
+		Vec2f(0.0f, 1.0f),
 	};
 
-	Vector3f tsize = Vector3f(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f);
+	Vec3f tsize = Vec3f(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f);
 
 	for (uint32_t face = 0; face < faceCount; ++face)
 	{
-		const Vector3f& normal = faceNormals[face];
-		Vector3f basis = (face >= 4) ? Vector3f(0.0f, 0.0f, 1.0f) : Vector3f(0.0f, 1.0f, 0.0f);
+		const Vec3f& normal = faceNormals[face];
+		Vec3f basis = (face >= 4) ? Vec3f(0.0f, 0.0f, 1.0f) : Vec3f(0.0f, 1.0f, 0.0f);
 
-		Vector3f side1 = MathModule::CrossProduct(normal, basis);
-		Vector3f side2 = MathModule::CrossProduct(normal, side1);
+		Vec3f side1 = MathModule::CrossProduct(normal, basis);
+		Vec3f side2 = MathModule::CrossProduct(normal, side1);
 
 		const size_t vbase = outVertices.size();
 		outIndices.push_back(vbase + 0);
@@ -77,9 +77,9 @@ void GeometryGenerator::CreateSphere(float radius, uint32_t tessellation, std::v
 			float dx = dxz * MathModule::Sin(longitude);
 			float dz = dxz * MathModule::Cos(longitude);
 
-			Vector3f position(radius * dx, radius * dy, radius * dz);
-			Vector3f normal(dx, dy, dz);
-			Vector2f uv(u, 1.0f - v);
+			Vec3f position(radius * dx, radius * dy, radius * dz);
+			Vec3f normal(dx, dy, dz);
+			Vec2f uv(u, 1.0f - v);
 
 			outVertices.push_back(Vertex(position, normal, uv));
 		}
@@ -110,7 +110,7 @@ void GeometryGenerator::CreateCylinder(float radius, float height, uint32_t tess
 
 	height *= 0.5f;
 
-	Vector3f topOffset(0.0f, height, 0.0f);
+	Vec3f topOffset(0.0f, height, 0.0f);
 	uint32_t stride = tessellation + 1;
 
 	for (uint32_t index = 0; index <= tessellation; ++index)
@@ -119,15 +119,15 @@ void GeometryGenerator::CreateCylinder(float radius, float height, uint32_t tess
 		float dx = MathModule::Sin(angle);
 		float dz = MathModule::Cos(angle);
 
-		Vector3f normal(dx, 0.0f, dz);
-		Vector3f sideOffset(normal.x * radius, normal.y * radius, normal.z * radius);
+		Vec3f normal(dx, 0.0f, dz);
+		Vec3f sideOffset(normal.x * radius, normal.y * radius, normal.z * radius);
 
-		Vector2f uv(static_cast<float>(index) / static_cast<float>(tessellation), 0.0f);
-		Vector2f uv0 = uv + Vector2f(0.0f, 0.0f);
-		Vector2f uv1 = uv + Vector2f(0.0f, 1.0f);
+		Vec2f uv(static_cast<float>(index) / static_cast<float>(tessellation), 0.0f);
+		Vec2f uv0 = uv + Vec2f(0.0f, 0.0f);
+		Vec2f uv1 = uv + Vec2f(0.0f, 1.0f);
 
-		outVertices.push_back(Vertex(sideOffset + topOffset, normal, Vector2f(uv0.x, 1.0f - uv0.y)));
-		outVertices.push_back(Vertex(sideOffset - topOffset, normal, Vector2f(uv1.x, 1.0f - uv1.y)));
+		outVertices.push_back(Vertex(sideOffset + topOffset, normal, Vec2f(uv0.x, 1.0f - uv0.y)));
+		outVertices.push_back(Vertex(sideOffset - topOffset, normal, Vec2f(uv1.x, 1.0f - uv1.y)));
 
 		outIndices.push_back((index * 2 + 0));
 		outIndices.push_back((index * 2 + 1));
@@ -160,13 +160,13 @@ void GeometryGenerator::CreateCylinderCap(float radius, float height, uint32_t t
 		outIndices.push_back(vbase + i1);
 	}
 
-	Vector3f normal(0.0f, 1.0f, 0.0f);
-	Vector2f textureScale(-0.5f, -0.5f);
+	Vec3f normal(0.0f, 1.0f, 0.0f);
+	Vec2f textureScale(-0.5f, -0.5f);
 
 	if (!bIsTop)
 	{
-		normal = Vector3f(0.0f, -1.0f, 0.0f);
-		textureScale = Vector2f(0.5f, -0.5f);
+		normal = Vec3f(0.0f, -1.0f, 0.0f);
+		textureScale = Vec2f(0.5f, -0.5f);
 	}
 
 	for (size_t index = 0; index < tessellation; ++index)
@@ -175,9 +175,9 @@ void GeometryGenerator::CreateCylinderCap(float radius, float height, uint32_t t
 		float dx = MathModule::Sin(angle);
 		float dz = MathModule::Cos(angle);
 
-		Vector3f position = Vector3f(dx * radius, normal.y * height, dz * radius);
-		Vector2f uv = Vector2f(dx, dz) * textureScale + Vector2f(0.5f, 0.5f);
+		Vec3f position = Vec3f(dx * radius, normal.y * height, dz * radius);
+		Vec2f uv = Vec2f(dx, dz) * textureScale + Vec2f(0.5f, 0.5f);
 
-		outVertices.push_back(Vertex(position, normal, Vector2f(uv.x, 1.0f - uv.y)));
+		outVertices.push_back(Vertex(position, normal, Vec2f(uv.x, 1.0f - uv.y)));
 	}
 }

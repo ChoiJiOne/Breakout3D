@@ -48,7 +48,7 @@ public:
 	 * @param projection 바인딩된 프레임 버퍼에 그릴 시 참조할 투영 행렬입니다.
 	 * @param skybox 바인딩된 프레임 버퍼에 그릴 스카이 박스입니다.
 	 */
-	void Draw(const Matrix4x4f& view, const Matrix4x4f& projection, const Skybox* skybox);
+	void Draw(const Mat4x4f& view, const Mat4x4f& projection, const Skybox* skybox);
 
 
 private:
