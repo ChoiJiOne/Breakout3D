@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vec2.h"
+#include <cstdint>
 
 
 /**
@@ -340,13 +340,7 @@ struct TMat2x2
 	 * 
 	 * @return 모든 원소가 0인 2x2 행렬을 반환합니다.
 	 */
-	static inline TMat2x2<T> Zero()
-	{
-		return TMat2x2(
-			static_cast<T>(0), static_cast<T>(0),
-			static_cast<T>(0), static_cast<T>(0)
-		);
-	}
+	static inline TMat2x2<T> Zero();
 
 
 	/**
@@ -354,13 +348,7 @@ struct TMat2x2
 	 *
 	 * @return 2x2 행렬의 단위 행렬를 반환합니다.
 	 */
-	static inline TMat2x2<T> Identity()
-	{
-		return TMat2x2(
-			static_cast<T>(1), static_cast<T>(0),
-			static_cast<T>(0), static_cast<T>(1)
-		);
-	}
+	static inline TMat2x2<T> Identity();
 
 
 	/**
@@ -370,13 +358,7 @@ struct TMat2x2
 	 * 
 	 * @return 원소가 전치된 2x2 행렬을 반환합니다.
 	 */
-	static inline TMat2x2<T> Transpose(const TMat2x2<T>& m)
-	{
-		return TMat2x2(
-			m.e00, m.e10,
-			m.e01, m.e11
-		);
-	}
+	static inline TMat2x2<T> Transpose(const TMat2x2<T>& m);
 
 
 	/**
@@ -386,10 +368,7 @@ struct TMat2x2
 	 * 
 	 * @return 2x2 행렬의 행렬식 값을 반환합니다.
 	 */
-	static inline T Determinant(const TMat2x2<T>& m)
-	{
-		return m.e00 * m.e11 - m.e01 * m.e10;
-	}
+	static inline T Determinant(const TMat2x2<T>& m);
 
 
 	/**
@@ -399,17 +378,7 @@ struct TMat2x2
 	 * 
 	 * @return 2x2 행렬의 역행렬을 반환합니다.
 	 */
-	static inline TMat2x2<T> Inverse(const TMat2x2<T>& m)
-	{
-		T oneOverDeterminant = static_cast<T>(1) / Determinant(m);
-
-		return TMat2x2<T>(
-			+m.e11 * oneOverDeterminant,
-			-m.e01 * oneOverDeterminant,
-			-m.e10 * oneOverDeterminant,
-			+m.e00 * oneOverDeterminant
-			);
-	}
+	static inline TMat2x2<T> Inverse(const TMat2x2<T>& m);
 
 	
 	/**
@@ -437,3 +406,6 @@ using Mat2x2i = TMat2x2<int32_t>;
  * @brief float 타입의 2x2 행렬입니다.
  */
 using Mat2x2f = TMat2x2<float>;
+
+
+#include "Mat2x2.inl"
