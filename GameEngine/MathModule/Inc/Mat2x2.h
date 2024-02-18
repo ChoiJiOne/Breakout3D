@@ -378,6 +378,19 @@ struct TMat2x2
 		);
 	}
 
+
+	/**
+	 * @brief 2x2 행렬의 행렬식 값을 얻습니다.
+	 * 
+	 * @param m 행렬식 값을 계산할 2x2 행렬입니다.
+	 * 
+	 * @return 2x2 행렬의 행렬식 값을 반환합니다.
+	 */
+	static inline T Determinant(const TMat2x2<T>& m)
+	{
+		return m.e00 * m.e11 - m.e01 * m.e10;
+	}
+
 	
 	/**
 	 * @brief 2x2 행렬의 원소입니다.
