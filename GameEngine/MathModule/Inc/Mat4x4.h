@@ -456,6 +456,24 @@ struct TMat4x4
 
 
 	/**
+	 * @brief 4x4 행렬의 전치 행렬을 얻습니다.
+	 *
+	 * @param m 원소들을 전치할 4x4 행렬입니다.
+	 *
+	 * @return 원소가 전치된 4x4 행렬을 반환합니다.
+	 */
+	static TMat4x4<T> Transpose(const TMat3x3<T>& m)
+	{
+		return TMat4x4(
+			m.e00, m.e10, m.e20, m.e30
+			m.e01, m.e11, m.e21, m.e31,
+			m.e02, m.e12, m.e22, m.e32,
+			m.e03, m.e13, m.e23, m.e33
+		);
+	}
+
+
+	/**
 	 * @brief 4x4 행렬의 원소입니다.
 	 */
 	union

@@ -406,6 +406,23 @@ struct TMat3x3
 
 
 	/**
+	 * @brief 3x3 행렬의 전치 행렬을 얻습니다.
+	 *
+	 * @param m 원소들을 전치할 3x3 행렬입니다.
+	 *
+	 * @return 원소가 전치된 3x3 행렬을 반환합니다.
+	 */
+	static TMat3x3<T> Transpose(const TMat3x3<T>& m)
+	{
+		return TMat3x3(
+			m.e00, m.e10, m.e20,
+			m.e01, m.e11, m.e21,
+			m.e02, m.e12, m.e22
+		);
+	}
+
+
+	/**
 	 * @brief 3x3 행렬의 원소입니다.
 	 */
 	union

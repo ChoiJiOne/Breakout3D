@@ -364,6 +364,22 @@ struct TMat2x2
 
 
 	/**
+	 * @brief 2x2 행렬의 전치 행렬을 얻습니다.
+	 * 
+	 * @param m 원소들을 전치할 2x2 행렬입니다.
+	 * 
+	 * @return 원소가 전치된 2x2 행렬을 반환합니다.
+	 */
+	static TMat2x2<T> Transpose(const TMat2x2<T>& m)
+	{
+		return TMat2x2(
+			m.e00, m.e10,
+			m.e01, m.e11
+		);
+	}
+
+
+	/**
 	 * @brief 2x2 행렬의 원소입니다.
 	 */
 	union
