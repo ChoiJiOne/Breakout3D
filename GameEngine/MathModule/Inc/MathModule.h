@@ -230,175 +230,7 @@ namespace MathModule
 		return Min(upper, Max(lower, value));
 	}
 
-
-	/**
-	 * @brief 2차원 백터의 내적 연산을 수행합니다.
-	 *
-	 * @param lhs 백터의 내적 연산을 수행할 좌측 피연산자입니다.
-	 * @param rhs 백터의 내적 연산을 수행할 우측 피연산자입니다.
-	 *
-	 * @return 내적 연산 결과를 반환합니다.
-	 */
-	template <typename T>
-	inline T DotProduct(const TVec2<T>& lhs, const TVec2<T>& rhs)
-	{
-		return lhs.x * rhs.x + lhs.y * rhs.y;
-	}
-
-
-	/**
-	 * @brief 3차원 백터의 내적 연산을 수행합니다.
-	 *
-	 * @param lhs 백터의 내적 연산을 수행할 좌측 피연산자입니다.
-	 * @param rhs 백터의 내적 연산을 수행할 우측 피연산자입니다.
-	 *
-	 * @return 내적 연산 결과를 반환합니다.
-	 */
-	template <typename T>
-	inline T DotProduct(const TVec3<T>& lhs, const TVec3<T>& rhs)
-	{
-		return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
-	}
-
-
-	/**
-	 * @brief 4차원 백터의 내적 연산을 수행합니다.
-	 *
-	 * @param lhs 백터의 내적 연산을 수행할 좌측 피연산자입니다.
-	 * @param rhs 백터의 내적 연산을 수행할 우측 피연산자입니다.
-	 *
-	 * @return 내적 연산 결과를 반환합니다.
-	 */
-	template <typename T>
-	inline T DotProduct(const TVec4<T>& lhs, const TVec4<T>& rhs)
-	{
-		return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w;
-	}
-
-
-	/**
-	 * @brief 2차원 백터의 외적 연산을 수행합니다.
-	 *
-	 * @param lhs 백터의 외적 연산을 수행할 좌측 피연산자입니다.
-	 * @param rhs 백터의 외적 연산을 수행할 우측 피연산자입니다.
-	 *
-	 * @return 외적 연산 결과를 반환합니다.
-	 *
-	 * @note 일반적인 3차원 외적 연산과 다릅니다.
-	 */
-	template <typename T>
-	inline T CrossProduct(const TVec2<T>& lhs, const TVec2<T>& rhs)
-	{
-		return lhs.x * rhs.y - lhs.y * rhs.x;
-	}
-
-
-	/**
-	 * @brief 3차원 벡터의 외적 연산을 수행합니다.
-	 * 
-	 * @param lhs 백터의 외적 연산을 수행할 좌측 피연산자입니다.
-	 * @param rhs 백터의 외적 연산을 수행할 우측 피연산자입니다.
-	 * 
-	 * @return 외적 연산 결과를 반환합니다.
-	 */
-	template <typename T>
-	inline TVec3<T> CrossProduct(const TVec3<T>& lhs, const TVec3<T>& rhs)
-	{
-		return TVec3<T>(
-			lhs.y * rhs.z - lhs.z * rhs.y,
-			lhs.z * rhs.x - lhs.x * rhs.z,
-			lhs.x * rhs.y - lhs.y * rhs.x
-		);
-	}
-
-
-	/**
-	 * @brief 2차원 백터의 크기 제곱 값을 계산합니다.
-	 *
-	 * @param v 크기 제곱을 계산할 벡터입니다.
-	 *
-	 * @return 계산된 크기 제곱 값을 반환합니다.
-	 */
-	template <typename T>
-	inline T LengthSquare(const TVec2<T>& v)
-	{
-		return v.x * v.x + v.y * v.y;
-	}
-
-
-	/**
-	 * @brief 3차원 백터의 크기 제곱 값을 계산합니다.
-	 *
-	 * @param v 크기 제곱을 계산할 벡터입니다.
-	 *
-	 * @return 계산된 크기 제곱 값을 반환합니다.
-	 */
-	template <typename T>
-	inline T LengthSquare(const TVec3<T>& v)
-	{
-		return v.x * v.x + v.y * v.y + v.z * v.z;
-	}
-
-
-	/**
-	 * @brief 4차원 백터의 크기 제곱 값을 계산합니다.
-	 *
-	 * @param v 크기 제곱을 계산할 벡터입니다.
-	 *
-	 * @return 계산된 크기 제곱 값을 반환합니다.
-	 */
-	template <typename T>
-	inline T LengthSquare(const TVec4<T>& v)
-	{
-		return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
-	}
-
-
-	/**
-	 * @brief 2차원 벡터의 크기를 얻습니다.
-	 *
-	 * @param v 크기를 계산할 벡터입니다.
-	 *
-	 * @return 계산된 크기 값을 반환합니다.
-	 */
-	template <typename T>
-	inline float Length(const TVec2<T>& v)
-	{
-		float lengthSquare = static_cast<float>(LengthSquare<T>(v));
-		return std::sqrtf(lengthSquare);
-	}
-
-
-	/**
-	 * @brief 3차원 벡터의 크기를 얻습니다.
-	 *
-	 * @param v 크기를 계산할 벡터입니다.
-	 *
-	 * @return 계산된 크기 값을 반환합니다.
-	 */
-	template <typename T>
-	inline float Length(const TVec3<T>& v)
-	{
-		float lengthSquare = static_cast<float>(LengthSquare<T>(v));
-		return std::sqrtf(lengthSquare);
-	}
-
-
-	/**
-	 * @brief 4차원 벡터의 크기를 얻습니다.
-	 *
-	 * @param v 크기를 계산할 벡터입니다.
-	 *
-	 * @return 계산된 크기 값을 반환합니다.
-	 */
-	template <typename T>
-	inline float Length(const TVec4<T>& v)
-	{
-		float lengthSquare = static_cast<float>(LengthSquare<T>(v));
-		return std::sqrtf(lengthSquare);
-	}
-
-
+	
 	/**
 	 * @brief 2차원 벡터를 정규화합니다.
 	 *
@@ -408,7 +240,7 @@ namespace MathModule
 	 */
 	inline Vec2f Normalize(const Vec2f& v)
 	{
-		float length = Length(v);
+		float length = Vec2f::Length(v);
 		return Vec2f(v.x / length, v.y / length);
 	}
 
@@ -422,7 +254,7 @@ namespace MathModule
 	 */
 	inline Vec3f Normalize(const Vec3f& v)
 	{
-		float length = Length(v);
+		float length = Vec3f::Length(v);
 		return Vec3f(v.x / length, v.y / length, v.z / length);
 	}
 
@@ -436,7 +268,7 @@ namespace MathModule
 	 */
 	inline Vec4f Normalize(const Vec4f& v)
 	{
-		float length = Length(v);
+		float length = Vec4f::Length(v);
 		return Vec4f(v.x / length, v.y / length, v.z / length, v.w / length);
 	}
 
@@ -709,14 +541,14 @@ namespace MathModule
 	inline Mat4x4f CreateLookAt(const Vec3f& eyePosition, const Vec3f& focusPosition, const Vec3f& upDirection)
 	{
 		Vec3f f = Normalize(focusPosition - eyePosition);
-		Vec3f s = Normalize(CrossProduct(f, upDirection));
-		Vec3f u = CrossProduct(s, f);
+		Vec3f s = Normalize(Vec3f::Cross(f, upDirection));
+		Vec3f u = Vec3f::Cross(s, f);
 
 		return Mat4x4f(
 			                        s.x,                         u.x,                       -f.x, 0.0f,
 			                        s.y,                         u.y,                       -f.y, 0.0f,
 			                        s.z,                         u.z,                       -f.z, 0.0f,
-			-DotProduct(s, eyePosition), -DotProduct(u, eyePosition), DotProduct(f, eyePosition), 1.0f
+			-Vec3f::Dot(s, eyePosition), -Vec3f::Dot(u, eyePosition), Vec3f::Dot(f, eyePosition), 1.0f
 		);
 	}
 }
