@@ -428,7 +428,7 @@ struct TMat4x4
 	 *
 	 * @return 모든 원소가 0인 4x4 행렬을 반환합니다.
 	 */
-	static TMat4x4<T> Zero();
+	static inline TMat4x4<T> Zero();
 
 
 	/**
@@ -436,7 +436,7 @@ struct TMat4x4
 	 *
 	 * @return 4x4 행렬의 단위 행렬를 반환합니다.
 	 */
-	static TMat4x4<T> Identity();
+	static inline TMat4x4<T> Identity();
 
 
 	/**
@@ -446,7 +446,7 @@ struct TMat4x4
 	 *
 	 * @return 원소가 전치된 4x4 행렬을 반환합니다.
 	 */
-	static TMat4x4<T> Transpose(const TMat4x4<T>& m);
+	static inline TMat4x4<T> Transpose(const TMat4x4<T>& m);
 
 
 	/**
@@ -456,7 +456,7 @@ struct TMat4x4
 	 *
 	 * @return 4x4 행렬의 행렬식 값을 반환합니다.
 	 */
-	static T Determinant(const TMat4x4<T>& m);
+	static T inline Determinant(const TMat4x4<T>& m);
 
 
 	/**
@@ -466,7 +466,7 @@ struct TMat4x4
 	 *
 	 * @return 4x4 행렬의 역행렬을 반환합니다.
 	 */
-	static TMat4x4<T> Inverse(const TMat4x4<T>& m);
+	static inline TMat4x4<T> Inverse(const TMat4x4<T>& m);
 
 
 	/**
