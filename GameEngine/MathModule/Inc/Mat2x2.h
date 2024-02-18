@@ -391,6 +391,26 @@ struct TMat2x2
 		return m.e00 * m.e11 - m.e01 * m.e10;
 	}
 
+
+	/**
+	 * @brief 2x2 행렬의 역행렬을 얻습니다.
+	 * 
+	 * @param m 역행렬을 계산할 2x2 행렬입니다.
+	 * 
+	 * @return 2x2 행렬의 역행렬을 반환합니다.
+	 */
+	static inline TMat2x2<T> Inverse(const TMat2x2<T>& m)
+	{
+		T oneOverDeterminant = static_cast<T>(1) / Determinant(m);
+
+		return TMat2x2<T>(
+			+m.e11 * oneOverDeterminant,
+			-m.e01 * oneOverDeterminant,
+			-m.e10 * oneOverDeterminant,
+			+m.e00 * oneOverDeterminant
+			);
+	}
+
 	
 	/**
 	 * @brief 2x2 행렬의 원소입니다.
