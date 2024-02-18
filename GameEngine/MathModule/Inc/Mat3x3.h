@@ -436,6 +436,31 @@ struct TMat3x3
 
 
 	/**
+	 * @brief 3x3 행렬의 역행렬을 얻습니다.
+	 *
+	 * @param m 역행렬을 계산할 3x3 행렬입니다.
+	 *
+	 * @return 3x3 행렬의 역행렬을 반환합니다.
+	 */
+	static inline TMat3x3<T> Inverse(const TMat3x3<T>& m)
+	{
+		T oneOverDeterminant = static_cast<T>(1) / Determinant(m);
+
+		return TMat3x3<T>(
+			+(m.e11 * m.e22 - m.e21 * m.e12) * oneOverDeterminant,
+			-(m.e10 * m.e22 - m.e20 * m.e12) * oneOverDeterminant,
+			+(m.e10 * m.e21 - m.e20 * m.e11) * oneOverDeterminant,
+			-(m.e01 * m.e22 - m.e21 * m.e02) * oneOverDeterminant,
+			+(m.e00 * m.e22 - m.e20 * m.e02) * oneOverDeterminant,
+			-(m.e00 * m.e21 - m.e20 * m.e01) * oneOverDeterminant,
+			+(m.e01 * m.e12 - m.e11 * m.e02) * oneOverDeterminant,
+			-(m.e00 * m.e12 - m.e10 * m.e02) * oneOverDeterminant,
+			+(m.e00 * m.e11 - m.e10 * m.e01) * oneOverDeterminant
+			);
+	}
+
+
+	/**
 	 * @brief 3x3 행렬의 원소입니다.
 	 */
 	union
