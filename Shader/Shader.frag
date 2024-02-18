@@ -32,4 +32,7 @@ void main()
 	vec3 specularRGB = vec3(0.6f) * spec;
 
 	outColor = vec4(ambientRGB + diffuseRGB + specularRGB, 1.0f);
+
+	float gamma = 2.2;
+	outColor.rgb = pow(outColor.rgb, vec3(1.0f / gamma));
 }
