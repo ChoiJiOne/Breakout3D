@@ -380,7 +380,7 @@ struct TMat3x3
 	 *
 	 * @return 모든 원소가 0인 3x3 행렬을 반환합니다.
 	 */
-	static TMat3x3<T> Zero()
+	static inline TMat3x3<T> Zero()
 	{
 		return TMat3x3(
 			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
@@ -395,7 +395,7 @@ struct TMat3x3
 	 *
 	 * @return 3x3 행렬의 단위 행렬를 반환합니다.
 	 */
-	static TMat3x3<T> Identity()
+	static inline TMat3x3<T> Identity()
 	{
 		return TMat3x3(
 			static_cast<T>(1), static_cast<T>(0), static_cast<T>(0),
@@ -412,7 +412,7 @@ struct TMat3x3
 	 *
 	 * @return 원소가 전치된 3x3 행렬을 반환합니다.
 	 */
-	static TMat3x3<T> Transpose(const TMat3x3<T>& m)
+	static inline TMat3x3<T> Transpose(const TMat3x3<T>& m)
 	{
 		return TMat3x3(
 			m.e00, m.e10, m.e20,

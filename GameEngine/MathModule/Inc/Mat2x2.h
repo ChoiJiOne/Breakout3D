@@ -340,7 +340,7 @@ struct TMat2x2
 	 * 
 	 * @return 모든 원소가 0인 2x2 행렬을 반환합니다.
 	 */
-	static TMat2x2<T> Zero()
+	static inline TMat2x2<T> Zero()
 	{
 		return TMat2x2(
 			static_cast<T>(0), static_cast<T>(0),
@@ -354,7 +354,7 @@ struct TMat2x2
 	 *
 	 * @return 2x2 행렬의 단위 행렬를 반환합니다.
 	 */
-	static TMat2x2<T> Identity()
+	static inline TMat2x2<T> Identity()
 	{
 		return TMat2x2(
 			static_cast<T>(1), static_cast<T>(0),
@@ -370,7 +370,7 @@ struct TMat2x2
 	 * 
 	 * @return 원소가 전치된 2x2 행렬을 반환합니다.
 	 */
-	static TMat2x2<T> Transpose(const TMat2x2<T>& m)
+	static inline TMat2x2<T> Transpose(const TMat2x2<T>& m)
 	{
 		return TMat2x2(
 			m.e00, m.e10,
@@ -378,7 +378,7 @@ struct TMat2x2
 		);
 	}
 
-
+	
 	/**
 	 * @brief 2x2 행렬의 원소입니다.
 	 */

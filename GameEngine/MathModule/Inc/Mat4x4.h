@@ -428,7 +428,7 @@ struct TMat4x4
 	 *
 	 * @return 모든 원소가 0인 4x4 행렬을 반환합니다.
 	 */
-	static TMat4x4<T> Zero()
+	static inline TMat4x4<T> Zero()
 	{
 		return TMat4x4(
 			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
@@ -444,7 +444,7 @@ struct TMat4x4
 	 *
 	 * @return 4x4 행렬의 단위 행렬를 반환합니다.
 	 */
-	static TMat4x4<T> Identity()
+	static inline TMat4x4<T> Identity()
 	{
 		return TMat4x4(
 			static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
@@ -462,7 +462,7 @@ struct TMat4x4
 	 *
 	 * @return 원소가 전치된 4x4 행렬을 반환합니다.
 	 */
-	static TMat4x4<T> Transpose(const TMat3x3<T>& m)
+	static inline TMat4x4<T> Transpose(const TMat3x3<T>& m)
 	{
 		return TMat4x4(
 			m.e00, m.e10, m.e20, m.e30
