@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vec3.h"
+#include <cstdint>
 
 
 /**
@@ -380,14 +380,7 @@ struct TMat3x3
 	 *
 	 * @return 모든 원소가 0인 3x3 행렬을 반환합니다.
 	 */
-	static inline TMat3x3<T> Zero()
-	{
-		return TMat3x3(
-			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
-			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
-			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0)
-		);
-	}
+	static inline TMat3x3<T> Zero();
 
 
 	/**
@@ -395,14 +388,7 @@ struct TMat3x3
 	 *
 	 * @return 3x3 행렬의 단위 행렬를 반환합니다.
 	 */
-	static inline TMat3x3<T> Identity()
-	{
-		return TMat3x3(
-			static_cast<T>(1), static_cast<T>(0), static_cast<T>(0),
-			static_cast<T>(0), static_cast<T>(1), static_cast<T>(0),
-			static_cast<T>(0), static_cast<T>(0), static_cast<T>(1)
-		);
-	}
+	static inline TMat3x3<T> Identity();
 
 
 	/**
@@ -412,14 +398,7 @@ struct TMat3x3
 	 *
 	 * @return 원소가 전치된 3x3 행렬을 반환합니다.
 	 */
-	static inline TMat3x3<T> Transpose(const TMat3x3<T>& m)
-	{
-		return TMat3x3(
-			m.e00, m.e10, m.e20,
-			m.e01, m.e11, m.e21,
-			m.e02, m.e12, m.e22
-		);
-	}
+	static inline TMat3x3<T> Transpose(const TMat3x3<T>& m);
 
 
 	/**
@@ -429,10 +408,7 @@ struct TMat3x3
 	 *
 	 * @return 3x3 행렬의 행렬식 값을 반환합니다.
 	 */
-	static inline T Determinant(const TMat3x3<T>& m)
-	{
-		return m.e00 * (m.e11 * m.e22 - m.e21 * m.e12) - m.e10 * (m.e01 * m.e22 - m.e21 * m.e02) + m.e20 * (m.e01 * m.e12 - m.e11 * m.e02);
-	}
+	static inline T Determinant(const TMat3x3<T>& m);
 
 
 	/**
@@ -442,22 +418,7 @@ struct TMat3x3
 	 *
 	 * @return 3x3 행렬의 역행렬을 반환합니다.
 	 */
-	static inline TMat3x3<T> Inverse(const TMat3x3<T>& m)
-	{
-		T oneOverDeterminant = static_cast<T>(1) / Determinant(m);
-
-		return TMat3x3<T>(
-			+(m.e11 * m.e22 - m.e21 * m.e12) * oneOverDeterminant,
-			-(m.e10 * m.e22 - m.e20 * m.e12) * oneOverDeterminant,
-			+(m.e10 * m.e21 - m.e20 * m.e11) * oneOverDeterminant,
-			-(m.e01 * m.e22 - m.e21 * m.e02) * oneOverDeterminant,
-			+(m.e00 * m.e22 - m.e20 * m.e02) * oneOverDeterminant,
-			-(m.e00 * m.e21 - m.e20 * m.e01) * oneOverDeterminant,
-			+(m.e01 * m.e12 - m.e11 * m.e02) * oneOverDeterminant,
-			-(m.e00 * m.e12 - m.e10 * m.e02) * oneOverDeterminant,
-			+(m.e00 * m.e11 - m.e10 * m.e01) * oneOverDeterminant
-			);
-	}
+	static inline TMat3x3<T> Inverse(const TMat3x3<T>& m);
 
 
 	/**
@@ -486,3 +447,6 @@ using Mat3x3i = TMat3x3<int32_t>;
  * @brief float 타입의 3x3 행렬입니다.
  */
 using Mat3x3f = TMat3x3<float>;
+
+
+#include "Mat3x3.inl"
