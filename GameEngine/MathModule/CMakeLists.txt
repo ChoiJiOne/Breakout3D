@@ -20,7 +20,7 @@ add_library(
     ${MATH_MODULE_SOURCE_FILE}
 )
 
-target_include_directories(${PROJECT_NAME}  PUBLIC ${MATH_MODULE_INCLUDE})
+target_include_directories(${PROJECT_NAME}  PUBLIC ${MATH_MODULE_INCLUDE} ${MATH_MODULE_SOURCE})
 
 source_group(Inc FILES ${MATH_MODULE_INCLUDE_FILE})
 source_group(Src FILES ${MATH_MODULE_SOURCE_FILE})
