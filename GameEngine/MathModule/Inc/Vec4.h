@@ -335,6 +335,37 @@ struct TVec4
 
 
 	/**
+	 * @brief 4차원 백터의 내적 연산을 수행합니다.
+	 *
+	 * @param lhs 백터의 내적 연산을 수행할 좌측 피연산자입니다.
+	 * @param rhs 백터의 내적 연산을 수행할 우측 피연산자입니다.
+	 *
+	 * @return 내적 연산 결과를 반환합니다.
+	 */
+	static inline T Dot(const TVec4<T>& lhs, const TVec4<T>& rhs);
+
+
+	/**
+	 * @brief 4차원 백터의 크기 제곱 값을 계산합니다.
+	 *
+	 * @param v 크기 제곱을 계산할 벡터입니다.
+	 *
+	 * @return 계산된 크기 제곱 값을 반환합니다.
+	 */
+	static inline T LengthSquare(const TVec4<T>& v);
+
+
+	/**
+	 * @brief 4차원 벡터의 크기를 얻습니다.
+	 *
+	 * @param v 크기를 계산할 벡터입니다.
+	 *
+	 * @return 계산된 크기 값을 반환합니다.
+	 */
+	static inline float Length(const TVec4<T>& v);
+
+
+	/**
 	 * @brief 4차원 벡터의 다양한 원소 형식입니다.
 	 */
 	union
@@ -361,3 +392,6 @@ using Vec4i = TVec4<int32_t>;
  * @brief float 타입의 4차원 벡터입니다.
  */
 using Vec4f = TVec4<float>;
+
+
+#include "Vec4.inl"
