@@ -424,6 +424,22 @@ struct TMat4x4
 
 
 	/**
+	 * @brief 4x4 행렬의 모든 원소가 0인 행렬을 얻습니다.
+	 *
+	 * @return 모든 원소가 0인 4x4 행렬을 반환합니다.
+	 */
+	static TMat4x4<T> Zero()
+	{
+		return TMat4x4(
+			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
+			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
+			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
+			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0)
+		);
+	}
+
+
+	/**
 	 * @brief 4x4 행렬의 단위 행렬을 얻습니다.
 	 *
 	 * @return 4x4 행렬의 단위 행렬를 반환합니다.

@@ -376,6 +376,21 @@ struct TMat3x3
 
 
 	/**
+	 * @brief 3x3 행렬의 모든 원소가 0인 행렬을 얻습니다.
+	 *
+	 * @return 모든 원소가 0인 3x3 행렬을 반환합니다.
+	 */
+	static TMat3x3<T> Zero()
+	{
+		return TMat3x3(
+			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
+			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
+			static_cast<T>(0), static_cast<T>(0), static_cast<T>(0)
+		);
+	}
+
+
+	/**
 	 * @brief 3x3 행렬의 단위 행렬을 얻습니다.
 	 *
 	 * @return 3x3 행렬의 단위 행렬를 반환합니다.
