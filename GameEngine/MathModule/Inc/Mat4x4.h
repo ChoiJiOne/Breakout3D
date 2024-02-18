@@ -474,6 +474,31 @@ struct TMat4x4
 
 
 	/**
+	 * @brief 4x4 행렬의 행렬식 값을 얻습니다.
+	 *
+	 * @param m 행렬식 값을 계산할 4x4 행렬입니다.
+	 *
+	 * @return 4x4 행렬의 행렬식 값을 반환합니다.
+	 */
+	static inline T Determinant(const TMat4x4<T>& m)
+	{
+		T subFactor00 = m.e22 * m.e33 - m.e32 * m.e23;
+		T subFactor01 = m.e21 * m.e33 - m.e31 * m.e23;
+		T subFactor02 = m.e21 * m.e32 - m.e31 * m.e22;
+		T subFactor03 = m.e20 * m.e33 - m.e30 * m.e23;
+		T subFactor04 = m.e20 * m.e32 - m.e30 * m.e22;
+		T subFactor05 = m.e20 * m.e31 - m.e30 * m.e21;
+
+		T cof0 = +(m.e11 * subFactor00 - m.e12 * subFactor01 + m.e13 * subFactor02);
+		T cof1 = -(m.e10 * subFactor00 - m.e12 * subFactor03 + m.e13 * subFactor04);
+		T cof2 = +(m.e10 * subFactor01 - m.e11 * subFactor03 + m.e13 * subFactor05);
+		T cof3 = -(m.e10 * subFactor02 - m.e11 * subFactor04 + m.e12 * subFactor05);
+
+		return m.e00 * cof0 + m.e01 * cof1 + m.e02 * cof2 + m.e03 * cof3;
+	}
+
+
+	/**
 	 * @brief 4x4 행렬의 원소입니다.
 	 */
 	union
