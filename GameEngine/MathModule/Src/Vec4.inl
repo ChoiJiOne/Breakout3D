@@ -1,4 +1,3 @@
-#include "..\Inc\Vec4.h"
 template<typename T>
 inline T TVec4<T>::Dot(const TVec4<T>& lhs, const TVec4<T>& rhs)
 {
