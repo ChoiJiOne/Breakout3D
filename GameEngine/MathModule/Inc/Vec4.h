@@ -366,6 +366,16 @@ struct TVec4
 
 
 	/**
+	 * @brief 4차원 벡터를 정규화합니다.
+	 *
+	 * @param v 정규화 할 벡터입니다.
+	 *
+	 * @return 정규화된 벡터를 반환합니다.
+	 */
+	static inline TVec4<T> Normalize(const TVec4<T>& v);
+
+
+	/**
 	 * @brief 4차원 벡터의 다양한 원소 형식입니다.
 	 */
 	union
