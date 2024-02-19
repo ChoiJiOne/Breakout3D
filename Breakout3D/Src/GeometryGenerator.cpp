@@ -34,8 +34,8 @@ void GeometryGenerator::CreateCube(const Vec3f& size, std::vector<Vertex>& outVe
 		const Vec3f& normal = faceNormals[face];
 		Vec3f basis = (face >= 4) ? Vec3f(0.0f, 0.0f, 1.0f) : Vec3f(0.0f, 1.0f, 0.0f);
 
-		Vec3f side1 = MathModule::CrossProduct(normal, basis);
-		Vec3f side2 = MathModule::CrossProduct(normal, side1);
+		Vec3f side1 = Vec3f::Cross(normal, basis);
+		Vec3f side2 = Vec3f::Cross(normal, side1);
 
 		const size_t vbase = outVertices.size();
 		outIndices.push_back(vbase + 0);
