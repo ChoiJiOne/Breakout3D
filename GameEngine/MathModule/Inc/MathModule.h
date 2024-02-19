@@ -301,48 +301,6 @@ namespace MathModule
 		return Min(upper, Max(lower, value));
 	}
 	
-	
-	/**
-	 * @brief 2차원 벡터를 정규화합니다.
-	 *
-	 * @param v 정규화 할 벡터입니다.
-	 *
-	 * @return 정규화된 벡터를 반환합니다.
-	 */
-	inline Vec2f Normalize(const Vec2f& v)
-	{
-		float length = Vec2f::Length(v);
-		return Vec2f(v.x / length, v.y / length);
-	}
-
-
-	/**
-	 * @brief 3차원 벡터를 정규화합니다.
-	 *
-	 * @param v 정규화 할 벡터입니다.
-	 *
-	 * @return 정규화된 벡터를 반환합니다.
-	 */
-	inline Vec3f Normalize(const Vec3f& v)
-	{
-		float length = Vec3f::Length(v);
-		return Vec3f(v.x / length, v.y / length, v.z / length);
-	}
-
-
-	/**
-	 * @brief 4차원 벡터를 정규화합니다.
-	 *
-	 * @param v 정규화 할 벡터입니다.
-	 *
-	 * @return 정규화된 벡터를 반환합니다.
-	 */
-	inline Vec4f Normalize(const Vec4f& v)
-	{
-		float length = Vec4f::Length(v);
-		return Vec4f(v.x / length, v.y / length, v.z / length, v.w / length);
-	}
-
 
 	/**
 	 * @brief 임의의 정수를 생성합니다.
@@ -535,7 +493,7 @@ namespace MathModule
 	{
 		float s = Sin(radian);
 		float c = Cos(radian);
-		Vec3f r = Normalize(axis);
+		Vec3f r = Vec3f::Normalize(axis);
 
 		return Mat4x4f(
 		  	      c + r.x * r.x * (1.0f - c), r.y * r.x * (1.0f - c) + r.z * s, r.z * r.x * (1.0f - c) - r.y * s, 0.0f,
@@ -611,8 +569,8 @@ namespace MathModule
 	 */
 	inline Mat4x4f CreateLookAt(const Vec3f& eyePosition, const Vec3f& focusPosition, const Vec3f& upDirection)
 	{
-		Vec3f f = Normalize(focusPosition - eyePosition);
-		Vec3f s = Normalize(Vec3f::Cross(f, upDirection));
+		Vec3f f = Vec3f::Normalize(focusPosition - eyePosition);
+		Vec3f s = Vec3f::Normalize(Vec3f::Cross(f, upDirection));
 		Vec3f u = Vec3f::Cross(s, f);
 
 		return Mat4x4f(
