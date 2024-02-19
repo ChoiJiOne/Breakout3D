@@ -24,7 +24,7 @@ struct Quat
 	 * @param zz 쿼터니언의 z 성분입니다.
 	 * @param ww 쿼터니언의 w 성분입니다.
 	 */
-	Quat(float&& xx, float&& yy, float&& z, float&& w) noexcept : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
+	Quat(float&& xx, float&& yy, float&& zz, float&& ww) noexcept : x(xx), y(yy), z(zz), w(ww) {}
 
 
 	/**
@@ -35,7 +35,7 @@ struct Quat
 	 * @param zz 쿼터니언의 z 성분입니다.
 	 * @param ww 쿼터니언의 w 성분입니다.
 	 */
-	Quat(const float& xx, const float& yy, const float& z, const float& w) noexcept : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
+	Quat(const float& xx, const float& yy, const float& zz, const float& ww) noexcept : x(xx), y(yy), z(zz), w(ww) {}
 
 
 	/**
