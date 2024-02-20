@@ -8,7 +8,7 @@
 /**
  * @brief 파이프라인 참조 및 렌더링 가능한 프레임 버퍼입니다.
  */
-class Framebuffer : public IResource
+class FrameBuffer : public IResource
 {
 public:
 	/**

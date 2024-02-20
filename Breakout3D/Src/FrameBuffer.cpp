@@ -3,7 +3,7 @@
 #include "Assertion.h"
 #include "FrameBuffer.h"
 
-Framebuffer::~Framebuffer()
+FrameBuffer::~FrameBuffer()
 {
 	if (bIsInitialized_)
 	{
@@ -11,7 +11,7 @@ Framebuffer::~Framebuffer()
 	}
 }
 
-void Framebuffer::Initialize(int32_t bufferWidth, int32_t bufferHeight, bool bIsEnableHDR)
+void FrameBuffer::Initialize(int32_t bufferWidth, int32_t bufferHeight, bool bIsEnableHDR)
 {
 	CHECK(!bIsInitialized_);
 	CHECK((bufferWidth >= 0 && bufferHeight >= 0));
@@ -42,7 +42,7 @@ void Framebuffer::Initialize(int32_t bufferWidth, int32_t bufferHeight, bool bIs
 	bIsInitialized_ = true;
 }
 
-void Framebuffer::Release()
+void FrameBuffer::Release()
 {
 	CHECK(bIsInitialized_);
 
@@ -53,7 +53,7 @@ void Framebuffer::Release()
 	bIsInitialized_ = false;
 }
 
-void Framebuffer::Clear(float red, float green, float blue, float alpha, float depth, uint8_t stencil)
+void FrameBuffer::Clear(float red, float green, float blue, float alpha, float depth, uint8_t stencil)
 {
 	if (!bIsBind_)
 	{
@@ -66,7 +66,7 @@ void Framebuffer::Clear(float red, float green, float blue, float alpha, float d
 	GL_FAILED(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 }
 
-void Framebuffer::Bind()
+void FrameBuffer::Bind()
 {
 	if (!bIsBind_)
 	{
@@ -75,7 +75,7 @@ void Framebuffer::Bind()
 	}
 }
 
-void Framebuffer::Unbind()
+void FrameBuffer::Unbind()
 {
 	if (bIsBind_)
 	{
@@ -84,7 +84,7 @@ void Framebuffer::Unbind()
 	}
 }
 
-void Framebuffer::Active(uint32_t unit)
+void FrameBuffer::Active(uint32_t unit)
 {
 	GL_FAILED(glActiveTexture(GL_TEXTURE0 + unit));
 	GL_FAILED(glBindTexture(GL_TEXTURE_2D, colorBufferID_));
