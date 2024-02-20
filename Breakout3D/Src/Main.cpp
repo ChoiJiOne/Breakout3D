@@ -148,6 +148,8 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 		{ // 2. ¾À ±×¸®±â
 			RenderManager::Get().SetWindowViewport();
 
+			skyboxPass->Draw(view, projection, skybox);
+
 			lightPass->Bind();
 			lightPass->SetUniform("view", view);
 			lightPass->SetUniform("projection", projection);
