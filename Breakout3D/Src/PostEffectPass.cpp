@@ -48,7 +48,7 @@ void PostEffectShader::Initialize(const std::string& fsPath)
 	GL_FAILED(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float))));
 	GL_FAILED(glEnableVertexAttribArray(1));
 
-	GL_FAILED(glBindVertexArray(0), "failed to unbind frame buffer vertex array...");
+	GL_FAILED(glBindVertexArray(0));
 }
 
 void PostEffectShader::Release()
