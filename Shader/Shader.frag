@@ -10,7 +10,7 @@ layout(location = 0) out vec4 outColor;
 layout(binding = 0) uniform sampler2D albedoMap;
 layout(binding = 1) uniform sampler2D shadowMap;
 
-uniform vec3 lightPosition;
+uniform vec3 lightDirection;
 uniform vec3 lightColor;
 uniform vec3 viewPosition;
 
@@ -22,7 +22,9 @@ float ComputeShadow(vec4 worldPositionInLightSpace)
 	float closestDepth = texture(shadowMap, projCoords.xy).r;
 	float currentDepth = projCoords.z;
 	
-	return currentDepth > closestDepth ? 1.0f : 0.0f;
+	float bias = 0.005;
+
+	return currentDepth - bias > closestDepth ? 1.0f : 0.0f;
 }
 
 void main()
@@ -33,7 +35,7 @@ void main()
 	vec3 ambientRGB = 0.3 * lightColor;
 
 	// diffuse
-	vec3 lightDirection = normalize(lightPosition - inWorldPosition);
+	vec3 lightDirection = normalize(-lightDirection);
 	vec3 normal = normalize(inNormal);
 	float diff = max(dot(lightDirection, normal), 0.0f);
 	vec3 diffuseRGB = diff * lightColor;
@@ -49,6 +51,6 @@ void main()
 
 	outColor = vec4((ambientRGB + (1.0f - shadow) * (diffuseRGB + specularRGB)) * albedo, 1.0f);
 
-	float gamma = 2.2;
-	outColor.rgb = pow(outColor.rgb, vec3(1.0f / gamma));
+//	float gamma = 2.2;
+//	outColor.rgb = pow(outColor.rgb, vec3(1.0f / gamma));
 }

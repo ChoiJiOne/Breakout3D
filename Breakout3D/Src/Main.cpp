@@ -34,6 +34,7 @@ Skybox* skybox = nullptr;
 
 Vec3f viewPosition = Vec3f(10.0f, 10.0f, 10.0f);
 Vec3f lightPosition = Vec3f(0.0f, 3.0f, 0.0f);
+Vec3f lightDirection = Vec3f(0.0f, -1.0f, 0.0f);
 Vec4f lightColor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 void Load()
@@ -165,7 +166,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			lightPass->SetUniform("projection", projection);			
 			lightPass->SetUniform("lightView", lightView);
 			lightPass->SetUniform("lightProjection", lightProjection);
-			lightPass->SetUniform("lightPosition", lightPosition);
+			lightPass->SetUniform("lightDirection", lightDirection);
 			lightPass->SetUniform("lightColor", lightColor.x, lightColor.y, lightColor.z);
 			lightPass->SetUniform("viewPosition", viewPosition);
 			
