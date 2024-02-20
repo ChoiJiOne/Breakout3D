@@ -55,8 +55,8 @@ void Load()
 	cube = ResourceManager::Get().CreateResource<StaticMesh>("Cube");
 	cube->Initialize(vertices, indices);
 
-	lightPass = ResourceManager::Get().CreateResource<Shader>("Shader");
-	lightPass->Initialize("Shader/Shader.vert", "Shader/Shader.frag");
+	lightPass = ResourceManager::Get().CreateResource<Shader>("LightPass");
+	lightPass->Initialize("Shader/LightPass.vert", "Shader/LightPass.frag");
 
 	skyboxPass = ResourceManager::Get().CreateResource<SkyboxPass>("SkyboxPass");
 	skyboxPass->Initialize();

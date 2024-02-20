@@ -27,15 +27,15 @@ float ComputeShadow(vec4 worldPositionInLightSpace)
 
 	float shadow = 0.0f;
 	vec2 texelSize = 1.0f / textureSize(shadowMap, 0);
-	for(int xoffset = -1; xoffset <= 1; ++xoffset)
+	for(int xoffset = -2; xoffset <= 2; ++xoffset)
 	{
-		for(int yoffset = -1; yoffset <= 1; ++yoffset)
+		for(int yoffset = -2; yoffset <= 2; ++yoffset)
 		{
 			float pcfDepth = texture(shadowMap, projCoords.xy + vec2(xoffset, yoffset) * texelSize).r;
 			shadow += currentDepth - bias > pcfDepth ? 1.0f : 0.0f;
 		}
 	}
-	shadow /= 9.0f;
+	shadow /= 25.0f;
 
 	if(projCoords.z > 1.0f)
 	{
