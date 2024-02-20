@@ -13,7 +13,7 @@ struct Quat
 	 * 
 	 * @note 모든 원소의 값을 0으로 초기화합니다.
 	 */
-	Quat() noexcept : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
+	Quat() noexcept : x(0.0f), y(0.0f), z(0.0f), w(1.0f) {}
 
 
 	/**
@@ -294,6 +294,97 @@ struct Quat
 	 * @param radian 라디안 단위의 각도입니다.
 	 */
 	static inline Quat AxisRadian(const Vec3f& axis, float radian);
+
+
+	/**
+	 * @brief 쿼터니언의 축을 얻습니다.
+	 * 
+	 * @param q 축을 얻을 쿼터니언입니다.
+	 * 
+	 * @return 쿼터니언의 축을 반환합니다.
+	 */
+	static inline Vec3f Axis(const Quat& q);
+
+
+	/**
+	 * @brief 쿼터니언의 육십분법 각을 얻습니다.
+	 *
+	 * @param q 육십분법 각도를 얻을 쿼터니언입니다.
+	 *
+	 * @return 쿼터니언의 육십분법 각을 반환합니다.
+	 */
+	static inline float Angle(const Quat& q);
+
+
+	/**
+	 * @brief 쿼터니언의 라디안 각을 얻습니다.
+	 * 
+	 * @param q 라디안 각도를 얻을 쿼터니언입니다.
+	 * 
+	 * @return 쿼터니언의 라디안 각을 반환합니다.
+	 */
+	static inline float Radian(const Quat& q);
+
+
+	/**
+	 * @brief 두 쿼터니언의 내적 연산을 수행합니다.
+	 * 
+	 * @param lhs 쿼터니언의 내적 연산을 수행할 좌측 피연산자입니다.
+	 * @param rhs 쿼터니언의 내적 연산을 수행할 우측 피연산자입니다.
+	 *
+	 * @return 내적 연산 결과를 반환합니다.
+	 */
+	static inline float Dot(const Quat& lhs, const Quat& rhs);
+
+
+	/**
+	 * @brief 쿼터니언의 크기 제곱 값을 계산합니다.
+	 *
+	 * @param q 크기 제곱을 계산할 쿼터니언입니다.
+	 *
+	 * @return 계산된 크기 제곱 값을 반환합니다.
+	 */
+	static inline float LengthSquare(const Quat& q);
+
+
+	/**
+	 * @brief 쿼터니언의 크기를 얻습니다.
+	 *
+	 * @param q 크기를 계산할 벡터입니다.
+	 *
+	 * @return 계산된 크기 값을 반환합니다.
+	 */
+	static inline float Length(const Quat& q);
+
+
+	/**
+	 * @brief 쿼터니언을 정규화합니다.
+	 *
+	 * @param q 정규화 할 쿼터니언입니다.
+	 *
+	 * @return 정규화된 쿼터니언을 반환합니다.
+	 */
+	static inline Quat Normalize(const Quat& q);
+
+
+	/**
+	 * @brief 켤레 쿼터니언을 얻습니다.
+	 * 
+	 * @param q 켤러 값을 계산할 쿼터니언입니다.
+	 * 
+	 * @return 켤레 쿼터니언을 반환합니다.
+	 */
+	static inline Quat Conjugate(const Quat& q);
+
+
+	/**
+	 * @brief 쿼터니언의 곱의 역원을 얻습니다.
+	 * 
+	 * @param 곱의 역원을 계산할 쿼터니언입니다.
+	 * 
+	 * @return 쿼터니언의 곱의 역원을 반환합니다.
+	 */
+	static inline Quat Inverse(const Quat& q);
 
 	
 	/**
