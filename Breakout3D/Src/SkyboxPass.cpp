@@ -16,8 +16,8 @@ void SkyboxPass::Initialize()
 {
 	CHECK(!bIsInitialized_);
 
-	std::string vsPath = "Shader/Skybox.vert";
-	std::string fsPath = "Shader/Skybox.frag";
+	std::string vsPath = "Shader/SkyboxPass.vert";
+	std::string fsPath = "Shader/SkyboxPass.frag";
 
 	Shader::Initialize(vsPath, fsPath);
 
