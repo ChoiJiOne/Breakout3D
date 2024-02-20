@@ -7,7 +7,7 @@
 #include "PostEffectPass.h"
 
 
-PostEffectShader::~PostEffectShader()
+PostEffectPass::~PostEffectPass()
 {
 	if (bIsInitialized_)
 	{
@@ -15,7 +15,7 @@ PostEffectShader::~PostEffectShader()
 	}
 }
 
-void PostEffectShader::Initialize(const std::string& fsPath)
+void PostEffectPass::Initialize(const std::string& fsPath)
 {
 	CHECK(!bIsInitialized_);
 
@@ -51,7 +51,7 @@ void PostEffectShader::Initialize(const std::string& fsPath)
 	GL_FAILED(glBindVertexArray(0));
 }
 
-void PostEffectShader::Release()
+void PostEffectPass::Release()
 {
 	CHECK(bIsInitialized_);
 
@@ -61,7 +61,7 @@ void PostEffectShader::Release()
 	Shader::Release();
 }
 
-void PostEffectShader::Blit(FrameBuffer* framebuffer)
+void PostEffectPass::Blit(FrameBuffer* framebuffer)
 {
 	framebuffer->Active(0);
 
