@@ -10,7 +10,9 @@
 #include "MathModule.h"
 
 #include "Assertion.h"
+#include "FrameBuffer.h"
 #include "GeometryGenerator.h"
+#include "PostEffectPass.h"
 #include "RenderManager.h"
 #include "ResourceManager.h"
 #include "SDLManager.h"
@@ -29,18 +31,20 @@ SkyboxPass* skyboxPass = nullptr;
 Shader* shadowPass = nullptr;
 Shader* lightPass = nullptr;
 Shader* visualLightPass = nullptr;
+PostEffectPass* hdrPass = nullptr;
 
 Texture2D* texture = nullptr;
 Skybox* skybox = nullptr;
 ShadowMap* shadowMap = nullptr;
+FrameBuffer* hdrFramebuffer = nullptr;
 
 const uint32_t SHADOW_WIDTH = 1024;
 const uint32_t SHADOW_HEIGHT = 1024;
 
 Vec3f viewPosition = Vec3f(10.0f, 10.0f, 10.0f);
-Vec3f lightPosition = Vec3f(0.0f, 3.0f, 0.0f);
+Vec3f lightPosition = Vec3f(0.0f, 5.0f, 0.0f);
 Vec3f lightDirection = Vec3f(0.0f, -1.0f, 0.0f);
-Vec4f lightColor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+Vec4f lightColor = Vec4f(10.0f, 10.0f, 10.0f, 10.0f);
 
 void Load()
 {
@@ -67,6 +71,9 @@ void Load()
 	visualLightPass = ResourceManager::Get().CreateResource<Shader>("VisualLight");
 	visualLightPass->Initialize("Shader/VisualLight.vert", "Shader/VisualLight.frag");
 
+	hdrPass = ResourceManager::Get().CreateResource<PostEffectPass>("HDRPass");
+	hdrPass->Initialize("Shader/HDRPass.frag");
+
 	texture = ResourceManager::Get().CreateResource<Texture2D>("Texture");
 	texture->Initialize("Resource/earth.png");
 
@@ -79,6 +86,9 @@ void Load()
 
 	shadowMap = ResourceManager::Get().CreateResource<ShadowMap>("ShadowMap");
 	shadowMap->Initialize(SHADOW_WIDTH, SHADOW_HEIGHT);
+
+	hdrFramebuffer = ResourceManager::Get().CreateResource<FrameBuffer>("HDRFrameBuffer");
+	hdrFramebuffer->Initialize(1000, 800, true);
 }
 
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
@@ -146,6 +156,8 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 		Mat4x4f projection = MathModule::CreatePerspective(MathModule::ToRadian(45.0f), static_cast<float>(1000) / static_cast<float>(800), 0.1f, 100.0f);
 		
 		{ // 2. ¾À ±×¸®±â
+			hdrFramebuffer->Bind();
+			hdrFramebuffer->Clear(0.0f, 0.0f, 0.0f, 1.0f);
 			RenderManager::Get().SetWindowViewport();
 
 			skyboxPass->Draw(view, projection, skybox);
@@ -192,6 +204,15 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			glDrawElements(GL_TRIANGLES, sphere->GetIndexCount(), GL_UNSIGNED_INT, 0);
 			sphere->Unbind();
 			visualLightPass->Unbind();
+			hdrFramebuffer->Unbind();
+		}
+
+		{ // 4. HDR ¾À ±×¸®±â
+			RenderManager::Get().SetWindowViewport();
+			hdrPass->Bind();
+			hdrPass->SetUniform("exposure", 1.0f);
+			hdrPass->Blit(hdrFramebuffer);
+			hdrPass->Unbind();
 		}
 
 		RenderManager::Get().EndFrame();
