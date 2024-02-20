@@ -25,6 +25,7 @@ StaticMesh* sphere = nullptr;
 StaticMesh* cube = nullptr;
 
 SkyboxPass* skyboxPass = nullptr;
+Shader* shadowPass = nullptr;
 Shader* lightPass = nullptr;
 Shader* visualLightPass = nullptr;
 
@@ -54,6 +55,9 @@ void Load()
 	skyboxPass = ResourceManager::Get().CreateResource<SkyboxPass>("SkyboxPass");
 	skyboxPass->Initialize();
 
+	shadowPass = ResourceManager::Get().CreateResource<Shader>("ShadowPass");
+	shadowPass->Initialize("Shader/ShadowPass.vert", "Shader/ShadowPass.frag");
+
 	visualLightPass = ResourceManager::Get().CreateResource<Shader>("VisualLight");
 	visualLightPass->Initialize("Shader/VisualLight.vert", "Shader/VisualLight.frag");
 
@@ -82,6 +86,27 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	
 	Load();
 
+	const uint32_t SHADOW_WIDTH = 1024;
+	const uint32_t SHADOW_HEIGHT = 1024;
+	
+	uint32_t depthMapFBO;
+	glGenFramebuffers(1, &depthMapFBO);
+
+	uint32_t depthMap;
+	glGenTextures(1, &depthMap);
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	SDL_Event e;
 	bool bIsDone = false;
 	while (!bIsDone)
@@ -98,20 +123,56 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 
 		RenderManager::Get().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
-		Mat4x4f world = MathModule::CreateScale(Vec3f(0.2f, 0.2f, 0.2f)) * MathModule::CreateTranslation(lightPosition);
+		Mat4x4f lightView = MathModule::CreateLookAt(lightPosition, Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 0.0f, 1.0f));
+		Mat4x4f lightProjection = MathModule::CreateOrtho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
+		
+		{ // 1. 깊이 씬 그리기
+			RenderManager::Get().SetViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+			glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+			glClear(GL_DEPTH_BUFFER_BIT);
+			
+			shadowPass->Bind();
+			shadowPass->SetUniform("view", lightView);
+			shadowPass->SetUniform("projection", lightProjection);
+
+			sphere->Bind();
+
+			shadowPass->SetUniform("world", MathModule::CreateTranslation(-2.0f, 1.0f, 0.0f));
+			glDrawElements(GL_TRIANGLES, sphere->GetIndexCount(), GL_UNSIGNED_INT, 0);
+
+			shadowPass->SetUniform("world", MathModule::CreateTranslation(+2.0f, 1.0f, 0.0f));
+			glDrawElements(GL_TRIANGLES, sphere->GetIndexCount(), GL_UNSIGNED_INT, 0);
+
+			sphere->Unbind();
+
+			cube->Bind();
+			shadowPass->SetUniform("world", MathModule::CreateTranslation(Vec3f(0.0f, -0.5f, 0.0f)));
+			glDrawElements(GL_TRIANGLES, cube->GetIndexCount(), GL_UNSIGNED_INT, 0);
+			cube->Unbind();
+			
+			shadowPass->Unbind();
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		}
+
 		Mat4x4f view = MathModule::CreateLookAt(viewPosition, Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 0.0f));
 		Mat4x4f projection = MathModule::CreatePerspective(MathModule::ToRadian(45.0f), static_cast<float>(1000) / static_cast<float>(800), 0.1f, 100.0f);
-
-		skyboxPass->Draw(view, projection, skybox);
-
-		{ // 1. 씬 그리기
-			texture->Active(0);
+		
+		{ // 2. 씬 그리기
+			RenderManager::Get().SetWindowViewport();
 
 			lightPass->Bind();
 			lightPass->SetUniform("view", view);
-			lightPass->SetUniform("projection", projection);
+			lightPass->SetUniform("projection", projection);			
+			lightPass->SetUniform("lightView", lightView);
+			lightPass->SetUniform("lightProjection", lightProjection);
 			lightPass->SetUniform("lightPosition", lightPosition);
+			lightPass->SetUniform("lightColor", lightColor.x, lightColor.y, lightColor.z);
 			lightPass->SetUniform("viewPosition", viewPosition);
+			
+			texture->Active(0);
+
+			glActiveTexture(GL_TEXTURE0 + 1);
+			glBindTexture(GL_TEXTURE_2D, depthMap);
 
 			sphere->Bind();
 
@@ -131,7 +192,9 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			lightPass->Unbind();
 		}
 
-		{ // 2. 화면에 라이트 그리기
+		Mat4x4f world = MathModule::CreateScale(Vec3f(0.2f, 0.2f, 0.2f)) * MathModule::CreateTranslation(lightPosition);
+
+		{ // 3. 라이트 그리기
 			visualLightPass->Bind();
 			visualLightPass->SetUniform("world", world);
 			visualLightPass->SetUniform("view", view);
