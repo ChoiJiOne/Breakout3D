@@ -15,6 +15,7 @@
 #include "ResourceManager.h"
 #include "SDLManager.h"
 #include "Shader.h"
+#include "ShadowMap.h"
 #include "Skybox.h"
 #include "SkyboxPass.h"
 #include "StaticMesh.h"
@@ -31,6 +32,10 @@ Shader* visualLightPass = nullptr;
 
 Texture2D* texture = nullptr;
 Skybox* skybox = nullptr;
+ShadowMap* shadowMap = nullptr;
+
+const uint32_t SHADOW_WIDTH = 1024;
+const uint32_t SHADOW_HEIGHT = 1024;
 
 Vec3f viewPosition = Vec3f(10.0f, 10.0f, 10.0f);
 Vec3f lightPosition = Vec3f(0.0f, 3.0f, 0.0f);
@@ -71,6 +76,9 @@ void Load()
 		"Resource/Skybox/Space_Top.png", "Resource/Skybox/Space_Bottom.png",
 		"Resource/Skybox/Space_Front.png", "Resource/Skybox/Space_Back.png"
 	);
+
+	shadowMap = ResourceManager::Get().CreateResource<ShadowMap>("ShadowMap");
+	shadowMap->Initialize(SHADOW_WIDTH, SHADOW_HEIGHT);
 }
 
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
@@ -86,27 +94,6 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	RenderManager::Get().SetMultisampleMode(true);
 	
 	Load();
-
-	const uint32_t SHADOW_WIDTH = 1024;
-	const uint32_t SHADOW_HEIGHT = 1024;
-	
-	uint32_t depthMapFBO;
-	glGenFramebuffers(1, &depthMapFBO);
-
-	uint32_t depthMap;
-	glGenTextures(1, &depthMap);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	SDL_Event e;
 	bool bIsDone = false;
@@ -129,8 +116,8 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 		
 		{ // 1. ±íÀÌ ¾À ±×¸®±â
 			RenderManager::Get().SetViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-			glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-			glClear(GL_DEPTH_BUFFER_BIT);
+			shadowMap->Bind();
+			shadowMap->Clear();
 			
 			shadowPass->Bind();
 			shadowPass->SetUniform("view", lightView);
@@ -152,7 +139,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			cube->Unbind();
 			
 			shadowPass->Unbind();
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			shadowMap->Unbind();
 		}
 
 		Mat4x4f view = MathModule::CreateLookAt(viewPosition, Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 0.0f));
@@ -163,7 +150,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 
 			lightPass->Bind();
 			lightPass->SetUniform("view", view);
-			lightPass->SetUniform("projection", projection);			
+			lightPass->SetUniform("projection", projection);
 			lightPass->SetUniform("lightView", lightView);
 			lightPass->SetUniform("lightProjection", lightProjection);
 			lightPass->SetUniform("lightDirection", lightDirection);
@@ -171,9 +158,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			lightPass->SetUniform("viewPosition", viewPosition);
 			
 			texture->Active(0);
-
-			glActiveTexture(GL_TEXTURE0 + 1);
-			glBindTexture(GL_TEXTURE_2D, depthMap);
+			shadowMap->Active(1);
 
 			sphere->Bind();
 
