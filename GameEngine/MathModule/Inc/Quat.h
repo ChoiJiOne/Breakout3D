@@ -282,9 +282,18 @@ struct Quat
 	 * @brief 각도와 축을 이용해서 쿼터니언을 얻습니다.
 	 *
 	 * @parma axis 축 입니다.
+	 * @param angle 육십분법 단위의 각도입니다.
+	 */
+	static inline Quat AxisAngle(const Vec3f& axis, float angle);
+
+
+	/**
+	 * @brief 각도와 축을 이용해서 쿼터니언을 얻습니다.
+	 *
+	 * @parma axis 축 입니다.
 	 * @param radian 라디안 단위의 각도입니다.
 	 */
-	static inline Quat AxisAngle(const Vec3f& axis, float radian);
+	static inline Quat AxisRadian(const Vec3f& axis, float radian);
 
 	
 	/**
