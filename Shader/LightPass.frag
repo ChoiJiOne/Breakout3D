@@ -69,6 +69,6 @@ void main()
 
 	outColor = vec4((ambientRGB + (1.0f - shadow) * (diffuseRGB + specularRGB)) * albedo, 1.0f);
 
-//	float gamma = 2.2;
-//	outColor.rgb = pow(outColor.rgb, vec3(1.0f / gamma));
+	float gamma = 2.2;
+	outColor.rgb = pow(outColor.rgb, vec3(1.0f / gamma));
 }

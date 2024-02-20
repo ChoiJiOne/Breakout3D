@@ -8,7 +8,7 @@ class FrameBuffer; // 프레임 버퍼 리소스를 사용하기 위한 전방 선언입니다.
 /**
  * @brief 후처리 효과를 적용하는 셰이더입니다.
  */
-class PostEffectShader : public Shader
+class PostEffectPass : public Shader
 {
 public:
 	/**
@@ -16,7 +16,7 @@ public:
 	 *
 	 * @note 생성자 이외의 메서드에서 적절한 초기화를 수행해야 합니다.
 	 */
-	PostEffectShader() = default;
+	PostEffectPass() = default;
 
 
 	/**
@@ -24,13 +24,13 @@ public:
 	 *
 	 * @note 후처리 효과 셰이더의 내부에서 할당된 요소를 해제하기 위해서는 반드시 Release를 호출해야 합니다.
 	 */
-	virtual ~PostEffectShader();
+	virtual ~PostEffectPass();
 
 
 	/**
 	 * @brief 후처리 효과 셰이더의 복사 생성자와 대입 연산자를 명시적으로 삭제합니다.
 	 */
-	DISALLOW_COPY_AND_ASSIGN(PostEffectShader);
+	DISALLOW_COPY_AND_ASSIGN(PostEffectPass);
 
 
 	/**
