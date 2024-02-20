@@ -1,11 +1,12 @@
 #include "MathModule.h"
 
-inline Quat Quat::AxisAngle(const Vec3f& axis, float angle)
+inline Quat Quat::AxisAngle(const Vec3f& axis, float radian)
 {
+	float s = MathModule::Sin(radian * 0.5f);
+	float c = MathModule::Cos(radian * 0.5f);
 	Vec3f norm = Vec3f::Normalize(axis);
-	float scalar = MathModule::Sin(angle * 0.5f);
 
-	return Quat(norm.x * scalar, norm.y * scalar, norm.z * scalar, MathModule::Cos(angle * 0.5f));
+	return Quat(norm.x * s, norm.y * s, norm.z * s, c);
 }
 inline Quat Quat::Zero()
 {
