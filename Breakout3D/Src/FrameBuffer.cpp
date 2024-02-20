@@ -23,7 +23,7 @@ void FrameBuffer::Initialize(int32_t bufferWidth, int32_t bufferHeight, bool bIs
 
 	GL_FAILED(glGenTextures(1, &colorBufferID_));
 	GL_FAILED(glBindTexture(GL_TEXTURE_2D, colorBufferID_));
-	GL_FAILED(glTexImage2D(GL_TEXTURE_2D, 0, bIsEnableHDR_ ? GL_RGBA32F : GL_RGBA, bufferWidth, bufferHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr));
+	GL_FAILED(glTexImage2D(GL_TEXTURE_2D, 0, bIsEnableHDR_ ? GL_RGBA32F : GL_RGBA, bufferWidth, bufferHeight, 0, GL_RGBA, bIsEnableHDR_ ? GL_FLOAT : GL_UNSIGNED_BYTE, nullptr));
 	GL_FAILED(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	GL_FAILED(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 	GL_FAILED(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
