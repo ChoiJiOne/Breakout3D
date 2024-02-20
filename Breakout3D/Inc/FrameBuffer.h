@@ -16,19 +16,19 @@ public:
 	 *
 	 * @note 생성자 이외의 메서드에서 적절한 초기화를 수행해야 합니다.
 	 */
-	Framebuffer() = default;
+	FrameBuffer() = default;
 
 
 	/**
 	 * @brief 프레임 버퍼의 가상 소멸자입니다.
 	 */
-	virtual ~Framebuffer();
+	virtual ~FrameBuffer();
 
 
 	/**
 	 * @brief 프레임 버퍼의 복사 생성자와 대입 연산자를 명시적으로 삭제합니다.
 	 */
-	DISALLOW_COPY_AND_ASSIGN(Framebuffer);
+	DISALLOW_COPY_AND_ASSIGN(FrameBuffer);
 
 
 	/**
