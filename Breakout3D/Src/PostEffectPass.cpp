@@ -23,15 +23,13 @@ void PostEffectPass::Initialize(const std::string& fsPath)
 
 	Shader::Initialize(vsPath, fsPath);
 
-	std::array<float, 30> vertices = 
+	std::array<float, 20> vertices = 
 	{
 		// position          // uv
-		-1.0f, +1.0f, 0.0f,  0.0f, 0.0f,
-		-1.0f, -1.0f, 0.0f,  0.0f, 1.0f,
-		+1.0f, +1.0f, 0.0f,  1.0f, 0.0f,
-		+1.0f, +1.0f, 0.0f,  1.0f, 0.0f,
-		-1.0f, -1.0f, 0.0f,  0.0f, 1.0f,
-		+1.0f, -1.0f, 0.0f,  1.0f, 1.0f,
+		-1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
+		+1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
+		+1.0f, +1.0f, 0.0f,  1.0f, 1.0f,
+		-1.0f, +1.0f, 0.0f,  0.0f, 1.0f,
 	};
 	uint32_t stride = static_cast<uint32_t>(5 * sizeof(float));
 
@@ -66,6 +64,6 @@ void PostEffectPass::Blit(FrameBuffer* framebuffer)
 	framebuffer->Active(0);
 
 	GL_FAILED(glBindVertexArray(vertexArrayObject_));
-	GL_FAILED(glDrawArrays(GL_TRIANGLES, 0, 6));
+	GL_FAILED(glDrawArrays(GL_TRIANGLE_FAN, 0, 4));
 	GL_FAILED(glBindVertexArray(0));
 }
