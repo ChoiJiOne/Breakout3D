@@ -11,18 +11,23 @@ FrameBuffer::~FrameBuffer()
 	}
 }
 
-void FrameBuffer::Initialize(int32_t bufferWidth, int32_t bufferHeight)
+void FrameBuffer::Initialize(int32_t bufferWidth, int32_t bufferHeight, uint32_t countColorBuffer, bool bIsEnableDeptnStencilBuffer)
 {
 	CHECK(!bIsInitialized_);
 	CHECK((bufferWidth >= 0 && bufferHeight >= 0));
+	CHECK(countColorBuffer <= MAX_COLOR_BUFFER);
+
+	bIsBind_ = false;
+	bIsEnableDeptnStencilBuffer_ = bIsEnableDeptnStencilBuffer;
+	colorBufferID_ = std::vector<uint32_t>(countColorBuffer);
 
 	GL_FAILED(glGenFramebuffers(1, &framebufferID_));
 	GL_FAILED(glBindFramebuffer(GL_FRAMEBUFFER, framebufferID_));
 
-	GL_FAILED(glGenTextures(MAX_COLOR_BUFFER, colorBufferID_));
+	GL_FAILED(glGenTextures(static_cast<int32_t>(colorBufferID_.size()), colorBufferID_.data()));
 
 	uint32_t attachments[MAX_COLOR_BUFFER];
-	for (int32_t index = 0; index < MAX_COLOR_BUFFER; ++index)
+	for (std::size_t index = 0; index < colorBufferID_.size(); ++index)
 	{
 		attachments[index] = GL_COLOR_ATTACHMENT0 + index;
 
@@ -35,12 +40,15 @@ void FrameBuffer::Initialize(int32_t bufferWidth, int32_t bufferHeight)
 		GL_FAILED(glFramebufferTexture2D(GL_FRAMEBUFFER, attachments[index], GL_TEXTURE_2D, colorBufferID_[index], 0));
 	}
 
-	GL_FAILED(glDrawBuffers(MAX_COLOR_BUFFER, attachments));
+	GL_FAILED(glDrawBuffers(static_cast<int32_t>(colorBufferID_.size()), attachments));
 
-	GL_FAILED(glGenRenderbuffers(1, &depthStencilBufferID_));
-	GL_FAILED(glBindRenderbuffer(GL_RENDERBUFFER, depthStencilBufferID_));
-	GL_FAILED(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, bufferWidth, bufferHeight));
-	GL_FAILED(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthStencilBufferID_));
+	if (bIsEnableDeptnStencilBuffer_)
+	{
+		GL_FAILED(glGenRenderbuffers(1, &depthStencilBufferID_));
+		GL_FAILED(glBindRenderbuffer(GL_RENDERBUFFER, depthStencilBufferID_));
+		GL_FAILED(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, bufferWidth, bufferHeight));
+		GL_FAILED(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthStencilBufferID_));
+	}
 
 	GLenum state = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	CHECK(state == GL_FRAMEBUFFER_COMPLETE);
@@ -53,8 +61,12 @@ void FrameBuffer::Release()
 {
 	CHECK(bIsInitialized_);
 
-	GL_FAILED(glDeleteRenderbuffers(1, &depthStencilBufferID_));
-	GL_FAILED(glDeleteTextures(MAX_COLOR_BUFFER, colorBufferID_));
+	if (bIsEnableDeptnStencilBuffer_)
+	{
+		GL_FAILED(glDeleteRenderbuffers(1, &depthStencilBufferID_));
+	}
+
+	GL_FAILED(glDeleteTextures(static_cast<int32_t>(colorBufferID_.size()), colorBufferID_.data()));
 	GL_FAILED(glDeleteFramebuffers(1, &framebufferID_));
 
 	bIsInitialized_ = false;
@@ -67,10 +79,18 @@ void FrameBuffer::Clear(float red, float green, float blue, float alpha, float d
 		Bind();
 	}
 
+	uint32_t bitMask = GL_COLOR_BUFFER_BIT;
 	glClearColor(red, green, blue, alpha);
-	glClearDepth(depth);
-	glClearStencil(stencil);
-	GL_FAILED(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
+
+	if (bIsEnableDeptnStencilBuffer_)
+	{
+		glClearDepth(depth);
+		glClearStencil(stencil);
+
+		bitMask |= GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT;
+	}
+
+	GL_FAILED(glClear(bitMask));
 }
 
 void FrameBuffer::Bind()

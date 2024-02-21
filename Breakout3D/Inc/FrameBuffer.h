@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 #include "IResource.h"
 
@@ -36,8 +37,10 @@ public:
 	 *
 	 * @param bufferWidth 프레임 버퍼의 가로 크기입니다.
 	 * @param bufferHeight 프레임 버퍼의 세로 크기입니다.
+	 * @param countColorBuffer 프레임 버퍼의 색상 버퍼 수입니다.
+	 * @param bIsEnableDeptnStencilBuffer 프레임 버퍼에 깊이 스텐실 버퍼를 사용할 지 여부입니다.
 	 */
-	void Initialize(int32_t bufferWidth, int32_t bufferHeight);
+	void Initialize(int32_t bufferWidth, int32_t bufferHeight, uint32_t countColorBuffer, bool bIsEnableDeptnStencilBuffer);
 
 
 	/**
@@ -92,6 +95,12 @@ private:
 	 * @brief 바인딩 되었는지 확인합니다.
 	 */
 	bool bIsBind_ = false;
+
+
+	/**
+	 * @brief 깊이 스텐실 버퍼가 활성화되었는지 확인합니다.
+	 */
+	bool bIsEnableDeptnStencilBuffer_ = false;
 	
 
 	/**
@@ -103,7 +112,7 @@ private:
 	/**
 	 * @brief 컬러 버퍼 오브젝트의 ID입니다.
 	 */
-	uint32_t colorBufferID_[MAX_COLOR_BUFFER];
+	std::vector<uint32_t> colorBufferID_;
 
 
 	/**
