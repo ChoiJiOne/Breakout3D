@@ -36,9 +36,8 @@ public:
 	 *
 	 * @param bufferWidth 프레임 버퍼의 가로 크기입니다.
 	 * @param bufferHeight 프레임 버퍼의 세로 크기입니다.
-	 * @param bIsEnableHDR 프레임 버퍼 중 색상 버퍼의 하이 다이나믹 레인지(HDR) 활성화 여부입니다.
 	 */
-	void Initialize(int32_t bufferWidth, int32_t bufferHeight, bool bIsEnableHDR);
+	void Initialize(int32_t bufferWidth, int32_t bufferHeight);
 
 
 	/**
@@ -73,33 +72,27 @@ public:
 
 
 	/**
-	 * @brief 프레임 버퍼의 텍스처를 활성화합니다.
+	 * @brief 프레임 버퍼의 컬러 버퍼 텍스처를 활성화합니다.
 	 *
+	 * @param index 활성화 할 컬러 버퍼의 인덱스입니다.
 	 * @param unit 활성화 할 텍스처 유닛입니다.
 	 */
-	void Active(uint32_t unit);
+	void Active(uint32_t inedx, uint32_t unit);
 
 
+private:
 	/**
-	 * @brief HDR이 활성화되어 있는지 확인합니다.
-	 * 
-	 * @return HDR이 활성화되어 있다면 true, 그렇지 않으면 false를 반환합니다.
+	 * @brief 프레임 버퍼의 최대 컬러 버퍼 수입니다.
 	 */
-	bool IsEnableHDR() const { return bIsEnableHDR_; }
+	static const uint32_t MAX_COLOR_BUFFER = 2;
 
-
+	
 private:
 	/**
 	 * @brief 바인딩 되었는지 확인합니다.
 	 */
 	bool bIsBind_ = false;
-
-
-	/**
-	 * @brief HDR이 활성화 되었는지 확인합니다.
-	 */
-	bool bIsEnableHDR_ = false;
-
+	
 
 	/**
 	 * @brief 프레임 버퍼 오브젝트의 ID입니다.
@@ -110,7 +103,7 @@ private:
 	/**
 	 * @brief 컬러 버퍼 오브젝트의 ID입니다.
 	 */
-	uint32_t colorBufferID_ = 0;
+	uint32_t colorBufferID_[MAX_COLOR_BUFFER];
 
 
 	/**

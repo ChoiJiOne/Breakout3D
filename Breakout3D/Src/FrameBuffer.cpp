@@ -11,24 +11,31 @@ FrameBuffer::~FrameBuffer()
 	}
 }
 
-void FrameBuffer::Initialize(int32_t bufferWidth, int32_t bufferHeight, bool bIsEnableHDR)
+void FrameBuffer::Initialize(int32_t bufferWidth, int32_t bufferHeight)
 {
 	CHECK(!bIsInitialized_);
 	CHECK((bufferWidth >= 0 && bufferHeight >= 0));
 
-	bIsEnableHDR_ = bIsEnableHDR;
-
 	GL_FAILED(glGenFramebuffers(1, &framebufferID_));
 	GL_FAILED(glBindFramebuffer(GL_FRAMEBUFFER, framebufferID_));
 
-	GL_FAILED(glGenTextures(1, &colorBufferID_));
-	GL_FAILED(glBindTexture(GL_TEXTURE_2D, colorBufferID_));
-	GL_FAILED(glTexImage2D(GL_TEXTURE_2D, 0, bIsEnableHDR_ ? GL_RGBA32F : GL_RGBA, bufferWidth, bufferHeight, 0, GL_RGBA, bIsEnableHDR_ ? GL_FLOAT : GL_UNSIGNED_BYTE, nullptr));
-	GL_FAILED(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-	GL_FAILED(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-	GL_FAILED(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	GL_FAILED(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-	GL_FAILED(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBufferID_, 0));
+	GL_FAILED(glGenTextures(MAX_COLOR_BUFFER, colorBufferID_));
+
+	uint32_t attachments[MAX_COLOR_BUFFER];
+	for (int32_t index = 0; index < MAX_COLOR_BUFFER; ++index)
+	{
+		attachments[index] = GL_COLOR_ATTACHMENT0 + index;
+
+		GL_FAILED(glBindTexture(GL_TEXTURE_2D, colorBufferID_[index]));
+		GL_FAILED(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, bufferWidth, bufferHeight, 0, GL_RGBA, GL_FLOAT, nullptr));
+		GL_FAILED(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+		GL_FAILED(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+		GL_FAILED(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+		GL_FAILED(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+		GL_FAILED(glFramebufferTexture2D(GL_FRAMEBUFFER, attachments[index], GL_TEXTURE_2D, colorBufferID_[index], 0));
+	}
+
+	GL_FAILED(glDrawBuffers(MAX_COLOR_BUFFER, attachments));
 
 	GL_FAILED(glGenRenderbuffers(1, &depthStencilBufferID_));
 	GL_FAILED(glBindRenderbuffer(GL_RENDERBUFFER, depthStencilBufferID_));
@@ -47,7 +54,7 @@ void FrameBuffer::Release()
 	CHECK(bIsInitialized_);
 
 	GL_FAILED(glDeleteRenderbuffers(1, &depthStencilBufferID_));
-	GL_FAILED(glDeleteTextures(1, &colorBufferID_));
+	GL_FAILED(glDeleteTextures(MAX_COLOR_BUFFER, colorBufferID_));
 	GL_FAILED(glDeleteFramebuffers(1, &framebufferID_));
 
 	bIsInitialized_ = false;
@@ -84,8 +91,10 @@ void FrameBuffer::Unbind()
 	}
 }
 
-void FrameBuffer::Active(uint32_t unit)
+void FrameBuffer::Active(uint32_t index, uint32_t unit)
 {
+	CHECK(0 <= index && index < MAX_COLOR_BUFFER);
+
 	GL_FAILED(glActiveTexture(GL_TEXTURE0 + unit));
-	GL_FAILED(glBindTexture(GL_TEXTURE_2D, colorBufferID_));
+	GL_FAILED(glBindTexture(GL_TEXTURE_2D, colorBufferID_[index]));
 }
