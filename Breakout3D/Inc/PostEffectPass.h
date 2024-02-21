@@ -49,10 +49,8 @@ public:
 
 	/**
 	 * @brief 후처리 효과를 적용한 뒤 바인딩된 프레임 버퍼에 전송합니다.
-	 *
-	 * @param framebuffer 후처리 효과를 적용할 프레임 버퍼입니다.
 	 */
-	void Blit(FrameBuffer* framebuffer);
+	void Blit();
 
 	
 private:

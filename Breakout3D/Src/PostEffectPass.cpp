@@ -3,7 +3,6 @@
 #include <glad/glad.h>
 
 #include "Assertion.h"
-#include "FrameBuffer.h"
 #include "PostEffectPass.h"
 
 
@@ -59,10 +58,8 @@ void PostEffectPass::Release()
 	Shader::Release();
 }
 
-void PostEffectPass::Blit(FrameBuffer* framebuffer)
+void PostEffectPass::Blit()
 {
-	framebuffer->Active(0);
-
 	GL_FAILED(glBindVertexArray(vertexArrayObject_));
 	GL_FAILED(glDrawArrays(GL_TRIANGLE_FAN, 0, 4));
 	GL_FAILED(glBindVertexArray(0));
